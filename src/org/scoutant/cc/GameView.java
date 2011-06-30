@@ -18,6 +18,7 @@ import java.util.List;
 import org.scoutant.cc.model.Board;
 import org.scoutant.cc.model.Game;
 import org.scoutant.cc.model.Move;
+import org.scoutant.cc.model.Pixel;
 import org.scoutant.cc.model.Point;
 
 import android.content.Context;
@@ -36,7 +37,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 public class GameView extends FrameLayout  {
 	private static String tag = "view";
@@ -67,15 +67,14 @@ public class GameView extends FrameLayout  {
 		setWillNotDraw(false);
 		setLayoutParams( new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, Gravity.TOP));
 		Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		Log.i(tag, "width : " + display.getWidth() + ", height : " + display.getHeight());
+//		Log.i(tag, "width : " + display.getWidth() + ", height : " + display.getHeight());
 
 		game = new Game(false);
 		
 		dI = display.getWidth()/10;
 		dJ = new Double(0.866*dI).intValue();
 		diameter = new Double( 0.8*dI).intValue();
-//		radius = new Double( 0.8*dI/2).intValue();
-		Log.i(tag, "dI : " + dI + ", dJ : " + dJ);
+		Log.i(tag, "width : " + display.getWidth() + ", height : " + display.getHeight() + ", dI : " + dI + ", dJ : " + dJ);
 		
 		buttons = new ButtonsView(context);
 		addView( buttons);
@@ -90,8 +89,7 @@ public class GameView extends FrameLayout  {
 	
 	}
 	
-	public float downX;
-	public float downY;
+	public Pixel e;
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -99,33 +97,68 @@ public class GameView extends FrameLayout  {
 		doTouch(event);
 		return true;
 	}
-
 	
 	public void doTouch(MotionEvent event) {
 		int action = event.getAction(); 
     	if (action==MotionEvent.ACTION_DOWN) {
-    		downX=event.getRawX();
-    		downY=event.getRawY();
-    		// TODO pour emulateur seulement !
-    		downY -= 25;
-    		Log.d(tag, "down on : " + downX +", " + downY);
-    		int j = new Double((downY)/dJ).intValue();
-    		// Attention si j impair, décallage de dI/2 
-			int oI = (j%2==0 ? 0 : dI/2);
-			// miniboard : -dI/2 comme offset global
-    		int i = new Double((downX+dI/2-oI)/dI).intValue();
-    		// attention decalage de ligne j pour j impaire
-    		Point p = new Point(i,j);
+    		e = new Pixel( event);
+    		// TODO downY -= 25, if status bar left available. always that offset??.
+    		Log.d(tag, "down on " + e);
+    		Point p = point(e);
     		Log.d(tag, "down : " + p);
-    		if (p.hole()) {
-				game.ball.set(p);
-				invalidate();
+    		// coordinate of the center of corresponding cell
+    		Pixel o = pixel(p);
+    		Log.d(tag, "o " + o);
+    		int nI = p.i;
+    		if (p.j%2==0) {
+    			nI += ( e.x<o.x ? -1 : 0);
+    		} else {
+    			nI += ( e.x<o.x ? 0 : 1);    			
     		}
+    		Point n = new Point (nI, p.j + ( e.y<o.y ? -1 : + 1));
+    		// qd on clique dans un coin, on est parfois plus près de la bille de la rangés de dessous ou dessus...
+    		Log.d(tag, "n " + n);
+    		Pixel oN = pixel(n);
+    		Log.d(tag, "oN " + oN);
+    		int dO = Pixel.distance(e, o);
+    		int dN = Pixel.distance(e, oN);
+    		Log.d(tag, "dist O : " + dO);
+    		Log.d(tag, "dist N : " + dN);
+    		if (dN<dO) {
+    			game.ball.set(n);
+    		} else {
+    			game.ball.set(p);
+    		}
+//    		if (p.hole()) {
+//    		game.ball.set(p);
+				invalidate();
+//    		}
+    		
     	}
     	if (action==MotionEvent.ACTION_MOVE ) {
     	}
     	if (action==MotionEvent.ACTION_UP ) {
     	}
+	}
+	
+	/** @return the cell Point in which Pixel @param l happens to be in */
+	private Point point( Pixel l) {
+		// miniboard : -dI/2 comme offset global et oI comme offset contextuel
+		int j = l.y/dJ;
+		int oI = (j%2==0 ? 0 : dI/2);
+		int i = (l.x+dI/2-oI)/dI;
+		return new Point (i, j);
+	}
+
+		
+	
+	/** @return the center of the hole identified by provided @param point */
+	private Pixel pixel(Point p) {
+		// -dI/2 is the global offset for the miniboard and (dI/2-1, dJ/2-1) is the standard offset for center of the cell.
+		// and +dI/2 is contextual offset for I on odd lines...
+		int oI = (p.j%2==0 ? 0 : dI/2);
+		int x = -dI/2+dI/2-1+p.i*dI+oI;
+		return new Pixel(x, dI/2-1+p.j*dJ);
 	}
 	
 	@Override
@@ -139,7 +172,6 @@ public class GameView extends FrameLayout  {
 	 * Mini board sizeI=11, but only 10 most left balls visible, And with dI/2 offset! 
 	 */
 	private void drawMiniBoard(Canvas canvas){
-		int oI;
 		Log.d(tag, "sizeI : " + Board.sizeI);
 		for (int j=0; j<=13; j++){
 			canvas.drawLine(0, j*dJ+1, 10*dI, j*dJ+1, paint);
@@ -150,15 +182,13 @@ public class GameView extends FrameLayout  {
 
 		
 		for (int j=0; j<13; j++){
-			oI = (j%2==0 ? 0 : dI/2);
 			for (int i=0; i< 10; i++) {
+				Pixel l = pixel(new Point(i, j));
 				if (Board.hole.is(i,j)) {
-					// -dI/2 c'est l'offset global pour miniboard
-					// (dI/2-1, dJ/2-1) c'est l'offset pour le centrage.
-					canvas.drawBitmap(hole, null, toSquare(-dI/2+dI/2-1+i*dI+oI, dI/2-1+j*dJ, diameter), null);
+					canvas.drawBitmap(hole, null, toSquare(l, diameter), null);
 				}
 				if (game.ball.is(i,j)) {
-					canvas.drawBitmap(ball, null, toSquare(-dI/2+dI/2-1+i*dI+oI, dI/2-1+j*dJ, diameter), null);
+					canvas.drawBitmap(ball, null, toSquare(l, diameter), null);
 				}
 			}
 		}
@@ -168,11 +198,17 @@ public class GameView extends FrameLayout  {
 	 * @return a Rect instance representing a square centered on (@param x, @param y) with @param length  
 	 */
 	public static Rect toSquare(int x, int y, int length) {
-		// TODO bas if length not multiple of 2?
 		return new Rect( x-length/2, y-length/2, x+length/2-1, y+length/2-1);
 	}
 	
+	/**
+	 * @return a Rect instance representing a square centered on (@param x, @param y) with @param length  
+	 */
+	public static Rect toSquare(Pixel l, int length) {
+		return new Rect( l.x-length/2, l.y-length/2, l.x+length/2-1, l.y+length/2-1);
+	}
 
+	
 	public PieceUI findPiece(Move move) {
 		if (move.points.size()<1) return null;
 		return findPiece(move.point(0));
@@ -201,12 +237,3 @@ public class GameView extends FrameLayout  {
 		return true;
 	}	
 }
-
-
-//ImageView gameBoard = new ImageView(context);
-//gameBoard.setImageResource(R.drawable.board_5_1);
-//addView(gameBoard);
-
-
-//canvas.drawBitmap(bitmap, null, new Rect( -dI/2+i*dI+oI, j*dJ, -dI/2+i*dI+oI+diameter, j*dJ+diameter), null);
-//canvas.drawBitmap(bitmap, null, toSquare(dI/2+i*dI+oI, dI/2+j*dJ, diameter), null);

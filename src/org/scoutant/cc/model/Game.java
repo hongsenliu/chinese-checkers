@@ -23,7 +23,7 @@ public class Game {
 	 *<p>    3 
 	 */
 	public Game(boolean regular) {
-		// OK?
+		// OK? TODO refactor to subclass and override constructor?
 		Board.init(regular);
 		if (regular) {
 			players.add( new Player( 6, 0).add( 6,16).add( 5,15).add( 6,15).add( 5,14).add( 6,14).add( 7,14).add( 4,13).add( 5,13).add( 6,13).add( 7,13) ); // 0
