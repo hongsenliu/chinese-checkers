@@ -25,7 +25,9 @@ public class Game {
 	public Game(boolean regular) {
 		// OK? TODO refactor to subclass and override constructor?
 		Board.init(regular);
+		int color=0;
 		if (regular) {
+			// TODO color!
 			players.add( new Player( 6, 0).add( 6,16).add( 5,15).add( 6,15).add( 5,14).add( 6,14).add( 7,14).add( 4,13).add( 5,13).add( 6,13).add( 7,13) ); // 0
 			players.add( new Player(12, 4).add( 0,12).add( 1,12).add( 2,12).add( 3,12).add( 0,11).add( 1,11).add( 2,11).add( 1,10).add( 2,10).add( 1, 9) ); // 1
 			players.add( new Player(12,12).add( 0, 4).add( 1, 4).add( 2, 4).add( 3, 4).add( 0, 5).add( 1, 5).add( 2, 5).add( 1, 6).add( 2, 6).add( 1, 7) ); // 2
@@ -33,12 +35,12 @@ public class Game {
 			players.add( new Player( 0,12).add( 9, 4).add(10, 4).add(11, 4).add(12, 4).add( 9, 5).add(10, 5).add(11, 5).add(10, 6).add(11, 6).add(10, 7) ); // 4
 			players.add( new Player( 0, 4).add( 9,12).add(10,12).add(11,12).add(12,12).add( 9,11).add(10,11).add(11,11).add(10,10).add(11,10).add(10, 9) ); // 5
 		} else {
-			players.add( new Player( 5, 0).add( 5,12).add( 4,11).add( 5,11).add( 4,10).add( 5,10).add( 6,10) ); // 0
-			players.add( new Player( 9, 3).add( 0, 9).add( 1, 9).add( 2, 9).add( 1, 8).add( 2, 8).add( 1, 7)); // 1
-			players.add( new Player( 9, 9).add( 0, 3).add( 1, 3).add( 2, 3).add( 1, 4).add( 2, 4).add( 1, 5)); // 2
-			players.add( new Player( 5,12).add( 5, 0).add( 4, 1).add( 5, 1).add( 4, 2).add( 5, 2).add( 6, 2) ); // 3
-			players.add( new Player( 0, 9).add( 7, 3).add( 8, 3).add( 9, 3).add( 8, 4).add( 9, 4).add( 8, 5)); // 4			
-			players.add( new Player( 0, 3).add( 7, 9).add( 8, 9).add( 9, 9).add( 8, 8).add( 9, 8).add( 8, 7)); // 5
+			players.add( new Player( 5, 0, color++).add( 5,12).add( 4,11).add( 5,11).add( 4,10).add( 5,10).add( 6,10) ); // 0
+			players.add( new Player( 9, 3, color++).add( 0, 9).add( 1, 9).add( 2, 9).add( 1, 8).add( 2, 8).add( 1, 7)); // 1
+			players.add( new Player( 9, 9, color++).add( 0, 3).add( 1, 3).add( 2, 3).add( 1, 4).add( 2, 4).add( 1, 5)); // 2
+			players.add( new Player( 5,12, color++).add( 5, 0).add( 4, 1).add( 5, 1).add( 4, 2).add( 5, 2).add( 6, 2) ); // 3
+			players.add( new Player( 0, 9, color++).add( 7, 3).add( 8, 3).add( 9, 3).add( 8, 4).add( 9, 4).add( 8, 5)); // 4			
+			players.add( new Player( 0, 3, color++).add( 7, 9).add( 8, 9).add( 9, 9).add( 8, 8).add( 9, 8).add( 8, 7)); // 5
 		}
 		for (Player player : players) {
 			for (Piece piece : player.pieces) {

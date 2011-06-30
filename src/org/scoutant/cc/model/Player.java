@@ -9,6 +9,7 @@ public class Player {
 	public List<Piece> pieces = new ArrayList<Piece>();
 	
 	public Point goal;
+	public int color;
 	
 	public Player(Point goal) {
 		this.goal = goal;
@@ -16,9 +17,14 @@ public class Player {
 	public Player(int i, int j) {
 		this(new Point(i,j));
 	}
+	public Player(int i, int j, int color) {
+		this(i,j);
+		this.color = color;
+	}
 	
 	public Player add(Piece piece) {
 		pieces.add(piece);
+		piece.color = this.color;
 		return this;
 	}
 	public Piece piece(int index) {

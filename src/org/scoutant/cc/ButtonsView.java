@@ -86,20 +86,20 @@ public class ButtonsView extends FrameLayout {
 	private OnClickListener doOk = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(tag, "ok...");
-			PieceUI piece = game.selected; 
+//			PieceUI piece = game.selected; 
 //			Move move = new Move(piece.piece, piece.i, piece.j);
 			Move move = new Move();
 			boolean possible = game.game.valid( move);
 			if (possible) {
-				piece.invalidate();
-				ButtonsView.this.game.game.play( move);
-				game.selected = null;
-				game.ui.turn = (piece.piece.color+1)%4;
-				if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("ai", true)) {
-//					game.ui.think(game.ui.turn);
-				} else {
-					game.invalidate();
-				}
+//				piece.invalidate();
+//				ButtonsView.this.game.game.play( move);
+//				game.selected = null;
+//				game.ui.turn = (piece.piece.color+1)%4;
+//				if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("ai", true)) {
+////					game.ui.think(game.ui.turn);
+//				} else {
+//					game.invalidate();
+//				}
 			}
 		}
 	};
