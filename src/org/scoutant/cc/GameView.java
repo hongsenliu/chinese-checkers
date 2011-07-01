@@ -15,6 +15,7 @@ package org.scoutant.cc;
 
 import org.scoutant.cc.model.Board;
 import org.scoutant.cc.model.Game;
+import org.scoutant.cc.model.Move;
 import org.scoutant.cc.model.Piece;
 import org.scoutant.cc.model.Pixel;
 import org.scoutant.cc.model.Player;
@@ -50,6 +51,7 @@ public class GameView extends FrameLayout  {
 	public ButtonsView buttons;
 	public Piece selected; // ball
 	public Point pointed;  // board target point
+	public Move move; // current target move in construction
 	
 	public Game game;
 //	public AI ai = new AI(game);
@@ -115,6 +117,7 @@ public class GameView extends FrameLayout  {
 		buttons.reset();
 		selected = null;
 		pointed = null;
+		move = null;
 		invalidate();
 	}
 
@@ -181,10 +184,14 @@ public class GameView extends FrameLayout  {
 	private void point(Point p) {
 		if (game.ball.is(p)) return;
 		pointed = p;
-		// TODO move is valid till now? display ok button ?!
+		// TODO validate against move and not against p!
 		boolean possible = game.valid(selected, p);
 		Log.d(tag, "possible move : " + possible);
 		buttons.setOkState( possible);
+		if (!possible) return;
+		if (move==null) move = new Move(selected);
+		move.add(p);
+		Log.d(tag, "move length : " + move.points.size());
 	}
 	
 	
@@ -240,8 +247,14 @@ public class GameView extends FrameLayout  {
 				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( piece.point), diameter), null);
 			}
 		}
-		if (pointed!=null) {
+		
+//		if (pointed!=null) {
+//			canvas.drawBitmap( iconPointed, null, toSquare( pixel(pointed), diameter/2), null);
+//		}
+		if (move==null) return;
+		for (Point p : move.points) {
 			canvas.drawBitmap( iconPointed, null, toSquare( pixel(pointed), diameter/2), null);
+			
 		}
 	}
 	

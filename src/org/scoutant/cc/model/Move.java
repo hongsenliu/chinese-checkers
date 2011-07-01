@@ -33,24 +33,27 @@ public class Move {
 		return this;
 	}
 	
-	/** valid is points actually are holes and if points are in same line. But does not checks for balls! */
+	/** valid if points actually are holes and if points are in same line. But does not checks for balls! */
 	public static boolean valid (Point a, Point z) {
-		a.hole();
-		z.hole();
+		if ( !a.hole() || !z.hole()) return false;  
 		int di = z.i-a.i;
 		int dj = z.j-a.j;
+		int j = (a.i>z.i? a.j : z.j);
+		if (Math.abs(di)==1 && Math.abs(dj)==1 && j%2==1) return false;
 		if (Math.abs(di)<=1 && Math.abs(dj)<=1 ) return true;
 		if (Math.abs(di)==2 && dj==0 ) return true; // on j axis :
 		if (Math.abs(di)==1 && Math.abs(dj)==2 ) return true; // on transversal axis :
 		return false;
 	}
 	
-	/** Supposed to be valid, @return length between provided points */
+	/** Supposed to be valid, @return length between provided points. This function is symetric. */
 	public static int lenght(Point a, Point z) {
+		int j = (a.i>z.i? a.j : z.j);
 		int di = z.i-a.i;
 		int dj = z.j-a.j;
 		if (di==0 && dj==0) return 0;
-		if (Math.abs(di)<=1 && Math.abs(dj)<=1 ) return 1;
+//		if (Math.abs(di)<=1 && Math.abs(dj)<=1 ) return 1;
+		if (Math.abs(di)<=1 && Math.abs(dj)<=1 ) return 1 + (Math.abs(di)==1 && j%2==1? 1 : 0);
 		if (Math.abs(di)==2 && dj==0 ) return 2; // on j axis :
 		if (Math.abs(di)==1 && Math.abs(dj)==2 ) return 2; // on transversal axis :
 		// TODO long jump length!
