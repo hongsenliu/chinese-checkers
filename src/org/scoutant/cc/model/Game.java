@@ -6,7 +6,7 @@ import java.util.List;
 public class Game {
 	
 	public List<Player> players = new ArrayList<Player>();
-	public Board ball = new Board();
+	public Board ball;
 	public Player player(int index) {
 		return players.get(index);
 	}
@@ -25,6 +25,7 @@ public class Game {
 	public Game(boolean regular) {
 		// OK? TODO refactor to subclass and override constructor?
 		Board.init(regular);
+		ball = new Board();
 		int color=0;
 		if (regular) {
 			// TODO color!

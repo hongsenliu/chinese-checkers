@@ -46,6 +46,7 @@ public class Board {
 	public boolean over=false;
 	
 	public Board() {
+//		assert( Board.hole != null);
 	}
 	public Board(boolean[][]tab) {
 		ji = tab;

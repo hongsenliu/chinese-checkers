@@ -14,10 +14,10 @@
 package org.scoutant.cc;
 
 import org.scoutant.cc.model.Move;
+import org.scoutant.cc.model.Piece;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -72,6 +72,11 @@ public class ButtonsView extends FrameLayout {
 		btn.setEnabled( state);
 		btn.setAlpha( state ? 200 : 50 );
 	}
+
+	public void reset() {
+		setOkState(false);
+		setVisibility(INVISIBLE);
+	}
 	
 	public void setOkState(boolean state) {
 		setState(ok, state);
@@ -86,28 +91,25 @@ public class ButtonsView extends FrameLayout {
 	private OnClickListener doOk = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(tag, "ok...");
-//			PieceUI piece = game.selected; 
-//			Move move = new Move(piece.piece, piece.i, piece.j);
-			Move move = new Move();
+			Piece piece = game.selected; 
+			Move move = new Move(piece);
+			// considering a single step move,  TODO : several steps...
+			move.add(game.pointed);
 			boolean possible = game.game.valid( move);
 			if (possible) {
-//				piece.invalidate();
-//				ButtonsView.this.game.game.play( move);
-//				game.selected = null;
+				Log.d(tag, "YES possible");
+				game.game.play( move);
+				game.init();
 //				game.ui.turn = (piece.piece.color+1)%4;
 //				if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("ai", true)) {
 ////					game.ui.think(game.ui.turn);
-//				} else {
-//					game.invalidate();
-//				}
 			}
 		}
 	};
 	private OnClickListener doCancel = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(tag, "cancel...");
-			game.selected = null;
-			ButtonsView.this.setVisibility(INVISIBLE);
+			game.init();
 		}
 	};
 }

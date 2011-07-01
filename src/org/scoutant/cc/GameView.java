@@ -28,11 +28,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -48,26 +48,23 @@ public class GameView extends FrameLayout  {
 	private static String touch = "touch";
 	public int size; 
 	public ButtonsView buttons;
-	public Point selected;
+	public Piece selected; // ball
+	public Point pointed;  // board target point
 	
 	public Game game;
 //	public AI ai = new AI(game);
-	public static int[] icons = { R.drawable.red, R.drawable.springgreen, R.drawable.purple, R.drawable.orange, R.drawable.pink, R.drawable.turquoise};
-//	private Drawable[] dots = new Drawable[6]; 
+	public static int[] icons = { R.drawable.red, R.drawable.springgreen, R.drawable.purple, R.drawable.gold, R.drawable.pink, R.drawable.turquoise};
 	public Bitmap[] balls = new Bitmap[6];
 	public UI ui;
 	public SharedPreferences prefs;
 	public boolean thinking=false;
-//	private int radius;
 	private int dI;
 	private int dJ;
 	private Bitmap hole ;
 	private int diameter;
-	private Bitmap ball; 
-	private Bitmap chosen; 
+	private Bitmap iconSelected; 
+	private Bitmap iconPointed; 
 	private Paint paint = new Paint();
-	
-	
 	
 	/** In equilateral triangle we have : 1² = (1/2)² + h² */
 	public GameView(Context context) {
@@ -93,18 +90,15 @@ public class GameView extends FrameLayout  {
 		BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
         hole = BitmapFactory.decodeResource(context.getResources(), R.drawable.steel);
-        ball = BitmapFactory.decodeResource(context.getResources(), R.drawable.springgreen);
-        chosen = BitmapFactory.decodeResource(context.getResources(), R.drawable.red);
+        iconSelected = BitmapFactory.decodeResource(context.getResources(), R.drawable.yellow);
+        iconPointed = BitmapFactory.decodeResource(context.getResources(), R.drawable.yellow_2);
 
 		paint.setStrokeWidth(0.4f);
 		paint.setColor(Color.WHITE);
 
 		for (int color=0; color<6; color++) {
-//			dots[color] = context.getResources().getDrawable(icons[color]);
-//			dots[color].setAlpha(191);
 			balls[color] = BitmapFactory.decodeResource(context.getResources(), icons[color]);
 		}
-	
 	}
 	
 	public Pixel e;
@@ -116,17 +110,33 @@ public class GameView extends FrameLayout  {
 		return true;
 	}
 	
+	/** Initialize state so as to accept a fresh new move*/
+	public void init() {
+		buttons.reset();
+		selected = null;
+		pointed = null;
+		invalidate();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Log.d(tag, "KEY : " + keyCode);
+		return true;
+	}
+	
 	public void doTouch(MotionEvent event) {
 		int action = event.getAction(); 
     	if (action==MotionEvent.ACTION_DOWN) {
     		e = new Pixel( event);
     		// TODO downY -= 25, if status bar left available. always that offset??.
-//    		Log.d(tag, "down on " + e);
+    		Log.d(touch, "down on " + e);
     		Point p = point(e);
-    		Log.d(tag, "down : " + p);
+    		Log.d(touch, "down : " + p);
+    		if (!p.hole()) return;
+    		
     		// coordinate of the center of corresponding cell
     		Pixel o = pixel(p);
-    		Log.d(tag, "o " + o);
+    		Log.d(touch, "o " + o);
     		int nI = p.i;
     		if (p.j%2==0) {
     			nI += ( e.x<o.x ? -1 : 0);
@@ -135,24 +145,48 @@ public class GameView extends FrameLayout  {
     		}
     		Point n = new Point (nI, p.j + ( e.y<o.y ? -1 : + 1));
     		// qd on clique dans un coin, on est parfois plus près de la bille de la rangés de dessous ou dessus...
-//    		Log.d(tag, "n " + n);
-    		Pixel oN = pixel(n);
-//    		Log.d(tag, "oN " + oN);
-    		int dO = Pixel.distance(e, o);
-    		int dN = Pixel.distance(e, oN);
-//    		Log.d(tag, "dist O : " + dO);
-//    		Log.d(tag, "dist N : " + dN);
-    		Point pointed = ( dN<dO ? n : p);
-    		if (Board.hole.is(pointed)) {
-    			selected = pointed;
-    			invalidate();
+    		Log.d(touch, "n " + n);
+    		Point s = p;
+    		// If n happen to be a hole it may be closer...
+    		if ( n.hole()) {
+	    		Pixel oN = pixel(n);
+	    		Log.d(touch, "oN " + oN);
+	    		int dO = Pixel.distance(e, o);
+	    		int dN = Pixel.distance(e, oN);
+	    		Log.d(touch, "dist O : " + dO);
+	    		Log.d(touch, "dist N : " + dN);
+	    		s = ( dN<dO ? n : p);
     		}
+			Log.d(tag, "touched : " + s);
+			if (selected==null || (pointed==null && game.ball.is(s))) select( s);
+			else point( s);
+			invalidate();
     	}
     	if (action==MotionEvent.ACTION_MOVE ) {
     	}
     	if (action==MotionEvent.ACTION_UP ) {
     	}
 	}
+
+	
+	/** User pretend to select one of her balls */
+	private void select(Point p) {
+		if (!game.ball.is(p)) return;
+		// retrieve ball under selection
+		selected = game.piece(p);
+		buttons.setVisibility(VISIBLE);
+	}
+	
+	/** User pretend to point a free hole as target for her selected ball */
+	private void point(Point p) {
+		if (game.ball.is(p)) return;
+		pointed = p;
+		// TODO move is valid till now? display ok button ?!
+		boolean possible = game.valid(selected, p);
+		Log.d(tag, "possible move : " + possible);
+		buttons.setOkState( possible);
+	}
+	
 	
 	/** @return the cell Point in which Pixel @param l happens to be in */
 	private Point point( Pixel l) {
@@ -163,8 +197,6 @@ public class GameView extends FrameLayout  {
 		return new Point (i, j);
 	}
 
-		
-	
 	/** @return the center of the hole identified by provided @param point */
 	private Pixel pixel(Point p) {
 		// -dI/2 is the global offset for the miniboard and (dI/2-1, dJ/2-1) is the standard offset for center of the cell.
@@ -185,7 +217,7 @@ public class GameView extends FrameLayout  {
 	 * Mini board sizeI=11, but only 10 most left balls visible, And with dI/2 offset! 
 	 */
 	private void drawMiniBoard(Canvas canvas){
-		Log.d(tag, "sizeI : " + Board.sizeI);
+//		Log.d(tag, "sizeI : " + Board.sizeI);
 		for (int j=0; j<=13; j++){
 			canvas.drawLine(0, j*dJ+1, 10*dI, j*dJ+1, paint);
 		}
@@ -198,19 +230,18 @@ public class GameView extends FrameLayout  {
 				if (Board.hole.is(i,j)) {
 					canvas.drawBitmap(hole, null, toSquare(l, diameter), null);
 				}
-//				if (game.ball.is(i,j)) {
-//					canvas.drawBitmap(ball, null, toSquare(l, diameter), null);
-//				}
-			}
-		}
-		for (Player player : game.players) {
-			for (Piece piece : player.pieces) {
-	//			canvas.drawBitmap(ball, null, toSquare( pixel( piece.point), diameter), null);
-				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( piece.point), diameter), null);
 			}
 		}
 		if (selected!=null) {
-			canvas.drawBitmap( chosen, null, toSquare( pixel(selected), diameter), null);
+			canvas.drawBitmap( iconSelected, null, toSquare( pixel(selected.point), diameter*13/10), null);
+		}
+		for (Player player : game.players) {
+			for (Piece piece : player.pieces) {
+				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( piece.point), diameter), null);
+			}
+		}
+		if (pointed!=null) {
+			canvas.drawBitmap( iconPointed, null, toSquare( pixel(pointed), diameter/2), null);
 		}
 	}
 	
@@ -225,7 +256,7 @@ public class GameView extends FrameLayout  {
 	 * @return a Rect instance representing a square centered on (@param x, @param y) with @param length  
 	 */
 	public static Rect toSquare(Pixel l, int length) {
-		return new Rect( l.x-length/2, l.y-length/2, l.x+length/2-1, l.y+length/2-1);
+		return new Rect( l.x-length/2, l.y-length/2, l.x+length/2, l.y+length/2);
 	}
 
 	

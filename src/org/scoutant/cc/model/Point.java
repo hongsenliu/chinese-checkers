@@ -23,7 +23,7 @@ public class Point {
 	}
 	
 	public boolean hole() {
-		if (i<0 || i>=Board.sizeJ || j<0 || j>=Board.sizeJ) return false;
+		if (i<0 || i>=Board.sizeI || j<0 || j>=Board.sizeJ) return false;
 		return Board.hole.is(this);		
 	}
 

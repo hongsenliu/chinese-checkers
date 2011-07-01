@@ -13,6 +13,18 @@ public class Move {
 		return points.get(index);
 	}
 
+	public Move() {
+	}
+	
+	public Move(Point p) {
+		this();
+		add(p);
+	}
+	public Move(Piece piece) {
+		this( piece.point);
+	}
+	
+	
 	public Move add(int i, int j) {
 		return add( new Point(i,j));
 	}
@@ -50,7 +62,9 @@ public class Move {
 		int d = lenght(a,z);
 		if (d!=2) return null; // TODO long jump!
 		int j = (a.j+z.j)/2;
-		int i = (a.i+z.i)/2;
+		int oI = (j%2==0 ? 1 : 0);
+		// int i = (a.i+z.i+1)/2;
+		int i = (a.i+z.i + oI)/2;
 		return new Point(i,j);
 	}
 	
