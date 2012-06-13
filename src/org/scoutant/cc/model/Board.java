@@ -93,6 +93,8 @@ public class Board {
 		return true;
 	}
 
+	// TODO if a move begins with a no-jump, it has to be single step.
+	// TODO move with jumps cannot have any single step...
 	public boolean valid(Move move) {
 		Point a = move.points.get(0);
 		for (Point z : move.points) {

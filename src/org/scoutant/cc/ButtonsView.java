@@ -90,20 +90,17 @@ public class ButtonsView extends FrameLayout {
 	
 	private OnClickListener doOk = new OnClickListener() {
 		public void onClick(View v) {
-			Log.d(tag, "ok...");
-			Piece piece = game.selected; 
-			Move move = new Move(piece);
-			// considering a single step move,  TODO : several steps...
-			move.add(game.pointed);
-			boolean possible = game.game.valid( move);
-			if (possible) {
-				Log.d(tag, "YES possible");
-				game.game.play( move);
-				game.init();
-//				game.ui.turn = (piece.piece.color+1)%4;
-//				if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("ai", true)) {
-////					game.ui.think(game.ui.turn);
-			}
+			Log.d(tag, "'ok' being pressed, let's play the move!...");
+			game.game.play( game.move);
+			game.init();
+//			boolean possible = game.game.valid( game.move);
+//			if (possible) {
+//				game.game.play( game.move);
+//				game.init();
+////				game.ui.turn = (piece.piece.color+1)%4;
+////				if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("ai", true)) {
+//////					game.ui.think(game.ui.turn);
+//			}
 		}
 	};
 	private OnClickListener doCancel = new OnClickListener() {

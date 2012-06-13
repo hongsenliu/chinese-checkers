@@ -3,8 +3,12 @@ package org.scoutant.cc.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 public class Game {
 	
+	private static String tag = "model";
+
 	public List<Player> players = new ArrayList<Player>();
 	public Board ball;
 	public Player player(int index) {
@@ -71,7 +75,6 @@ public class Game {
 		return ball.valid(piece.point, p);
 	}
 
-	
 	/** Actually move @param piece to a given position @param p. Keeping in synch the pieces list and the board 'ball'. 
 	 * Validation is do be done elsewhere.
 	 */
@@ -87,8 +90,9 @@ public class Game {
 		return ball.valid(move);
 	}
 	
-	/** Validation to be done before... TODO*/
+	/** Validation to be done before... TODO */
 	public boolean play(Move m) {
+		Log.d(tag, "playing move " + m);
 		Piece piece = piece( m.point(0));
 		if (piece==null) return false;
 		Point point = m.point( m.points.size()-1);

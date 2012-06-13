@@ -1,6 +1,7 @@
 package org.scoutant.cc;
 
 import android.app.Activity;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,4 +17,9 @@ public class UI extends Activity {
 	}
 	public int turn = 0;
 
+	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		getWindow().setFormat( PixelFormat.RGBA_8888);
+	}
 }

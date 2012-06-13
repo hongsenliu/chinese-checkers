@@ -13,6 +13,15 @@ public class Move {
 		return points.get(index);
 	}
 
+	public Point last() {
+		if (points.isEmpty()) return null;
+		return points.get(points.size()-1);
+	}
+	public Point penultima() {
+		if (points.size()<2) return null;
+		return points.get(points.size()-2);
+	}
+	
 	public Move() {
 	}
 	
@@ -31,6 +40,14 @@ public class Move {
 	public Move add(Point p) {
 		points.add(p);
 		return this;
+	}
+
+	public String toString() {
+		String str = "";
+		for (Point p : points) {
+			str += p + " ";
+		}
+		return str;
 	}
 	
 	/** valid if points actually are holes and if points are in same line. But does not checks for balls! */
@@ -70,6 +87,10 @@ public class Move {
 		int i = (a.i+z.i + oI)/2;
 		return new Point(i,j);
 	}
-	
+
+	public Move pop() {
+		if (!points.isEmpty()) points.remove( points.size()-1);
+		return this;
+	}
 	
 }

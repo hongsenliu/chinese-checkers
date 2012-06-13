@@ -55,7 +55,7 @@ public class GameView extends FrameLayout  {
 	
 	public Game game;
 //	public AI ai = new AI(game);
-	public static int[] icons = { R.drawable.red, R.drawable.springgreen, R.drawable.purple, R.drawable.gold, R.drawable.pink, R.drawable.turquoise};
+	public static int[] icons = { R.drawable.red, R.drawable.green, R.drawable.pink, R.drawable.blue, R.drawable.violet, R.drawable.orange};
 	public Bitmap[] balls = new Bitmap[6];
 	public UI ui;
 	public SharedPreferences prefs;
@@ -78,6 +78,10 @@ public class GameView extends FrameLayout  {
 		Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 //		Log.i(tag, "width : " + display.getWidth() + ", height : " + display.getHeight());
 
+//		setBackgroundColor(Color.DKGRAY);
+		setBackgroundResource(R.layout.linear_gradient);
+		getBackground().setDither(true);
+		
 		game = new Game(false);
 		
 		dI = display.getWidth()/10;
@@ -95,8 +99,8 @@ public class GameView extends FrameLayout  {
         iconSelected = BitmapFactory.decodeResource(context.getResources(), R.drawable.yellow);
         iconPointed = BitmapFactory.decodeResource(context.getResources(), R.drawable.yellow_2);
 
-		paint.setStrokeWidth(0.4f);
-		paint.setColor(Color.WHITE);
+		paint.setStrokeWidth(0.2f);
+		paint.setColor(Color.BLACK);
 
 		for (int color=0; color<6; color++) {
 			balls[color] = BitmapFactory.decodeResource(context.getResources(), icons[color]);
@@ -127,6 +131,7 @@ public class GameView extends FrameLayout  {
 		return true;
 	}
 	
+	// TOUCH
 	public void doTouch(MotionEvent event) {
 		int action = event.getAction(); 
     	if (action==MotionEvent.ACTION_DOWN) {
@@ -183,15 +188,22 @@ public class GameView extends FrameLayout  {
 	/** User pretend to point a free hole as target for her selected ball */
 	private void point(Point p) {
 		if (game.ball.is(p)) return;
+		if (move==null) move = new Move(selected);
+		// if user goes back in her move path, we just pop the last 2 points...
+		if ( p.equals( move.penultima())) {
+			move.pop();
+			return;
+		}
+		move.add(p);
+		Log.d(tag, "proposed move length : " + move.points.size());
 		pointed = p;
 		// TODO validate against move and not against p!
-		boolean possible = game.valid(selected, p);
+//		boolean possible = game.valid(selected, p);
+		boolean possible = game.valid( move);
 		Log.d(tag, "possible move : " + possible);
 		buttons.setOkState( possible);
-		if (!possible) return;
-		if (move==null) move = new Move(selected);
-		move.add(p);
-		Log.d(tag, "move length : " + move.points.size());
+		if (possible) return;
+		move.pop();
 	}
 	
 	
@@ -220,6 +232,7 @@ public class GameView extends FrameLayout  {
 		drawMiniBoard(canvas);
 	}
 	
+	// DRAW -------------------------------------------------------------------
 	/** 
 	 * Mini board sizeI=11, but only 10 most left balls visible, And with dI/2 offset! 
 	 */
@@ -244,7 +257,7 @@ public class GameView extends FrameLayout  {
 		}
 		for (Player player : game.players) {
 			for (Piece piece : player.pieces) {
-				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( piece.point), diameter), null);
+				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( piece.point), diameter*9/10), null);
 			}
 		}
 		
@@ -253,7 +266,7 @@ public class GameView extends FrameLayout  {
 //		}
 		if (move==null) return;
 		for (Point p : move.points) {
-			canvas.drawBitmap( iconPointed, null, toSquare( pixel(pointed), diameter/2), null);
+			canvas.drawBitmap( iconPointed, null, toSquare( pixel(p), diameter/2), null);
 			
 		}
 	}
@@ -272,6 +285,8 @@ public class GameView extends FrameLayout  {
 		return new Rect( l.x-length/2, l.y-length/2, l.x+length/2, l.y+length/2);
 	}
 
+	
+	
 	
 //	public PieceUI findPiece(Move move) {
 //		if (move.points.size()<1) return null;
