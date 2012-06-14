@@ -14,27 +14,86 @@
 package org.scoutant.cc.model;
 
 public class Board {
-	static {
-		init( true);
-	}
-	public static final String tag = "sc";
-	/** With  @param regular to false, initialization to a mini-board game.*/ 
-	public static void init(boolean regular) {
-		radiusI = (regular ? 6 : 5);
-		radiusJ = (regular ? 8 : 6);
-		sizeI = 2*radiusI+1;
-		sizeJ = 2*radiusJ+1;
-		origin = new Point(sizeI/2, sizeJ/2);
-		center = new Board( regular ? centreJI6 : centreJI5);
-		hole = new Board( regular ? holeJI6 : holeJI5);
-		}
-	public static int radiusI;
-	public static int radiusJ;
-	public static int sizeI;
-	public static int sizeJ;
-	public static Point origin;
-	public static Board center; 
-	public static Board hole; 
+	public static final String tag = "model";
+	private static final boolean[][] holeJI = { 
+		{ false, false, false, false, false, false, true, false, false, false, false, false, false }, // 0
+
+			{ false, false, false, false, false,  true, true, false, false, false, false, false, false }, // 1
+
+		{ false, false, false, false, false,  true, true,  true, false, false, false, false, false }, // 2
+
+			{ false, false, false, false,  true,  true, true,  true, false, false, false, false, false }, // 3
+			
+		{  true,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true,  true }, // 4
+		
+			{  true,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true, false }, // 5
+			
+		{ false,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true, false }, // 6
+		
+			{ false,  true,  true,  true,  true,  true, true,  true,  true,  true,  true, false, false }, // 7
+			
+		{ false, false,  true,  true,  true,  true, true,  true,  true,  true,  true, false, false }, // 8 ----------------------
+		
+			{ false,  true,  true,  true,  true,  true, true,  true,  true,  true,  true, false, false }, // 7
+			
+		{ false,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true, false }, // 6
+		
+			{  true,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true, false }, // 5
+			
+		{  true,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true,  true }, // 4
+		
+			{ false, false, false, false,  true,  true, true,  true, false, false, false, false, false }, // 3
+			
+		{ false, false, false, false, false,  true, true,  true, false, false, false, false, false }, // 2
+		
+			{ false, false, false, false, false,  true, true, false, false, false, false, false, false }, // 1
+			
+		{ false, false, false, false, false, false, true, false, false, false, false, false, false }, // 0
+		};
+	
+	private static final boolean[][] centreJI = { 
+		{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 0
+		
+			{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 1
+			
+		{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 2
+		
+			{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 3
+			
+		{ false, false, false, false,  true,  true,  true,  true,  true, false, false, false, false }, // 4
+		
+			{ false, false, false,  true,  true,  true,  true,  true,  true, false, false, false, false }, // 5
+			
+		{ false, false, false,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 6
+		
+			{ false, false,  true,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 7
+			
+		{ false, false,  true,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 8 ----------------------
+		
+			{ false, false,  true,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 7
+		
+		{ false, false, false,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 6
+		
+			{ false, false, false,  true,  true,  true,  true,  true,  true, false, false, false, false }, // 5
+		
+		{ false, false, false, false,  true,  true,  true,  true,  true, false, false, false, false }, // 4
+		
+			{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 3
+		
+		{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 2
+	
+			{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 1
+		
+		{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 0
+		};
+
+	public static int radiusI = 6;
+	public static int radiusJ = 8;
+	public static int sizeI = 2*radiusI+1;
+	public static int sizeJ = 2*radiusJ+1;
+	public static Point origin = new Point(sizeI/2, sizeJ/2);
+	public static Board center = new Board( centreJI ); 
+	public static Board hole = new Board( holeJI ); 
 	
 	public static Point oposite(Point p) {
 		return new Point (sizeI-1-p.i, sizeJ-1-p.j );
@@ -120,135 +179,4 @@ public class Board {
 		msg += "------------------------------------------\n";
 		return msg;
 	}
-
-	private static final boolean[][] holeJI6 = { 
-		{ false, false, false, false, false, false, true, false, false, false, false, false, false }, // 0
-
-			{ false, false, false, false, false,  true, true, false, false, false, false, false, false }, // 1
-
-		{ false, false, false, false, false,  true, true,  true, false, false, false, false, false }, // 2
-
-			{ false, false, false, false,  true,  true, true,  true, false, false, false, false, false }, // 3
-			
-		{  true,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true,  true }, // 4
-		
-			{  true,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true, false }, // 5
-			
-		{ false,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true, false }, // 6
-		
-			{ false,  true,  true,  true,  true,  true, true,  true,  true,  true,  true, false, false }, // 7
-			
-		{ false, false,  true,  true,  true,  true, true,  true,  true,  true,  true, false, false }, // 8 ----------------------
-		
-			{ false,  true,  true,  true,  true,  true, true,  true,  true,  true,  true, false, false }, // 7
-			
-		{ false,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true, false }, // 6
-		
-			{  true,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true, false }, // 5
-			
-		{  true,  true,  true,  true,  true,  true, true,  true,  true,  true,  true,  true,  true }, // 4
-		
-			{ false, false, false, false,  true,  true, true,  true, false, false, false, false, false }, // 3
-			
-		{ false, false, false, false, false,  true, true,  true, false, false, false, false, false }, // 2
-		
-			{ false, false, false, false, false,  true, true, false, false, false, false, false, false }, // 1
-			
-		{ false, false, false, false, false, false, true, false, false, false, false, false, false }, // 0
-		};
-	
-	private static final boolean[][] centreJI6 = { 
-		{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 0
-		
-			{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 1
-			
-		{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 2
-		
-			{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 3
-			
-		{ false, false, false, false,  true,  true,  true,  true,  true, false, false, false, false }, // 4
-		
-			{ false, false, false,  true,  true,  true,  true,  true,  true, false, false, false, false }, // 5
-			
-		{ false, false, false,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 6
-		
-			{ false, false,  true,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 7
-			
-		{ false, false,  true,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 8 ----------------------
-		
-			{ false, false,  true,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 7
-		
-		{ false, false, false,  true,  true,  true,  true,  true,  true,  true,  true, false, false }, // 6
-		
-			{ false, false, false,  true,  true,  true,  true,  true,  true, false, false, false, false }, // 5
-		
-		{ false, false, false, false,  true,  true,  true,  true,  true, false, false, false, false }, // 4
-		
-			{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 3
-		
-		{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 2
-	
-			{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 1
-		
-		{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 0
-		};
-
-	private static final boolean[][] holeJI5 = { 
-	{ false, false, false, false, false,  true, false, false, false, false, false}, // 0
-		
-		{ false, false, false, false,  true,  true, false, false, false, false, false}, // 1
-		
-	{ false, false, false, false,  true,  true,  true, false, false, false, false}, // 2
-				
-		{  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, false}, // 3
-	
-	{ false,  true,  true,  true,  true,  true,  true,  true,  true,  true, false}, // 4
-		
-		{ false,  true,  true,  true,  true,  true,  true,  true,  true, false, false}, // 5
-	
-	{ false, false,  true,  true,  true,  true,  true,  true,  true, false, false}, // 6 ------------------
-		
-		{ false,  true,  true,  true,  true,  true,  true,  true,  true, false, false}, // 7 (5)
-			
-	{ false,  true,  true,  true,  true,  true,  true,  true,  true,  true, false}, // 8 (4)
-		
-		{  true,  true,  true,  true,  true,  true,  true,  true,  true,  true, false}, // 9 (3)
-	
-	{ false, false, false, false,  true,  true,  true, false, false, false, false}, // 10 (2)
-				
-		{ false, false, false, false,  true,  true, false, false, false, false, false}, // 11 (1)
-	
-	{ false, false, false, false, false,  true, false, false, false, false, false}, // 12 (0)
-	};
-
-	// sizeI=10, sizeJ=13
-	private static final boolean[][] centreJI5 = { 
-	{ false, false, false, false, false, false, false, false, false, false, false}, // 0
-		
-		{ false, false, false, false, false, false, false, false, false, false, false}, // 1
-		
-	{ false, false, false, false, false, false, false, false, false, false, false}, // 2
-				
-		{ false, false, false,  true,  true,  true,  true, false, false, false, false}, // 3
-	
-	{ false, false, false,  true,  true,  true,  true,  true, false, false, false}, // 4
-		
-		{ false, false,  true,  true,  true,  true,  true,  true,  true, false, false}, // 5
-	
-	{ false, false,  true,  true,  true,  true,  true,  true,  true, false, false}, // 6 ------------------
-
-		{ false, false,  true,  true,  true,  true,  true,  true,  true, false, false}, // 7 (5)
-	
-	{ false, false, false,  true,  true,  true,  true,  true, false, false, false}, // 8(4)
-	
-		{ false, false, false,  true,  true,  true,  true, false, false, false, false}, // 9(3)
-		
-	{ false, false, false, false, false, false, false, false, false, false, false}, // 10(2)
-			
-		{ false, false, false, false, false, false, false, false, false, false, false}, // 11(1)
-
-	{ false, false, false, false, false, false, false, false, false, false, false}, // 12(0)
-	
-	};
-	
 }

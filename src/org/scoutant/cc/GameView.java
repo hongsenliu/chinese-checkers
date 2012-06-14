@@ -45,6 +45,9 @@ import android.widget.FrameLayout;
  * http://commons.wikimedia.org/wiki/Category:Round_icons
  */
 public class GameView extends FrameLayout  {
+	public static int sizeI = Board.sizeI;
+	public static int sizeJ = Board.sizeJ;
+	
 	private static String tag = "view";
 	private static String touch = "touch";
 	public int size; 
@@ -82,9 +85,9 @@ public class GameView extends FrameLayout  {
 		setBackgroundResource(R.layout.linear_gradient);
 		getBackground().setDither(true);
 		
-		game = new Game(false);
+		game = new Game();
 		
-		dI = display.getWidth()/10;
+		dI = display.getWidth()/sizeI;
 		dJ = new Double(0.866*dI).intValue();
 //		diameter = new Double( 0.8*dI).intValue();
 		diameter = new Double( 0.96*dI).intValue();
@@ -206,7 +209,8 @@ public class GameView extends FrameLayout  {
 		move.pop();
 	}
 	
-	
+
+	// TODO ok for full board? Test if better pointing -----------------------------------------------------------------------------
 	/** @return the cell Point in which Pixel @param l happens to be in */
 	private Point point( Pixel l) {
 		// miniboard : -dI/2 comme offset global et oI comme offset contextuel
@@ -218,34 +222,29 @@ public class GameView extends FrameLayout  {
 
 	/** @return the center of the hole identified by provided @param point */
 	private Pixel pixel(Point p) {
-		// -dI/2 is the global offset for the miniboard and (dI/2-1, dJ/2-1) is the standard offset for center of the cell.
-		// and +dI/2 is contextual offset for I on odd lines...
 		int oI = (p.j%2==0 ? 0 : dI/2);
-		int x = -dI/2+dI/2-1+p.i*dI+oI;
-		return new Pixel(x, dI/2-1+p.j*dJ);
+//		int x = -dI/2+dI/2-1+p.i*dI+oI;
+		int x = p.i*dI+oI;
+//		return new Pixel(x, dI/2-1+p.j*dJ);
+		return new Pixel(dI/2 + p.i*dI+oI, dJ/2 +p.j*dJ);
 	}
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-//		canvas.drawBitmap(bitmap, null, new Rect(0, 0, 80, 80), null);
-		drawMiniBoard(canvas);
+		drawBoard(canvas);
 	}
 	
-	// DRAW -------------------------------------------------------------------
-	/** 
-	 * Mini board sizeI=11, but only 10 most left balls visible, And with dI/2 offset! 
-	 */
-	private void drawMiniBoard(Canvas canvas){
-//		Log.d(tag, "sizeI : " + Board.sizeI);
-		for (int j=0; j<=13; j++){
-			canvas.drawLine(0, j*dJ+1, 10*dI, j*dJ+1, paint);
+	// TODO fix the dI/2 offset! 
+	private void drawBoard(Canvas canvas){
+		for (int j=0; j<=Board.sizeJ; j++){
+			canvas.drawLine(0, j*dJ+1, sizeJ*dI, j*dJ+1, paint);
 		}
-		for (int i=0; i<= 10; i++) {
-			canvas.drawLine(i*dI, 0, i*dI, 13*dJ, paint);
+		for (int i=0; i<= sizeI; i++) {
+			canvas.drawLine(i*dI, 0, i*dI, sizeI*dJ, paint);
 		}
-		for (int j=0; j<13; j++){
-			for (int i=0; i< 10; i++) {
+		for (int j=0; j<sizeJ; j++){
+			for (int i=0; i< sizeI; i++) {
 				Pixel l = pixel(new Point(i, j));
 				if (Board.hole.is(i,j)) {
 					canvas.drawBitmap(hole, null, toSquare(l, diameter), null);
@@ -281,38 +280,7 @@ public class GameView extends FrameLayout  {
 	/**
 	 * @return a Rect instance representing a square centered on (@param x, @param y) with @param length  
 	 */
-	public static Rect toSquare(Pixel l, int length) {
+	public Rect toSquare(Pixel l, int length) {
 		return new Rect( l.x-length/2, l.y-length/2, l.x+length/2, l.y+length/2);
-	}
-
-	
-	
-	
-//	public PieceUI findPiece(Move move) {
-//		if (move.points.size()<1) return null;
-//		return findPiece(move.point(0));
-//	}
-//	public PieceUI findPiece(Point point) {
-//		// TODO
-//		return null;
-//	}
-//	
-//	public void play(Move move) {
-//		if (move==null) return;
-////		Piece piece = game.piece(move);
-//		PieceUI ui = findPiece( move);
-//		boolean done = game.play(move);
-////		if (done) ui.place(move.i, move.j);
-//		invalidate();
-//	}
-//	
-//
-//	public boolean replay(List<Move> moves) {
-//		for (Move move : moves) {
-//			PieceUI ui = findPiece(move);
-////			ui.piece.reset(piece);
-//			play(move);
-//		}
-//		return true;
-//	}	
+	}	
 }
