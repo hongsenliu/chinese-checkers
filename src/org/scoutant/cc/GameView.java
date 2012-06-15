@@ -81,7 +81,6 @@ public class GameView extends FrameLayout  {
 		Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 //		Log.i(tag, "width : " + display.getWidth() + ", height : " + display.getHeight());
 
-//		setBackgroundColor(Color.DKGRAY);
 		setBackgroundResource(R.layout.linear_gradient);
 		getBackground().setDither(true);
 		
@@ -98,8 +97,8 @@ public class GameView extends FrameLayout  {
 		BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
         hole = BitmapFactory.decodeResource(context.getResources(), R.drawable.steel);
-        iconSelected = BitmapFactory.decodeResource(context.getResources(), R.drawable.yellow);
-        iconPointed = BitmapFactory.decodeResource(context.getResources(), R.drawable.yellow_2);
+        iconSelected = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring2);
+        iconPointed = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring2);
 
 		paint.setStrokeWidth(0.2f);
 		paint.setColor(Color.BLACK);
@@ -133,7 +132,6 @@ public class GameView extends FrameLayout  {
 		return true;
 	}
 	
-	// TOUCH
 	public void doTouch(MotionEvent event) {
 		int action = event.getAction(); 
     	if (action==MotionEvent.ACTION_DOWN) {
@@ -155,7 +153,7 @@ public class GameView extends FrameLayout  {
 	    		if (dN<dO) Log.i(tag, "Neighboor refining with : " + n);
 	    		s = ( dN<dO ? n : p);
     		}
-			Log.d(tag, "touched : " + s);
+			Log.d(touch, "touched : " + s);
 			if (selected==null || (pointed==null && game.ball.is(s))) select( s);
 			else point( s);
 			invalidate();
@@ -188,8 +186,6 @@ public class GameView extends FrameLayout  {
 		move.add(p);
 		Log.d(tag, "proposed move length : " + move.points.size());
 		pointed = p;
-		// TODO validate against move and not against p!
-//		boolean possible = game.valid(selected, p);
 		boolean possible = game.valid( move);
 		Log.d(tag, "possible move : " + possible);
 		buttons.setOkState( possible);
@@ -236,7 +232,7 @@ public class GameView extends FrameLayout  {
 			}
 		}
 		if (selected!=null) {
-			canvas.drawBitmap( iconSelected, null, toSquare( pixel(selected.point), diameter*13/10), null);
+			canvas.drawBitmap( iconSelected, null, toSquare( pixel(selected.point), diameter*12/10), null);
 		}
 		for (Player player : game.players) {
 			for (Piece piece : player.pieces) {
@@ -249,7 +245,7 @@ public class GameView extends FrameLayout  {
 //		}
 		if (move==null) return;
 		for (Point p : move.points) {
-			canvas.drawBitmap( iconPointed, null, toSquare( pixel(p), diameter/2), null);
+			canvas.drawBitmap( iconPointed, null, toSquare( pixel(p), diameter*12/10), null);
 			
 		}
 	}

@@ -13,9 +13,6 @@
 
 package org.scoutant.cc;
 
-import org.scoutant.cc.model.Move;
-import org.scoutant.cc.model.Piece;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -41,8 +38,9 @@ public class ButtonsView extends FrameLayout {
 		this.context = context;
 		setVisibility(INVISIBLE);
 		Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		int h = display.getHeight() - display.getWidth();
-		setLayoutParams( new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, h, Gravity.BOTTOM));
+//		int h = display.getHeight() - display.getWidth();
+		int h = 128;
+		setLayoutParams( new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, h, Gravity.TOP));
 		cancel = button(R.drawable.cancel_128, doCancel, 0);
 		addView(cancel );
 		ok = button(R.drawable.checkmark_128, doOk, 1);
@@ -90,7 +88,7 @@ public class ButtonsView extends FrameLayout {
 	
 	private OnClickListener doOk = new OnClickListener() {
 		public void onClick(View v) {
-			Log.d(tag, "'ok' being pressed, let's play the move!...");
+//			Log.d(tag, "'ok' being pressed, let's play the move!...");
 			game.game.play( game.move);
 			game.init();
 //			boolean possible = game.game.valid( game.move);

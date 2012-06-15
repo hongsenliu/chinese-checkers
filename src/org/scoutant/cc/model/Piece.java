@@ -13,8 +13,7 @@ public class Piece {
 	}
 	
 	public String toString(){
-		// TODO + color?
-		return ""+point;
+		return ""+point + ", color :" + color;
 	}
 
 }

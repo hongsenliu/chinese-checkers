@@ -23,7 +23,6 @@ public class Game {
 	 *<p>    3 
 	 */
 	public Game() {
-		// OK? TODO refactor to subclass and override constructor?
 		ball = new Board();
 		int color=0;
 		players.add( new Player( 6, 0, color++).add( 6,16).add( 5,15).add( 6,15).add( 5,14).add( 6,14).add( 7,14).add( 4,13).add( 5,13).add( 6,13).add( 7,13) ); // 0
@@ -75,7 +74,7 @@ public class Game {
 		return ball.valid(move);
 	}
 	
-	/** Validation to be done before... TODO */
+	// TODO ensure validation is done before...
 	public boolean play(Move m) {
 		Log.d(tag, "playing move " + m);
 		Piece piece = piece( m.point(0));
