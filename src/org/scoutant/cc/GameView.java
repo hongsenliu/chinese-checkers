@@ -71,7 +71,7 @@ public class GameView extends FrameLayout  {
 	private Bitmap iconPointed; 
 	private Paint paint = new Paint();
 	
-	/** In equilateral triangle we have : 1² = (1/2)² + h² */
+	/** In equilateral triangle we have : 1² = (1/2)² + h²  => h = sqrt(3)/2 = 08660254*/
 	public GameView(Context context) {
 		super(context);
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -88,8 +88,7 @@ public class GameView extends FrameLayout  {
 		game = new Game();
 		
 		dI = display.getWidth()/sizeI;
-		dJ = new Double(0.866*dI).intValue();
-//		diameter = new Double( 0.8*dI).intValue();
+		dJ = new Double(0.8660254*dI).intValue();
 		diameter = new Double( 0.96*dI).intValue();
 		Log.i(tag, "width : " + display.getWidth() + ", height : " + display.getHeight() + ", dI : " + dI + ", dJ : " + dJ);
 		
@@ -140,30 +139,29 @@ public class GameView extends FrameLayout  {
     	if (action==MotionEvent.ACTION_DOWN) {
     		e = new Pixel( event);
     		Point p = point(e);
-//    		Log.d(touch, "dI : " + p.i * dI);
     		if (!p.hole()) return;
     		
     		// coordinate of the center of corresponding cell
     		Pixel o = pixel(p);
     		Log.d(touch, "down on " + e + ", p is : " + p + ", center o : " + o);
-    		int nI = p.i;
     		if (p.j%2==0) {
-    			nI += ( e.x<o.x ? -1 : 0);
+    			p.i += ( e.x<o.x ? -1 : 0);
     		} else {
-    			nI += ( e.x<o.x ? 0 : 1);    			
+    			p.i += ( e.x<o.x ? 0 : 1);    			
     		}
-    		Point n = new Point (nI, p.j + ( e.y<o.y ? -1 : + 1));
+    		Point n = new Point (p.i, p.j + ( e.y<o.y ? -1 : + 1));
     		// when click in a corner we may be nearer a row up or below 
     		Point s = p;
-    		// If n happen to be a hole it may be closer...
+    		// Yes, 'Neighbor' may actually be closer, if it is a hole it is worth a check
     		if ( n.hole()) {
 	    		Pixel oN = pixel(n);
 	    		int dO = Pixel.distance(e, o);
 	    		int dN = Pixel.distance(e, oN);
 	    		Log.d(touch, "neighbour " + n + ", oN " + oN + ", dist O : " + dO + ", dist N : " + dN);
+	    		if (dN<dO) Log.i(tag, "Neighboor refining with : " + n);
 	    		s = ( dN<dO ? n : p);
     		}
-			Log.d(tag, "touched : " + s);
+//			Log.d(tag, "touched : " + s);
 			if (selected==null || (pointed==null && game.ball.is(s))) select( s);
 			else point( s);
 			invalidate();
