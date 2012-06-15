@@ -140,15 +140,9 @@ public class GameView extends FrameLayout  {
     		e = new Pixel( event);
     		Point p = point(e);
     		if (!p.hole()) return;
-    		
     		// coordinate of the center of corresponding cell
     		Pixel o = pixel(p);
     		Log.d(touch, "down on " + e + ", p is : " + p + ", center o : " + o);
-    		if (p.j%2==0) {
-    			p.i += ( e.x<o.x ? -1 : 0);
-    		} else {
-    			p.i += ( e.x<o.x ? 0 : 1);    			
-    		}
     		Point n = new Point (p.i, p.j + ( e.y<o.y ? -1 : + 1));
     		// when click in a corner we may be nearer a row up or below 
     		Point s = p;
@@ -161,7 +155,7 @@ public class GameView extends FrameLayout  {
 	    		if (dN<dO) Log.i(tag, "Neighboor refining with : " + n);
 	    		s = ( dN<dO ? n : p);
     		}
-//			Log.d(tag, "touched : " + s);
+			Log.d(tag, "touched : " + s);
 			if (selected==null || (pointed==null && game.ball.is(s))) select( s);
 			else point( s);
 			invalidate();
@@ -178,6 +172,7 @@ public class GameView extends FrameLayout  {
 		if (!game.ball.is(p)) return;
 		// retrieve ball under selection
 		selected = game.piece(p);
+		Log.d(tag, "selected is now : " + selected);
 		buttons.setVisibility(VISIBLE);
 	}
 	
