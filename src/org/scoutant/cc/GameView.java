@@ -139,15 +139,13 @@ public class GameView extends FrameLayout  {
 		int action = event.getAction(); 
     	if (action==MotionEvent.ACTION_DOWN) {
     		e = new Pixel( event);
-    		// TODO downY -= 25, if status bar left available. always that offset??.
-    		Log.d(touch, "down on " + e);
     		Point p = point(e);
-    		Log.d(touch, "down : " + p);
+//    		Log.d(touch, "dI : " + p.i * dI);
     		if (!p.hole()) return;
     		
     		// coordinate of the center of corresponding cell
     		Pixel o = pixel(p);
-    		Log.d(touch, "o " + o);
+    		Log.d(touch, "down on " + e + ", p is : " + p + ", center o : " + o);
     		int nI = p.i;
     		if (p.j%2==0) {
     			nI += ( e.x<o.x ? -1 : 0);
@@ -155,17 +153,14 @@ public class GameView extends FrameLayout  {
     			nI += ( e.x<o.x ? 0 : 1);    			
     		}
     		Point n = new Point (nI, p.j + ( e.y<o.y ? -1 : + 1));
-    		// qd on clique dans un coin, on est parfois plus près de la bille de la rangés de dessous ou dessus...
-    		Log.d(touch, "n " + n);
+    		// when click in a corner we may be nearer a row up or below 
     		Point s = p;
     		// If n happen to be a hole it may be closer...
     		if ( n.hole()) {
 	    		Pixel oN = pixel(n);
-	    		Log.d(touch, "oN " + oN);
 	    		int dO = Pixel.distance(e, o);
 	    		int dN = Pixel.distance(e, oN);
-	    		Log.d(touch, "dist O : " + dO);
-	    		Log.d(touch, "dist N : " + dN);
+	    		Log.d(touch, "neighbour " + n + ", oN " + oN + ", dist O : " + dO + ", dist N : " + dN);
 	    		s = ( dN<dO ? n : p);
     		}
 			Log.d(tag, "touched : " + s);
@@ -210,22 +205,19 @@ public class GameView extends FrameLayout  {
 	}
 	
 
-	// TODO ok for full board? Test if better pointing -----------------------------------------------------------------------------
 	/** @return the cell Point in which Pixel @param l happens to be in */
 	private Point point( Pixel l) {
-		// miniboard : -dI/2 comme offset global et oI comme offset contextuel
 		int j = l.y/dJ;
+		// dI/2 offset for odd lines : 
 		int oI = (j%2==0 ? 0 : dI/2);
-		int i = (l.x+dI/2-oI)/dI;
+		int i = (l.x-oI)/dI;
 		return new Point (i, j);
 	}
 
 	/** @return the center of the hole identified by provided @param point */
 	private Pixel pixel(Point p) {
+		// dI/2 offset for odd lines : 
 		int oI = (p.j%2==0 ? 0 : dI/2);
-//		int x = -dI/2+dI/2-1+p.i*dI+oI;
-		int x = p.i*dI+oI;
-//		return new Pixel(x, dI/2-1+p.j*dJ);
 		return new Pixel(dI/2 + p.i*dI+oI, dJ/2 +p.j*dJ);
 	}
 	
@@ -235,7 +227,6 @@ public class GameView extends FrameLayout  {
 		drawBoard(canvas);
 	}
 	
-	// TODO fix the dI/2 offset! 
 	private void drawBoard(Canvas canvas){
 		for (int j=0; j<=Board.sizeJ; j++){
 			canvas.drawLine(0, j*dJ+1, sizeJ*dI, j*dJ+1, paint);
