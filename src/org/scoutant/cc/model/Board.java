@@ -147,6 +147,7 @@ public class Board {
 		// below only jumps :
 		Point middle = Move.middle(a, z);
 		if (middle== null) return false;
+		// middle must be a ball
 		if(!is(middle)) return false;
 		// TODO long jump, other holes shall be empty...
 		return true;
@@ -156,6 +157,7 @@ public class Board {
 	// TODO move with jumps cannot have any single step...
 	public boolean valid(Move move) {
 		Point a = move.points.get(0);
+		// if first step is a Go, move must be single step
 		for (Point z : move.points) {
 			if (!valid(a, z)) return false;
 			a = z;

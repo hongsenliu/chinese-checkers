@@ -79,5 +79,11 @@ public class Point {
 		return String.format( ":%d:%d", p.i, p.j);
 	}
 	
+	public boolean isOdd() {
+		return j%2 == 1; 
+	}
+	public boolean isEven() {
+		return j%2 == 0; 
+	}
 	
 }

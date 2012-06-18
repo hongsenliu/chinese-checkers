@@ -76,7 +76,7 @@ public class Game {
 	
 	// TODO ensure validation is done before...
 	public boolean play(Move m) {
-		Log.d(tag, "playing move " + m);
+//		Log.d(tag, "playing move " + m);
 		Piece piece = piece( m.point(0));
 		if (piece==null) return false;
 		Point point = m.point( m.points.size()-1);
