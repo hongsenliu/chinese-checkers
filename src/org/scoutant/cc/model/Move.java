@@ -50,17 +50,16 @@ public class Move {
 		return str;
 	}
 	
-	/** valid if points actually are holes and if points are in same line. But does not checks for balls! */
+	/** valid if points actually are holes and if points are in same line. But does not checks for balls at all! */
 	public static boolean valid (Point a, Point z) {
-		if ( !a.hole() || !z.hole()) return false;  
-		int di = z.i-a.i;
-		int dj = z.j-a.j;
-		int j = (a.i>z.i? a.j : z.j);
-		if (Math.abs(di)==1 && Math.abs(dj)==1 && j%2==1) return false;
-		if (Math.abs(di)<=1 && Math.abs(dj)<=1 ) return true;
-		if (Math.abs(di)==2 && dj==0 ) return true; // on j axis :
-		if (Math.abs(di)==1 && Math.abs(dj)==2 ) return true; // on transversal axis :
-		return false;
+		if (a.equals(z)) return true;
+		if ( !a.hole() || !z.hole()) return false;
+		int dir = direction(a,z);
+		if (dir==-1) return false; // not in same line
+		int l = lenght(a, z, dir);
+		if (l==1) return true; // it's a go to neighbor
+		if (l%2==1) return false; // length cannot be odd!
+		return true;
 	}
 
 	/** @return true if move is a Go to a neighbor point. Do not test is neighbor actually is a hole. */
@@ -75,30 +74,13 @@ public class Move {
 		return true;
 	}
 	
-	
-	/** Supposed to be valid, @return length between provided points. This function is symetric. */
-	public static int lenght(Point a, Point z) {
-		int j = (a.i>z.i? a.j : z.j);
-		int di = z.i-a.i;
-		int dj = z.j-a.j;
-		if (di==0 && dj==0) return 0;
-//		if (Math.abs(di)<=1 && Math.abs(dj)<=1 ) return 1;
-		if (Math.abs(di)<=1 && Math.abs(dj)<=1 ) return 1 + (Math.abs(di)==1 && j%2==1? 1 : 0);
-		if (Math.abs(di)==2 && dj==0 ) return 2; // on j axis :
-		if (Math.abs(di)==1 && Math.abs(dj)==2 ) return 2; // on transversal axis :
-		// TODO long jump length!
-		return -1;
-	}
-
+	/**
+	 * @return middle of points @param a and @param z.
+	 * <p>Precondition : Points are supposed to be in same line and a even distance; 
+	 */
 	public static Point middle (Point a, Point z) {
-		if (!valid(a, z)) return null;
-		int d = lenght(a,z);
-		if (d!=2) return null; // TODO long jump!
-		int j = (a.j+z.j)/2;
-		int oI = (j%2==0 ? 1 : 0);
-		// int i = (a.i+z.i+1)/2;
-		int i = (a.i+z.i + oI)/2;
-		return new Point(i,j);
+		int o = (a.isOdd()?1:0);
+		return new Point( (a.i+z.i+o)/2, (a.j+z.j)/2);
 	}
 
 	public Move pop() {
@@ -114,7 +96,7 @@ public class Move {
 	 *<p> 5    2
 	 *<p>  4  3
 	 */
-	public final static int  direction(Point a, Point z) {
+	public final static int direction(Point a, Point z) {
 		int di = z.i-a.i;
 		int dj = z.j-a.j;
 		if (dj==0)return (di > 0 ? 2 : 5); 
@@ -142,15 +124,15 @@ public class Move {
 		}
 		return -1;
 	}
+	/** Points @param a and @param z are supposed to be in line with @param direction
+	 * @return corresponding length
+	 */
+	public static int lenght(Point a, Point z, int direction) {
+		if (a.equals(z)) return 0;
+		int dir = direction(a, z);
+		if (dir==-1) return -1;
+		if (dir==2 || dir==5) return Math.abs(a.i-z.i);
+		return Math.abs(z.j-a.j);
+	}
+	
 }
-
-
-// neighbor or nearly
-//if (Di<=1 && Dj==1) {
-//	if (a.isOdd()) return (di==0 ? 0 : 1);
-//	else {
-//		if(di==1) return -1;
-//		return (di==0 ? 1 : 0);
-//	}
-//}
-// else dj has to be more or less twice

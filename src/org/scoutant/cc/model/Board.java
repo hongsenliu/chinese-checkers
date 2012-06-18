@@ -141,15 +141,16 @@ public class Board {
 	public boolean valid(Point a, Point z) {
 		if (a.equals(z)) return true;
 		if(is(z)) return false;
-		if (!Move.valid(a, z)) return false;
-		int d = Move.lenght(a, z);
-		if (d<= 1) return true;
-		// below only jumps :
+		int dir = Move.direction(a, z);
+		if (dir==-1) return false;
+		int l = Move.lenght(a, z, dir);
+		if (l<= 1) return true;
+		// length must be even
+		if (l%2!=0) return false;
+		// below only true jumps, we just have to check : 1) a ball in the middle and 2) no other balls in the way.
 		Point middle = Move.middle(a, z);
-		if (middle== null) return false;
-		// middle must be a ball
 		if(!is(middle)) return false;
-		// TODO long jump, other holes shall be empty...
+		// TODO checks no other balls in the way
 		return true;
 	}
 
