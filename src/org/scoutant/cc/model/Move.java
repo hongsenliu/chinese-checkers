@@ -57,15 +57,16 @@ public class Move {
 		int dir = direction(a,z);
 		if (dir==-1) return false; // not in same line
 		int l = lenght(a, z, dir);
-		if (l==1) return true; // it's a go to neighbor
+		if (l==1) return true; // it's a hop
 		if (l%2==1) return false; // length cannot be odd!
 		return true;
 	}
 
-	/** @return true if move is a Go to a neighbor point. Do not test is neighbor actually is a hole. 
+	/** @return true if move is a hop. A hop is a single-step move as opposite to a jump over a ball. 
+	 * Do not test if target actually is a hole. 
 	 * We suppose a not equal to z
 	 */
-	public static boolean isGo(Point a, Point z) {
+	public static boolean isHop(Point a, Point z) {
 		int di = Math.abs(z.i-a.i);
 		int dj = Math.abs(z.j-a.j);
 		if (dj==0 && di==1) return true; 

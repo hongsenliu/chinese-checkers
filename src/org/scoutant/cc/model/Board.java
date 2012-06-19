@@ -15,7 +15,6 @@ package org.scoutant.cc.model;
 
 import java.util.List;
 
-import android.text.InputFilter.LengthFilter;
 
 public class Board {
 	public static final String tag = "model";
@@ -185,7 +184,7 @@ public class Board {
 	 */
 	public boolean valid(Move move) {
 		List<Point> points = move.points;
-		if (Move.isGo(points.get(0), points.get(1))) { 
+		if (Move.isHop(points.get(0), points.get(1))) { 
 			// move is a mono-step Go,
 			if (points.size()>2) return false;
 			// we need to check that target is free
@@ -195,7 +194,7 @@ public class Board {
 		for (int i=0; i<points.size()-1; i++) {
 			Point a = points.get(i);
 			Point z = points.get(i+1);
-			if (Move.isGo(a,z)) return false;
+			if (Move.isHop(a,z)) return false;
 			if ( !valid(a, z)) return false;
 		}
 		return true;
