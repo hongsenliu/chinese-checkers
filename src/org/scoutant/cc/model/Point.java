@@ -13,8 +13,8 @@ public class Point {
 	public Point(Point p){
 		this( p.i, p.j);
 	}
-	public Point(Piece piece){
-		this(piece.point);
+	public Point(Peg peg){
+		this(peg.point);
 	}
 
 	
@@ -74,7 +74,7 @@ public class Point {
 		return (i==other.i) && (j==other.j);
 	}
 
-	/** @return a represention of the piece, like this sample : 2:I3:0,-1:0,0:0,1 */
+	/** @return a representation of the peg */
 	public static String serialize(Point p) {
 		return String.format( ":%d:%d", p.i, p.j);
 	}

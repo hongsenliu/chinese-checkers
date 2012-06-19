@@ -103,12 +103,8 @@ public class Board {
 	}
 	
 	public boolean[][] ji = new boolean [sizeJ][sizeI];
-	public int nbPieces;
-	public int score;
-	public boolean over=false;
 	
 	public Board() {
-//		assert( Board.hole != null);
 	}
 	public Board(boolean[][]tab) {
 		ji = tab;

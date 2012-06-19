@@ -32,39 +32,39 @@ public class Game {
 		players.add( new Player(12, 4, color++).add( 0,12).add( 1,12).add( 2,12).add( 3,12).add( 0,11).add( 1,11).add( 2,11).add( 1,10).add( 2,10).add( 1, 9) ); // 1
 		players.add( new Player(12,12, color++).add( 0, 4).add( 1, 4).add( 2, 4).add( 3, 4).add( 0, 5).add( 1, 5).add( 2, 5).add( 1, 6).add( 2, 6).add( 1, 7) ); // 2
 		for (Player player : players) {
-			for (Piece piece : player.pieces) {
-				ball.set(piece.point);
+			for (Peg peg : player.pegs) {
+				ball.set(peg.point);
 			}
 		}
 	}
 
-	/** return Piece corresponding pointed by provided @param point */
-	public Piece piece(Move move) {
-		return piece(move.point(0));
+	/** return Peg corresponding pointed by provided @param point */
+	public Peg peg(Move move) {
+		return peg(move.point(0));
 	}
 
 	
-	/** return Piece corresponding pointed by provided @param point */
-	public Piece piece(Point point) {
+	/** return Peg corresponding pointed by provided @param point */
+	public Peg peg(Point point) {
 		for (Player player : players) {
-			for (Piece p : player.pieces) {
+			for (Peg p : player.pegs) {
 				if (p.point.equals(point)) return p;
 			}
 		}
 		return null;
 	}
 	
-	/** @return true if proposed move step towards @param point p is valid for @param piece. A single translate o jump move, proposed by UI. */ 
-	public boolean valid(Piece piece, Point p) {
-		return ball.valid(piece.point, p);
+	/** @return true if proposed move step towards @param point p is valid for @param peg. A single translate o jump move, proposed by UI. */ 
+	public boolean valid(Peg peg, Point p) {
+		return ball.valid(peg.point, p);
 	}
 
-	/** Actually move @param piece to a given position @param p. Keeping in synch the pieces list and the board 'ball'. 
+	/** Actually move @param peg to a given position @param p. Keeping in synch the pegs list and the board 'ball'. 
 	 * Validation is do be done elsewhere.
 	 */
-	public boolean move(Piece piece, Point p) {
-		ball.reset( piece.point);
-		piece.point = p;
+	public boolean move(Peg peg, Point p) {
+		ball.reset( peg.point);
+		peg.point = p;
 		ball.set(p);
 		return true;
 	}
@@ -80,10 +80,10 @@ public class Game {
 	 */
 	public boolean play(Move m) {
 //		Log.d(tag, "playing move " + m);
-		Piece piece = piece( m.point(0));
-		if (piece==null) return false;
+		Peg peg = peg( m.point(0));
+		if (peg==null) return false;
 		Point point = m.point( m.points.size()-1);
-		return move( piece, point);
+		return move( peg, point);
 	}
 	
 	
@@ -95,7 +95,7 @@ public class Game {
 	public String toString(int jmin, int jmax) {
 		boolean ji[][] = new boolean [Board.sizeJ][Board.sizeI];
 		for (Player player : players) {
-			for (Piece p : player.pieces) {
+			for (Peg p : player.pegs) {
 				ji[p.point.j][p.point.i] = true;
 			}
 		}

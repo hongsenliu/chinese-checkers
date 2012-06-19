@@ -1,14 +1,14 @@
 package org.scoutant.cc.model;
 
-public class Piece {
+public class Peg {
 	
 	public Point point;
 	public int color;
 
-	public Piece( Point p) {
+	public Peg( Point p) {
 		this.point = p;
 	}
-	public Piece(int i, int j) {
+	public Peg(int i, int j) {
 		this( new Point(i,j));
 	}
 	

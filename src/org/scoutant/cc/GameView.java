@@ -16,7 +16,7 @@ package org.scoutant.cc;
 import org.scoutant.cc.model.Board;
 import org.scoutant.cc.model.Game;
 import org.scoutant.cc.model.Move;
-import org.scoutant.cc.model.Piece;
+import org.scoutant.cc.model.Peg;
 import org.scoutant.cc.model.Pixel;
 import org.scoutant.cc.model.Player;
 import org.scoutant.cc.model.Point;
@@ -52,7 +52,7 @@ public class GameView extends FrameLayout  {
 	private static String touch = "touch";
 	public int size; 
 	public ButtonsView buttons;
-	public Piece selected; // ball
+	public Peg selected; // ball
 	public Point pointed;  // board target point
 	public Move move; // current target move in construction
 	
@@ -170,7 +170,7 @@ public class GameView extends FrameLayout  {
 		if (!game.ball.is(p)) return;
 		// retrieve ball under selection
 		// TODO ensure ball actually is one of his. Or no need and consider case : selected==null...
-		selected = game.piece(p);
+		selected = game.peg(p);
 		Log.d(tag, "selected is now : " + selected);
 		buttons.setVisibility(VISIBLE);
 	}
@@ -235,8 +235,8 @@ public class GameView extends FrameLayout  {
 			canvas.drawBitmap( iconSelected, null, toSquare( pixel(selected.point), diameter*12/10), null);
 		}
 		for (Player player : game.players) {
-			for (Piece piece : player.pieces) {
-				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( piece.point), diameter*9/10), null);
+			for (Peg peg : player.pegs) {
+				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( peg.point), diameter*9/10), null);
 			}
 		}
 		

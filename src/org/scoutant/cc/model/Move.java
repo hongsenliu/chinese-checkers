@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Move {
 	
-//	public Piece piece;
 	public int score;
 	public List<Point> points = new ArrayList<Point>();
 
@@ -29,8 +28,8 @@ public class Move {
 		this();
 		add(p);
 	}
-	public Move(Piece piece) {
-		this( piece.point);
+	public Move(Peg peg) {
+		this( peg.point);
 	}
 	
 	

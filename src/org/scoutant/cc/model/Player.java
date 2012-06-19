@@ -6,7 +6,7 @@ import java.util.List;
 public class Player {
 
 	/** Each player has a set of ten balls */ 
-	public List<Piece> pieces = new ArrayList<Piece>();
+	public List<Peg> pegs = new ArrayList<Peg>();
 	
 	public Point goal;
 	public int color;
@@ -22,17 +22,17 @@ public class Player {
 		this.color = color;
 	}
 	
-	public Player add(Piece piece) {
-		pieces.add(piece);
-		piece.color = this.color;
+	public Player add(Peg peg) {
+		pegs.add(peg);
+		peg.color = this.color;
 		return this;
 	}
-	public Piece piece(int index) {
-		return pieces.get(index);
+	public Peg peg(int index) {
+		return pegs.get(index);
 	}
 	
 	public Player add(int i, int j) {
-		return add( new Piece(i,j));
+		return add( new Peg(i,j));
 	}
 
 	public String toString() {
@@ -42,7 +42,7 @@ public class Player {
 	/** A graphical display for visual console checks */
 	public String toString(int jmin, int jmax) {
 		boolean ji[][] = new boolean [Board.sizeJ][Board.sizeI];
-		for (Piece p : pieces) {
+		for (Peg p : pegs) {
 			ji[p.point.j][p.point.i] = true;
 		}
 		String msg = "";
