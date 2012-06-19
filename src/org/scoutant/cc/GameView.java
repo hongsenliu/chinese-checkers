@@ -165,20 +165,21 @@ public class GameView extends FrameLayout  {
 	}
 
 	
-	/** User pretend to select one of her balls */
+	/** User pretend to select one of his balls */
 	private void select(Point p) {
 		if (!game.ball.is(p)) return;
 		// retrieve ball under selection
+		// TODO ensure ball actually is one of his. Or no need and consider case : selected==null...
 		selected = game.piece(p);
 		Log.d(tag, "selected is now : " + selected);
 		buttons.setVisibility(VISIBLE);
 	}
 	
-	/** User pretend to point a free hole as target for her selected ball */
+	/** User pretend to point a free hole as target for next step */
 	private void point(Point p) {
 		if (game.ball.is(p)) return;
 		if (move==null) move = new Move(selected);
-		// if user goes back in her move path, we just pop the last 2 points...
+		// if user goes back in his move path, we just pop the last 2 points...
 		if ( p.equals( move.penultima())) {
 			move.pop();
 			return;
@@ -188,9 +189,8 @@ public class GameView extends FrameLayout  {
 		pointed = p;
 		boolean possible = game.valid( move);
 		Log.d(tag, "possible move : " + possible);
-		buttons.setOkState( possible);
-		if (possible) return;
-		move.pop();
+		if (!possible) move.pop();
+		if (move.points.size()>1) buttons.setOkState( true);
 	}
 	
 

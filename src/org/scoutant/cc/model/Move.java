@@ -68,6 +68,7 @@ public class Move {
 	public static boolean isGo(Point a, Point z) {
 		int di = Math.abs(z.i-a.i);
 		int dj = Math.abs(z.j-a.j);
+		if (dj==0 && di==1) return true; 
 		if (di>=2 || dj>=2) return false;
 		// (5,2) and (6,3) are not neighbors. Happens when point with biggest i has an odd j.
 		int j = (a.i>z.i? a.j : z.j);
