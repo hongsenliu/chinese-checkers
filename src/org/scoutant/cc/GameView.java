@@ -98,7 +98,7 @@ public class GameView extends FrameLayout  {
         opts.inJustDecodeBounds = true;
         hole = BitmapFactory.decodeResource(context.getResources(), R.drawable.steel);
         iconSelected = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring2);
-        iconPointed = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring2);
+        iconPointed = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring3);
 
 		paint.setStrokeWidth(0.2f);
 		paint.setColor(Color.BLACK);
