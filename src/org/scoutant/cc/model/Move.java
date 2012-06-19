@@ -62,12 +62,13 @@ public class Move {
 		return true;
 	}
 
-	/** @return true if move is a Go to a neighbor point. Do not test is neighbor actually is a hole. */
+	/** @return true if move is a Go to a neighbor point. Do not test is neighbor actually is a hole. 
+	 * We suppose a not equal to z
+	 */
 	public static boolean isGo(Point a, Point z) {
-		// TODO consider a==z also ?
 		int di = Math.abs(z.i-a.i);
 		int dj = Math.abs(z.j-a.j);
-		if (di>2 || dj>2) return false;
+		if (di>=2 || dj>=2) return false;
 		// (5,2) and (6,3) are not neighbors. Happens when point with biggest i has an odd j.
 		int j = (a.i>z.i? a.j : z.j);
 		if (di==1 && j%2==1) return false;

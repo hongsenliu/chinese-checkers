@@ -74,7 +74,10 @@ public class Game {
 		return ball.valid(move);
 	}
 	
-	// TODO ensure validation is done before...
+	/**
+	 * Assuming move was previously validated. Play provided move @param m.
+	 * @return true if done.   
+	 */
 	public boolean play(Move m) {
 //		Log.d(tag, "playing move " + m);
 		Piece piece = piece( m.point(0));

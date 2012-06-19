@@ -13,6 +13,10 @@
 
 package org.scoutant.cc.model;
 
+import java.util.List;
+
+import android.text.InputFilter.LengthFilter;
+
 public class Board {
 	public static final String tag = "model";
 	private static final boolean[][] holeJI = { 
@@ -123,6 +127,9 @@ public class Board {
 	public void set(Point p) {
 		ji[p.j][p.i] = true;
 	}
+	public void set(int i, int j) {
+		ji[j][i] = true;
+	}
 	public void reset(Point p) {
 		ji[p.j][p.i] = false;
 	}
@@ -150,18 +157,46 @@ public class Board {
 		// below only true jumps, we just have to check : 1) a ball in the middle and 2) no other balls in the way.
 		Point middle = Move.middle(a, z);
 		if(!is(middle)) return false;
-		// TODO checks no other balls in the way
+		// Checks no other balls in the way (but the one in the middle of course)
+		for (int k=1; k<l/2; k++) {
+			if (dir==2 || dir==5) {
+				if (dir==2 && (is(a.i+k,a.j) || is(z.i-k,z.j))) return false;
+				if (dir==5 && (is(a.i-k,a.j) || is(z.i+k,z.j))) return false;
+			} else {
+				if (is(a,z,k,l) ) return false;
+				if (is(z,a,k,l) ) return false;
+			}
+		}
 		return true;
 	}
+	
+	/**
+	 * @return true if point at distance @param d is a ball. Provided points @param a and @param z. Assuming they are in same line.
+	 * separated by a even length @param l 
+	 */
+	private boolean is(Point a, Point z, int d, int l) {
+		if (z.j<a.j) return is(z,a,l-d, l);
+		if (a.isEven()) return is(a.i+d/2, a.j+d);
+		else return is(a.i+(d+1)/2, a.j+d);
+	}
 
-	// TODO if a move begins with a no-jump, it has to be single step.
-	// TODO move with jumps cannot have any single step...
+	/**
+	 * @return true if move is valid as topography and against present position of balls.
+	 */
 	public boolean valid(Move move) {
-		Point a = move.points.get(0);
-		// if first step is a Go, move must be single step
-		for (Point z : move.points) {
-			if (!valid(a, z)) return false;
-			a = z;
+		List<Point> points = move.points;
+		if (Move.isGo(points.get(0), points.get(1))) { 
+			// move is a mono-step Go,
+			if (points.size()>2) return false;
+			// we need to check that target is free
+			return !is(points.get(1));
+		}
+		// below only multi-step. Each step is a jump.
+		for (int i=0; i<points.size()-1; i++) {
+			Point a = points.get(i);
+			Point z = points.get(i+1);
+			if (Move.isGo(a,z)) return false;
+			if ( !valid(a, z)) return false;
 		}
 		return true;
 	}
