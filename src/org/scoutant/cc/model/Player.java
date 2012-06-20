@@ -1,12 +1,19 @@
 package org.scoutant.cc.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Player {
 
 	/** Each player has a set of ten balls */ 
-	public List<Peg> pegs = new ArrayList<Peg>();
+	private List<Peg> pegs = new ArrayList<Peg>();
+	
+	// TODO Or ensure sort in done only once when a move is done...
+	public List<Peg> pegs() {
+		Collections.sort(pegs);
+		return pegs;
+	}
 	
 	public Point goal;
 	public int color;

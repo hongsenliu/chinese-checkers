@@ -1,6 +1,6 @@
 package org.scoutant.cc.model;
 
-public class Peg {
+public class Peg implements Comparable<Peg> {
 	
 	public Point point;
 	public int color;
@@ -14,6 +14,13 @@ public class Peg {
 	
 	public String toString(){
 		return ""+point + ", color :" + color;
+	}
+	/**
+	 * So as to consider as first candidate the pegs closest to bottom
+	 */
+	@Override
+	public int compareTo(Peg that) {
+		return -(this.point.j - that.point.j);
 	}
 
 }

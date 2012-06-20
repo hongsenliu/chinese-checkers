@@ -235,7 +235,7 @@ public class GameView extends FrameLayout  {
 			canvas.drawBitmap( iconSelected, null, toSquare( pixel(selected.point), diameter*12/10), null);
 		}
 		for (Player player : game.players) {
-			for (Peg peg : player.pegs) {
+			for (Peg peg : player.pegs()) {
 				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( peg.point), diameter*9/10), null);
 			}
 		}

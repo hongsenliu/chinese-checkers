@@ -32,7 +32,7 @@ public class Game {
 		players.add( new Player(12, 4, color++).add( 0,12).add( 1,12).add( 2,12).add( 3,12).add( 0,11).add( 1,11).add( 2,11).add( 1,10).add( 2,10).add( 1, 9) ); // 1
 		players.add( new Player(12,12, color++).add( 0, 4).add( 1, 4).add( 2, 4).add( 3, 4).add( 0, 5).add( 1, 5).add( 2, 5).add( 1, 6).add( 2, 6).add( 1, 7) ); // 2
 		for (Player player : players) {
-			for (Peg peg : player.pegs) {
+			for (Peg peg : player.pegs()) {
 				ball.set(peg.point);
 			}
 		}
@@ -47,7 +47,7 @@ public class Game {
 	/** return Peg corresponding pointed by provided @param point */
 	public Peg peg(Point point) {
 		for (Player player : players) {
-			for (Peg p : player.pegs) {
+			for (Peg p : player.pegs()) {
 				if (p.point.equals(point)) return p;
 			}
 		}
@@ -95,7 +95,7 @@ public class Game {
 	public String toString(int jmin, int jmax) {
 		boolean ji[][] = new boolean [Board.sizeJ][Board.sizeI];
 		for (Player player : players) {
-			for (Peg p : player.pegs) {
+			for (Peg p : player.pegs()) {
 				ji[p.point.j][p.point.i] = true;
 			}
 		}
