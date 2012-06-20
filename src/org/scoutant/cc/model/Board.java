@@ -13,6 +13,7 @@
 
 package org.scoutant.cc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -53,7 +54,7 @@ public class Board {
 			
 		{ false, false, false, false, false, false, true, false, false, false, false, false, false }, // 0
 		};
-	
+
 	private static final boolean[][] centreJI = { 
 		{ false, false, false, false, false, false, false, false, false, false, false, false, false }, // 0
 		
@@ -98,6 +99,11 @@ public class Board {
 	public static Board center = new Board( centreJI ); 
 	public static Board hole = new Board( holeJI ); 
 	
+	public static boolean hole(Point p) {
+		if (p.i<0 || p.i>= sizeI || p.j<0 || p.j>sizeJ) return false;
+		return hole.is(p);
+	}
+
 	public static Point oposite(Point p) {
 		return new Point (sizeI-1-p.i, sizeJ-1-p.j );
 	}
@@ -128,16 +134,45 @@ public class Board {
 	public void reset(Point p) {
 		ji[p.j][p.i] = false;
 	}
+
 	
-	public boolean  go(Point p, int d) {
-		if (!p.go(d)) return false;
-		return !is(p);
+	/** 
+	 * Hop to neighbor hole in provided direction @param d 
+	 *<p>   0  1
+	 *<p> 5  *  2
+	 *<p>   4  3
+	 * @return the new Point identified by a hop in provided direction @param dir.
+	 * Or null if hopping out of board.
+	 * <p> Does not check if target happens to be filled with a ball  
+	 */
+	public final Point hop(Point p, int d) {
+		if (p==null || d<0 || d> 6) return null;
+		Point t = p.clone();
+		switch (d) {
+		case 0: t.decrement() ; t.j--; break;
+		case 1: t.increment() ; t.j--; break;
+		case 2: t.i++			;    ; break;
+		case 3: t.increment() ; t.j++; break;
+		case 4: t.decrement() ; t.j++; break;
+		case 5: t.i--			;    ; break;
+		}
+		return hole(t) ? t : null;
 	}
 	
-	public boolean jump(Point p, int d) {
-		if (!p.go(d)) return false;
-		if (!is(p)) return false;		
-		return go(p,d);
+	/** 
+	 * Short jump in provided direction @param d 
+	 * @return the new Point or null if :
+	 * <li>jumping out of board,
+	 * <li>no ball to jump over
+	 * <li>target is not free  
+	 */
+	public final Point jump(Point p, int d) {
+		Point t = hop(p,d);
+		if (t==null) return null;
+		if (!is(t)) return null; // shall be a ball		
+		t = hop(t,d);
+		if (is(t)) return null; // target shall not be a ball		
+		return t;
 	}
 
 	public boolean valid(Point a, Point z) {
@@ -213,5 +248,24 @@ public class Board {
 		return msg;
 	}
 	
+	
+	/**
+	 * @return the list of points of the board, starting from origin @param o in provided direction @param dir.
+	 */
+	public List<Point> points(Point o, int dir) {
+		List<Point> points = new ArrayList<Point>();
+		
+//		for (int k=1; k<sizeI; k++) {
+//			if (dir==2 || dir==5) {
+//				if (dir==2 && (is(a.i+k,a.j) || is(z.i-k,z.j))) return false;
+//				if (dir==5 && (is(a.i-k,a.j) || is(z.i+k,z.j))) return false;
+//			} else {
+//				if (is(a,z,k,l) ) return false;
+//				if (is(z,a,k,l) ) return false;
+//			}
+//		}
+		
+		return points;
+	}
 	
 }

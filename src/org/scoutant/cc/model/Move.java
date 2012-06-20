@@ -52,7 +52,7 @@ public class Move {
 	/** valid if points actually are holes and if points are in same line. But does not checks for balls at all! */
 	public static boolean valid (Point a, Point z) {
 		if (a.equals(z)) return true;
-		if ( !a.hole() || !z.hole()) return false;
+		if ( !Board.hole(a) || !Board.hole(z)) return false;
 		int dir = direction(a,z);
 		if (dir==-1) return false; // not in same line
 		int l = lenght(a, z, dir);

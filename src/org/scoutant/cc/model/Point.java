@@ -16,35 +16,15 @@ public class Point {
 	public Point(Peg peg){
 		this(peg.point);
 	}
-
+	public Point clone() {
+		return new Point(i,j);
+	}
 	
 	public String toString(){
 		return String.format("(%d, %d)", i, j);
 	}
 	
-	public boolean hole() {
-		if (i<0 || i>=Board.sizeI || j<0 || j>=Board.sizeJ) return false;
-		return Board.hole.is(this);		
-	}
-
-	/** go to neighbor hole in provided direction @param d 
-	 *<p>   0  1
-	 *<p> 5  *  2
-	 *<p>   4  3
-	 */
-	public boolean go(int d) {
-		if (d<0 || d> 6) return false;
-		switch (d) {
-		case 0: decrement() ; j--; break;
-		case 1: increment() ; j--; break;
-		case 2: i++			;    ; break;
-		case 3: increment() ; j++; break;
-		case 4: decrement() ; j++; break;
-		case 5: i--			;    ; break;
-		}
-		return hole();
-	}
-
+	
 	/** --> */ 
 	public void increment() {
 		if ( odd(j)) i++;

@@ -137,7 +137,7 @@ public class GameView extends FrameLayout  {
     	if (action==MotionEvent.ACTION_DOWN) {
     		e = new Pixel( event);
     		Point p = point(e);
-    		if (!p.hole()) return;
+    		if (!Board.hole(p)) return;
     		// coordinate of the center of corresponding cell
     		Pixel o = pixel(p);
     		Log.d(touch, "down on " + e + ", p is : " + p + ", center o : " + o);
@@ -145,7 +145,7 @@ public class GameView extends FrameLayout  {
     		// when click in a corner we may be nearer a row up or below 
     		Point s = p;
     		// Yes, 'Neighbor' may actually be closer, if it is a hole it is worth a check
-    		if ( n.hole()) {
+    		if ( Board.hole(n)) {
 	    		Pixel oN = pixel(n);
 	    		int dO = Pixel.distance(e, o);
 	    		int dN = Pixel.distance(e, oN);
