@@ -149,12 +149,12 @@ public class Board {
 		if (p==null || d<0 || d> 6) return null;
 		Point t = p.clone();
 		switch (d) {
-		case 0: t.decrement() ; t.j--; break;
-		case 1: t.increment() ; t.j--; break;
-		case 2: t.i++			;    ; break;
-		case 3: t.increment() ; t.j++; break;
-		case 4: t.decrement() ; t.j++; break;
-		case 5: t.i--			;    ; break;
+			case 0: t.decrement() ; t.j--; break;
+			case 1: t.increment() ; t.j--; break;
+			case 2: t.i++			;    ; break;
+			case 3: t.increment() ; t.j++; break;
+			case 4: t.decrement() ; t.j++; break;
+			case 5: t.i--			;    ; break;
 		}
 		return hole(t) ? t : null;
 	}
@@ -264,7 +264,7 @@ public class Board {
 //				if (is(z,a,k,l) ) return false;
 //			}
 //		}
-		
+		// TODO RETURN THE LIST PLEASE----------------------------------------
 		return points;
 	}
 	
