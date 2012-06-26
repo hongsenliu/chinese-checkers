@@ -54,7 +54,7 @@ public class Game {
 		return null;
 	}
 	
-	/** @return true if proposed move step towards @param point p is valid for @param peg. A single translate o jump move, proposed by UI. */ 
+	/** @return true if proposed move step towards @param point p is valid for @param peg. A single-step hop o jump move, proposed by UI. */ 
 	public boolean valid(Peg peg, Point p) {
 		return ball.valid(peg.point, p);
 	}

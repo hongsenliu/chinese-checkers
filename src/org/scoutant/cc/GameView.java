@@ -57,6 +57,7 @@ public class GameView extends FrameLayout  {
 	public Move move; // current target move in construction
 	
 	public Game game;
+	// TODO
 //	public AI ai = new AI(game);
 	public static int[] icons = { R.drawable.red, R.drawable.green, R.drawable.pink, R.drawable.blue, R.drawable.violet, R.drawable.orange};
 	public Bitmap[] balls = new Bitmap[6];
@@ -71,7 +72,7 @@ public class GameView extends FrameLayout  {
 	private Bitmap iconPointed; 
 	private Paint paint = new Paint();
 	
-	/** In equilateral triangle we have : 1² = (1/2)² + h²  => h = sqrt(3)/2 = 08660254*/
+	/** In equilateral triangle we have : 1² = (1/2)² + h²  => h = sqrt(3)/2 = 08660254 */
 	public GameView(Context context) {
 		super(context);
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -108,7 +109,6 @@ public class GameView extends FrameLayout  {
 		}
 	}
 	
-	public Pixel e;
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -134,34 +134,30 @@ public class GameView extends FrameLayout  {
 	
 	public void doTouch(MotionEvent event) {
 		int action = event.getAction(); 
-    	if (action==MotionEvent.ACTION_DOWN) {
-    		e = new Pixel( event);
-    		Point p = point(e);
-    		if (!Board.hole(p)) return;
-    		// coordinate of the center of corresponding cell
-    		Pixel o = pixel(p);
-    		Log.d(touch, "down on " + e + ", p is : " + p + ", center o : " + o);
-    		Point n = new Point (p.i, p.j + ( e.y<o.y ? -1 : + 1));
-    		// when click in a corner we may be nearer a row up or below 
-    		Point s = p;
-    		// Yes, 'Neighbor' may actually be closer, if it is a hole it is worth a check
-    		if ( Board.hole(n)) {
-	    		Pixel oN = pixel(n);
-	    		int dO = Pixel.distance(e, o);
-	    		int dN = Pixel.distance(e, oN);
-	    		Log.d(touch, "neighbour " + n + ", oN " + oN + ", dist O : " + dO + ", dist N : " + dN);
-	    		if (dN<dO) Log.i(tag, "Neighboor refining with : " + n);
-	    		s = ( dN<dO ? n : p);
-    		}
+		if (action==MotionEvent.ACTION_DOWN) {
+			Pixel e = new Pixel( event);
+			Point p = point(e);
+			if (!Board.hole(p)) return;
+			// coordinate of the center of corresponding cell
+			Pixel o = pixel(p);
+			Log.d(touch, "down on " + e + ", p is : " + p + ", center o : " + o);
+			Point n = new Point (p.i, p.j + ( e.y<o.y ? -1 : + 1));
+			// when click in a corner we may be nearer a row up or below 
+			Point s = p;
+			// Yes, 'Neighbor' may actually be closer, if it is a hole it is worth a check
+			if ( Board.hole(n)) {
+				Pixel oN = pixel(n);
+				int dO = Pixel.distance(e, o);
+				int dN = Pixel.distance(e, oN);
+				Log.d(touch, "neighbour " + n + ", oN " + oN + ", dist O : " + dO + ", dist N : " + dN);
+				if (dN<dO) Log.i(tag, "Neighboor refining with : " + n);
+				s = ( dN<dO ? n : p);
+			}
 			Log.d(touch, "touched : " + s);
 			if (selected==null || (pointed==null && game.ball.is(s))) select( s);
 			else point( s);
 			invalidate();
-    	}
-    	if (action==MotionEvent.ACTION_MOVE ) {
-    	}
-    	if (action==MotionEvent.ACTION_UP ) {
-    	}
+		}
 	}
 
 	
@@ -239,14 +235,9 @@ public class GameView extends FrameLayout  {
 				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( peg.point), diameter*9/10), null);
 			}
 		}
-		
-//		if (pointed!=null) {
-//			canvas.drawBitmap( iconPointed, null, toSquare( pixel(pointed), diameter/2), null);
-//		}
 		if (move==null) return;
 		for (Point p : move.points) {
 			canvas.drawBitmap( iconPointed, null, toSquare( pixel(p), diameter*12/10), null);
-			
 		}
 	}
 	

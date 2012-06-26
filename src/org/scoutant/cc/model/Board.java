@@ -149,12 +149,12 @@ public class Board {
 		if (p==null || d<0 || d> 6) return null;
 		Point t = p.clone();
 		switch (d) {
-			case 0: t.decrement() ; t.j--; break;
-			case 1: t.increment() ; t.j--; break;
-			case 2: t.i++			;    ; break;
-			case 3: t.increment() ; t.j++; break;
-			case 4: t.decrement() ; t.j++; break;
-			case 5: t.i--			;    ; break;
+			case 0: t.decrement();	t.j--;	break;
+			case 1: t.increment();	t.j--;	break;
+			case 2: t.i++;		 			break;
+			case 3: t.increment();	t.j++;	break;
+			case 4: t.decrement();	t.j++;	break;
+			case 5: t.i--;					break;
 		}
 		return hole(t) ? t : null;
 	}
@@ -216,12 +216,12 @@ public class Board {
 	public boolean valid(Move move) {
 		List<Point> points = move.points;
 		if (Move.isHop(points.get(0), points.get(1))) { 
-			// move is a mono-step Go,
+			// move is a hop,
 			if (points.size()>2) return false;
 			// we need to check that target is free
 			return !is(points.get(1));
 		}
-		// below only multi-step. Each step is a jump.
+		// below only multi-step move. Each step is a jump.
 		for (int i=0; i<points.size()-1; i++) {
 			Point a = points.get(i);
 			Point z = points.get(i+1);

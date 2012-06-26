@@ -1,8 +1,6 @@
 package org.scoutant.cc.model;
 
-
 public class Point {
-	
 	public int i;
 	public int j;
 	
@@ -24,7 +22,6 @@ public class Point {
 		return String.format("(%d, %d)", i, j);
 	}
 	
-	
 	/** --> */ 
 	public void increment() {
 		if ( odd(j)) i++;
@@ -40,12 +37,6 @@ public class Point {
 	private static boolean even(int value) {
 		return (value % 2 == 0);
 	}
-	
-	/** jump to hole in provided direction @param d. @throws NotAHoleException  */
-//	public void jump(int d) throws NotAHoleException {
-//		go(d);
-//		go(d);
-//	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -65,5 +56,4 @@ public class Point {
 	public boolean isEven() {
 		return j%2 == 0; 
 	}
-	
 }
