@@ -159,6 +159,16 @@ public class Board {
 		return hole(t) ? t : null;
 	}
 	
+	/**
+	 * If any @return the point corresponding to the first ball, starting from origin @param o in provided direction @param dir.
+	 */
+	public Point ball(Point o, int dir) {
+		for (Point p : points(o,dir)) {
+			if (is(p)) return p;
+		}
+		return null;		
+	}
+
 	/** 
 	 * Short jump in provided direction @param d 
 	 * @return the new Point or null if :
@@ -167,14 +177,29 @@ public class Board {
 	 * <li>target is not free  
 	 */
 	public final Point jump(Point p, int d) {
-		Point t = hop(p,d);
-		if (t==null) return null;
-		if (!is(t)) return null; // shall be a ball		
-		t = hop(t,d);
-		if (is(t)) return null; // target shall not be a ball		
+		Point ball = ball(p,d);
+		if (ball==null) return null;
+		// let's checks all points till target actually are free:
+		int length = Move.lenght(p, ball, d);
+		List<Point> points = points(ball,d);
+		Point t=null;
+		for (int k=0; k<length; k++) {
+			t = points.get(k);
+			if ( is(t)) return null;
+		}
 		return t;
 	}
 
+//	public final Point jump(Point p, int d) {
+//		Point t = hop(p,d);
+//		if (t==null) return null;
+//		if (!is(t)) return null; // shall be a ball		
+//		t = hop(t,d);
+//		if (is(t)) return null; // target shall not be a ball		
+//		return t;
+//	}
+	
+	
 	public boolean valid(Point a, Point z) {
 		if (a.equals(z)) return true;
 		if(is(z)) return false;
@@ -254,18 +279,14 @@ public class Board {
 	 */
 	public List<Point> points(Point o, int dir) {
 		List<Point> points = new ArrayList<Point>();
-		
-//		for (int k=1; k<sizeI; k++) {
-//			if (dir==2 || dir==5) {
-//				if (dir==2 && (is(a.i+k,a.j) || is(z.i-k,z.j))) return false;
-//				if (dir==5 && (is(a.i-k,a.j) || is(z.i+k,z.j))) return false;
-//			} else {
-//				if (is(a,z,k,l) ) return false;
-//				if (is(z,a,k,l) ) return false;
-//			}
-//		}
-		// TODO RETURN THE LIST PLEASE----------------------------------------
+		Point p = o;
+		for (int k=1; k<sizeI; k++) {
+			p = hop(p, dir);
+			if (p==null) return points;
+			points.add(p);
+		}
 		return points;
 	}
+
 	
 }

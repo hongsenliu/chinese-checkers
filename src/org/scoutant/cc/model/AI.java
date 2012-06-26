@@ -24,6 +24,7 @@ public class AI {
 		for (Peg peg : player.pegs()) {
 			for (int dir:dirs ) {
 				// consider jump in corresponding direction...
+				
 			}
 		}
 		// consider hops only at least
