@@ -3,7 +3,7 @@ package org.scoutant.cc.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Move {
+public class Move implements Comparable<Move> {
 	
 	public int score;
 	public List<Point> points = new ArrayList<Point>();
@@ -32,6 +32,12 @@ public class Move {
 		this( peg.point);
 	}
 	
+	public Move clone(){
+		Move move = new Move();
+		// TODO in bunch array cloning? 
+		for (Point p : points) move.add(p);
+		return move;
+	}
 	
 	public Move add(int i, int j) {
 		return add( new Point(i,j));
@@ -42,7 +48,8 @@ public class Move {
 	}
 
 	public String toString() {
-		String str = "";
+		// TODO player?
+		String str = "length : " + lenght(0) +" - ";
 		for (Point p : points) {
 			str += p + " ";
 		}
@@ -126,6 +133,25 @@ public class Move {
 		}
 		return -1;
 	}
+	
+	/**
+	 * @return distance between first and last point.
+	 * <p> Distance as number of rows for given @param player .
+	 */
+	public int lenght(int player) {
+		Point a = this.point(0);
+		Point z = last();
+		switch (player) {
+			case 0: return -(z.j-a.j);
+			case 3: return +(z.j-a.j);
+			case 1: throw new RuntimeException("TODO");
+			case 2: throw new RuntimeException("TODO");
+			case 4: throw new RuntimeException("TODO");
+			case 5: throw new RuntimeException("TODO");
+			default: throw new IllegalArgumentException("player ranging from 0 to 5...");
+		}
+	}
+	
 	/** Points @param a and @param z are supposed to be in line with @param direction
 	 * @return corresponding length
 	 */
@@ -135,6 +161,11 @@ public class Move {
 		if (dir==-1) return -1;
 		if (dir==2 || dir==5) return Math.abs(a.i-z.i);
 		return Math.abs(z.j-a.j);
+	}
+
+	@Override
+	public int compareTo(Move that) {
+		return this.lenght( 0) - that.lenght(0);
 	}
 	
 }

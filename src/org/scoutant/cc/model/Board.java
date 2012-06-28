@@ -100,7 +100,7 @@ public class Board {
 	public static Board hole = new Board( holeJI ); 
 	
 	public static boolean hole(Point p) {
-		if (p.i<0 || p.i>= sizeI || p.j<0 || p.j>sizeJ) return false;
+		if (p.i<0 || p.i>= sizeI || p.j<0 || p.j>=sizeJ) return false;
 		return hole.is(p);
 	}
 
@@ -182,6 +182,7 @@ public class Board {
 		// let's checks all points till target actually are free:
 		int length = Move.lenght(p, ball, d);
 		List<Point> points = points(ball,d);
+		if (points.size()==0) return null;
 		Point t=null;
 		for (int k=0; k<length; k++) {
 			t = points.get(k);
