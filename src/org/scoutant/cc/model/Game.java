@@ -10,7 +10,7 @@ public class Game {
 	private static String tag = "model";
 
 	public List<Player> players = new ArrayList<Player>();
-	public Board ball;
+	public Board board;
 	public Player player(int index) {
 		return players.get(index);
 	}
@@ -23,17 +23,17 @@ public class Game {
 	 *<p>    0
 	 */
 	public Game() {
-		ball = new Board();
+		board = new Board();
 		int color=0;
-		players.add( new Player( 6,16, color++).add( 6, 0).add( 5, 1).add( 6, 1).add( 5, 2).add( 6, 2).add( 7, 2).add( 4, 3).add( 5, 3).add( 6, 3).add( 7, 3) ); // 3
-		players.add( new Player( 0,12, color++).add( 9, 4).add(10, 4).add(11, 4).add(12, 4).add( 9, 5).add(10, 5).add(11, 5).add(10, 6).add(11, 6).add(10, 7) ); // 4
-		players.add( new Player( 0, 4, color++).add( 9,12).add(10,12).add(11,12).add(12,12).add( 9,11).add(10,11).add(11,11).add(10,10).add(11,10).add(10, 9) ); // 5
 		players.add( new Player( 6, 0, color++).add( 6,16).add( 5,15).add( 6,15).add( 5,14).add( 6,14).add( 7,14).add( 4,13).add( 5,13).add( 6,13).add( 7,13) ); // 0
 		players.add( new Player(12, 4, color++).add( 0,12).add( 1,12).add( 2,12).add( 3,12).add( 0,11).add( 1,11).add( 2,11).add( 1,10).add( 2,10).add( 1, 9) ); // 1
 		players.add( new Player(12,12, color++).add( 0, 4).add( 1, 4).add( 2, 4).add( 3, 4).add( 0, 5).add( 1, 5).add( 2, 5).add( 1, 6).add( 2, 6).add( 1, 7) ); // 2
+		players.add( new Player( 6,16, color++).add( 6, 0).add( 5, 1).add( 6, 1).add( 5, 2).add( 6, 2).add( 7, 2).add( 4, 3).add( 5, 3).add( 6, 3).add( 7, 3) ); // 3
+		players.add( new Player( 0,12, color++).add( 9, 4).add(10, 4).add(11, 4).add(12, 4).add( 9, 5).add(10, 5).add(11, 5).add(10, 6).add(11, 6).add(10, 7) ); // 4
+		players.add( new Player( 0, 4, color++).add( 9,12).add(10,12).add(11,12).add(12,12).add( 9,11).add(10,11).add(11,11).add(10,10).add(11,10).add(10, 9) ); // 5
 		for (Player player : players) {
 			for (Peg peg : player.pegs()) {
-				ball.set(peg.point);
+				board.set(peg.point);
 			}
 		}
 	}
@@ -56,22 +56,22 @@ public class Game {
 	
 	/** @return true if proposed move step towards @param point p is valid for @param peg. A single-step hop o jump move, proposed by UI. */ 
 	public boolean valid(Peg peg, Point p) {
-		return ball.valid(peg.point, p);
+		return board.valid(peg.point, p);
 	}
 
 	/** Actually move @param peg to a given position @param p. Keeping in synch the pegs list and the board 'ball'. 
 	 * Validation is do be done elsewhere.
 	 */
 	public boolean move(Peg peg, Point p) {
-		ball.reset( peg.point);
+		board.reset( peg.point);
 		peg.point = p;
-		ball.set(p);
+		board.set(p);
 		return true;
 	}
 
 	/** @return true if each steps of given @param move is valid */
 	public boolean valid(Move move) {
-		return ball.valid(move);
+		return board.valid(move);
 	}
 	
 	/**

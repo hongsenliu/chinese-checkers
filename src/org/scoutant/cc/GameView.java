@@ -154,7 +154,7 @@ public class GameView extends FrameLayout  {
 				s = ( dN<dO ? n : p);
 			}
 			Log.d(touch, "touched : " + s);
-			if (selected==null || (pointed==null && game.ball.is(s))) select( s);
+			if (selected==null || (pointed==null && game.board.is(s))) select( s);
 			else point( s);
 			invalidate();
 		}
@@ -163,7 +163,7 @@ public class GameView extends FrameLayout  {
 	
 	/** User pretend to select one of his balls */
 	private void select(Point p) {
-		if (!game.ball.is(p)) return;
+		if (!game.board.is(p)) return;
 		// retrieve ball under selection
 		// TODO ensure ball actually is one of his. Or no need and consider case : selected==null...
 		selected = game.peg(p);
@@ -173,7 +173,7 @@ public class GameView extends FrameLayout  {
 	
 	/** User pretend to point a free hole as target for next step */
 	private void point(Point p) {
-		if (game.ball.is(p)) return;
+		if (game.board.is(p)) return;
 		if (move==null) move = new Move(selected);
 		// if user goes back in his move path, we just pop the last 2 points...
 		if ( p.equals( move.penultima())) {

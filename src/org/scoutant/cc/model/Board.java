@@ -190,16 +190,6 @@ public class Board {
 		return t;
 	}
 
-//	public final Point jump(Point p, int d) {
-//		Point t = hop(p,d);
-//		if (t==null) return null;
-//		if (!is(t)) return null; // shall be a ball		
-//		t = hop(t,d);
-//		if (is(t)) return null; // target shall not be a ball		
-//		return t;
-//	}
-	
-	
 	public boolean valid(Point a, Point z) {
 		if (a.equals(z)) return true;
 		if(is(z)) return false;
