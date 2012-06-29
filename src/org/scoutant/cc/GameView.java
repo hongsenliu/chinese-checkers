@@ -13,6 +13,7 @@
 
 package org.scoutant.cc;
 
+import org.scoutant.cc.model.AI;
 import org.scoutant.cc.model.Board;
 import org.scoutant.cc.model.Game;
 import org.scoutant.cc.model.Move;
@@ -57,8 +58,7 @@ public class GameView extends FrameLayout  {
 	public Move move; // current target move in construction
 	
 	public Game game;
-	// TODO
-//	public AI ai = new AI(game);
+	public AI ai;
 	public static int[] icons = { R.drawable.red, R.drawable.green, R.drawable.pink, R.drawable.blue, R.drawable.violet, R.drawable.orange};
 	public Bitmap[] balls = new Bitmap[6];
 	public UI ui;
@@ -86,7 +86,7 @@ public class GameView extends FrameLayout  {
 		getBackground().setDither(true);
 		
 		game = new Game();
-		
+		ai = new AI(game);
 		dI = display.getWidth()/sizeI;
 		dJ = new Double(0.8660254*dI).intValue();
 		diameter = new Double( 0.96*dI).intValue();
@@ -153,7 +153,7 @@ public class GameView extends FrameLayout  {
 				if (dN<dO) Log.i(tag, "Neighboor refining with : " + n);
 				s = ( dN<dO ? n : p);
 			}
-			Log.d(touch, "touched : " + s);
+			Log.i(touch, "touched : " + s);
 			if (selected==null || (pointed==null && game.board.is(s))) select( s);
 			else point( s);
 			invalidate();
@@ -167,7 +167,7 @@ public class GameView extends FrameLayout  {
 		// retrieve ball under selection
 		// TODO ensure ball actually is one of his. Or no need and consider case : selected==null...
 		selected = game.peg(p);
-		Log.d(tag, "selected is now : " + selected);
+		Log.i(tag, "selected is now : " + selected);
 		buttons.setVisibility(VISIBLE);
 	}
 	
@@ -181,10 +181,10 @@ public class GameView extends FrameLayout  {
 			return;
 		}
 		move.add(p);
-		Log.d(tag, "proposed move length : " + move.points.size());
+		Log.d(touch, "proposed move length : " + move.points.size());
 		pointed = p;
 		boolean possible = game.valid( move);
-		Log.d(tag, "possible move : " + possible);
+		Log.d(touch, "possible move : " + possible);
 		if (!possible) move.pop();
 		if (move.points.size()>1) buttons.setOkState( true);
 	}
@@ -253,5 +253,15 @@ public class GameView extends FrameLayout  {
 	 */
 	public Rect toSquare(Pixel l, int length) {
 		return new Rect( l.x-length/2, l.y-length/2, l.x+length/2, l.y+length/2);
-	}	
+	}
+
+	public void play(Move move, boolean animate) {
+		if (move==null) return;
+		boolean done = game.play(move);
+		if (done) {
+			init();
+		}
+		invalidate();
+	}
+	
 }

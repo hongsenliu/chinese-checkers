@@ -38,6 +38,13 @@ public class Player {
 		return pegs.get(index);
 	}
 	
+	public Peg peg(Point p) {
+		for(Peg peg : pegs) {
+			if(peg.point.equals(p)) return peg;
+		}
+		return null;
+	}
+	
 	public Player add(int i, int j) {
 		return add( new Peg(i,j));
 	}

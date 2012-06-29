@@ -1,6 +1,7 @@
 package org.scoutant.cc.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 //TODO switch to platform Log when tests done...
@@ -25,7 +26,8 @@ public class AI {
 	/**
 	 * @return the list of moves for given play. Considering only jumps.
 	 */
-	public List<Move> thinkUpToNMoves() {
+	protected List<Move> thinkUpToNMoves() {
+		track = new Board();
 		moves.clear();
 		// TODO consider other player?
 		Player player = game.player(0);
@@ -36,6 +38,7 @@ public class AI {
 			Move move = new Move(peg.point);
 			visite( move);
 		}
+		Collections.sort(moves);
 		return moves;
 	}
 	
@@ -45,6 +48,19 @@ public class AI {
 		}
 	}
 	
+	public Move think(int color, int level) {
+		// TODO color
+		// TODO level
+		List<Move> moves = thinkUpToNMoves();
+		
+		if (moves.size()==0) {
+			// TODO endgame
+		}
+		// TODO random move among the 10 best ones...
+		Move move = moves.get(0);
+		return move ;
+	}
+
 	
 	private void visite(Move move, int dir) {
 		Point p = board.jump(move.last(), dir);
@@ -57,23 +73,13 @@ public class AI {
 		track.set(p);
 		Move found = move.clone();
 		found.add(p);
-		moves.add(found);
-		Log.d(tag, "move ! " + found);
+		// TODO player 0?
+		if (found.lenght( 0)>0) {
+			Log.d(tag, "move ! " + found);
+			moves.add(found);
+		} 
 		Log.d(tag, "+++++++++++++++++++++++++++++++++++++++++++");
 		visite( found.clone());
 		Log.d(tag, "-------------------------------------------");
 	}
-//	private void visite(Peg peg, int dir) {
-//		Point p = board.jump(peg.point, dir);
-////		Log.d(tag, "dir : " + dir +", jump to : " + p);
-//		if (p==null) return;
-//		if (track.is(p)) {
-//			Log.d(tag, "allready visited point " + p);
-//			return;
-//		}
-//		track.set(p);
-//		Move move = new Move(peg.point);
-//		move.add(p);
-//		moves.add(move);
-//	}
 }

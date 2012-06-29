@@ -3,7 +3,7 @@ package org.scoutant.cc.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
+//import android.util.Log;
 
 public class Game {
 	
@@ -78,11 +78,11 @@ public class Game {
 	 * Assuming move was previously validated. Play provided move @param m.
 	 * @return true if done.   
 	 */
-	public boolean play(Move m) {
-//		Log.d(tag, "playing move " + m);
-		Peg peg = peg( m.point(0));
+	public boolean play(Move move) {
+		Log.d(tag, "playing move " + move);
+		Peg peg = peg( move.point(0));
 		if (peg==null) return false;
-		Point point = m.point( m.points.size()-1);
+		Point point = move.point( move.points.size()-1);
 		return move( peg, point);
 	}
 	

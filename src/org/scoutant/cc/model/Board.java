@@ -14,6 +14,7 @@
 package org.scoutant.cc.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -112,7 +113,7 @@ public class Board {
 	
 	public Board() {
 	}
-	public Board(boolean[][]tab) {
+	private Board(final boolean[][]tab) {
 		ji = tab;
 	}
 	
@@ -121,11 +122,11 @@ public class Board {
 		return ji[j][i];
 	}
 	
-	public boolean is(Point p) {
+	public boolean is(final Point p) {
 		return ji[p.j][p.i];
 	}
 
-	public void set(Point p) {
+	public void set(final Point p) {
 		ji[p.j][p.i] = true;
 	}
 	public void set(int i, int j) {
@@ -133,6 +134,9 @@ public class Board {
 	}
 	public void reset(Point p) {
 		ji[p.j][p.i] = false;
+	}
+	public void reset(int i, int j) {
+		ji[j][i] = false;
 	}
 
 	
@@ -179,12 +183,15 @@ public class Board {
 	public final Point jump(Point p, int d) {
 		Point ball = ball(p,d);
 		if (ball==null) return null;
-		// let's checks all points till target actually are free:
+		// let's checks all points till target actually are free and actually are hole!
 		int length = Move.lenght(p, ball, d);
+		// we are jumping out of board if the nb of points below does not reach the length to middle point
 		List<Point> points = points(ball,d);
+		if (points.size()<length) return null;
 		if (points.size()==0) return null;
 		Point t=null;
 		for (int k=0; k<length; k++) {
+			Log.d(tag, "p : " + p +" d : " + d + ", k : " + k + ", ball : " + ball);
 			t = points.get(k);
 			if ( is(t)) return null;
 		}

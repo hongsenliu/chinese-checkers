@@ -12,6 +12,10 @@ public class Move implements Comparable<Move> {
 		return points.get(index);
 	}
 
+	public Point first(){
+		return points.get(0);
+	}
+	
 	public Point last() {
 		if (points.isEmpty()) return null;
 		return points.get(points.size()-1);
@@ -49,7 +53,7 @@ public class Move implements Comparable<Move> {
 
 	public String toString() {
 		// TODO player?
-		String str = "length : " + lenght(0) +" - ";
+		String str = " [" + lenght(0) +" ] ";
 		for (Point p : points) {
 			str += p + " ";
 		}
@@ -163,9 +167,13 @@ public class Move implements Comparable<Move> {
 		return Math.abs(z.j-a.j);
 	}
 
+	/**
+	 * Compare 2 moves against their length. So that a Collections.sort(.) puts at first the longest moves. 
+	 */
 	@Override
 	public int compareTo(Move that) {
-		return this.lenght( 0) - that.lenght(0);
+		// TODO consider a second criteria 'closest to axis'... (not to be trapped in another triangle)
+		return -(this.lenght( 0) - that.lenght(0));
 	}
 	
 }
