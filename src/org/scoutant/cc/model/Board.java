@@ -216,21 +216,34 @@ public class Board {
 				if (dir==2 && (is(a.i+k,a.j) || is(z.i-k,z.j))) return false;
 				if (dir==5 && (is(a.i-k,a.j) || is(z.i+k,z.j))) return false;
 			} else {
-				if (is(a,z,k,l) ) return false;
-				if (is(z,a,k,l) ) return false;
+				if (is(a,z,dir,k,l) ) return false;
+				if (is(z,a,(dir+3)%6,k,l) ) return false;
 			}
 		}
 		return true;
 	}
 	
 	/**
-	 * @return true if point at distance @param d is a ball. Provided points @param a and @param z. Assuming they are in same line.
-	 * separated by a even length @param l 
+	 * @return true if point at distance @param dist is a ball. Provided points @param a and @param z. Assuming they are in same line
+	 * with direction @param dir (possible values 0, 1, 3 or 4). Points are separated by a even length @param l.  
 	 */
-	private boolean is(Point a, Point z, int d, int l) {
-		if (z.j<a.j) return is(z,a,l-d, l);
-		if (a.isEven()) return is(a.i+d/2, a.j+d);
-		else return is(a.i+(d+1)/2, a.j+d);
+	protected boolean is(Point a, Point z, int dir, int dist, int l) {
+		switch (dir) {
+		case 3:
+			if (a.isEven()) return is(a.i+dist/2, a.j+dist);
+			else return is(a.i+(dist+1)/2, a.j+dist);
+		case 4:
+			if (a.isEven()) return is(a.i-dist/2, a.j+dist);
+			else return is(a.i-(dist+1)/2, a.j+dist);
+		case 0:
+			if (a.isOdd()) return is(a.i-dist/2, a.j-dist);
+			else return is(a.i-(dist+1)/2, a.j-dist);
+		case 1:
+			if (a.isEven()) return is(a.i+dist/2, a.j-dist);
+			else return is(a.i+(dist+1)/2, a.j-dist);
+		default:
+			throw new IllegalArgumentException("Bad direction provided");
+		}
 	}
 
 	/**
