@@ -88,8 +88,8 @@ public class GameView extends FrameLayout  {
 		game = new Game();
 		ai = new AI(game);
 		dI = display.getWidth()/sizeI;
-		dJ = new Double(0.8660254*dI).intValue();
-		diameter = new Double( 0.96*dI).intValue();
+		dJ = Double.valueOf(0.8660254*dI).intValue();
+		diameter = Double.valueOf( 0.96*dI).intValue();
 		Log.i(tag, "width : " + display.getWidth() + ", height : " + display.getHeight() + ", dI : " + dI + ", dJ : " + dJ);
 		
 		buttons = new ButtonsView(context);
@@ -213,12 +213,13 @@ public class GameView extends FrameLayout  {
 	}
 	
 	private void drawBoard(Canvas canvas){
-		for (int j=0; j<=Board.sizeJ; j++){
-			canvas.drawLine(0, j*dJ+1, sizeJ*dI, j*dJ+1, paint);
-		}
-		for (int i=0; i<= sizeI; i++) {
-			canvas.drawLine(i*dI, 0, i*dI, sizeI*dJ, paint);
-		}
+		Log.d(tag, "onDraw");
+//		for (int j=0; j<=Board.sizeJ; j++){
+//			canvas.drawLine(0, j*dJ+1, sizeJ*dI, j*dJ+1, paint);
+//		}
+//		for (int i=0; i<= sizeI; i++) {
+//			canvas.drawLine(i*dI, 0, i*dI, sizeI*dJ, paint);
+//		}
 		for (int j=0; j<sizeJ; j++){
 			for (int i=0; i< sizeI; i++) {
 				Pixel l = pixel(new Point(i, j));

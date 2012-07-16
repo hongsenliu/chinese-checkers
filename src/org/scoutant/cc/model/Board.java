@@ -14,7 +14,6 @@
 package org.scoutant.cc.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -155,10 +154,10 @@ public class Board {
 		switch (d) {
 			case 0: t.decrement();	t.j--;	break;
 			case 1: t.increment();	t.j--;	break;
-			case 2: t.i++;		 			break;
+			case 2: t.i++;	break;
 			case 3: t.increment();	t.j++;	break;
 			case 4: t.decrement();	t.j++;	break;
-			case 5: t.i--;					break;
+			case 5: t.i--;	break;
 		}
 		return hole(t) ? t : null;
 	}
