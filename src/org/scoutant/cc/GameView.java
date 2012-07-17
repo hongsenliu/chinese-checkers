@@ -34,14 +34,14 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 
 /**
- * 
  * @author scoutant
  * http://commons.wikimedia.org/wiki/Category:Round_icons
  */
@@ -59,15 +59,13 @@ public class GameView extends FrameLayout  {
 	
 	public Game game;
 	public AI ai;
-	public static int[] icons = { R.drawable.red, R.drawable.green, R.drawable.pink, R.drawable.blue, R.drawable.violet, R.drawable.orange};
-	public Bitmap[] balls = new Bitmap[6];
 	public UI ui;
 	public SharedPreferences prefs;
 	public boolean thinking=false;
 	private int dI;
 	private int dJ;
 	private Bitmap hole ;
-	private int diameter;
+	protected int diameter;
 	private Bitmap iconSelected; 
 	private Bitmap iconPointed; 
 	private Paint paint = new Paint();
@@ -104,11 +102,25 @@ public class GameView extends FrameLayout  {
 		paint.setStrokeWidth(0.2f);
 		paint.setColor(Color.BLACK);
 
-		for (int color=0; color<6; color++) {
-			balls[color] = BitmapFactory.decodeResource(context.getResources(), icons[color]);
+		for (Player player : game.players) {
+			for (Peg peg : player.pegs()) {
+				addView( new PegUI(context, peg, this));
+			}
 		}
 	}
 	
+	public PegUI findPeg(Peg peg) {
+		if (peg==null) return null;
+		PegUI found=null;
+		for (int i=0; i<getChildCount(); i++) {
+			View v = getChildAt(i);
+			if (v instanceof PegUI) {
+				found = (PegUI) v;
+				if (found.peg.color == peg.color) return found;
+			}
+		}
+		return null;
+	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -126,11 +138,11 @@ public class GameView extends FrameLayout  {
 		invalidate();
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		Log.d(tag, "KEY : " + keyCode);
-		return true;
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		Log.d(tag, "KEY : " + keyCode);
+//		return true;
+//	}
 	
 	public void doTouch(MotionEvent event) {
 		int action = event.getAction(); 
@@ -200,7 +212,7 @@ public class GameView extends FrameLayout  {
 	}
 
 	/** @return the center of the hole identified by provided @param point */
-	private Pixel pixel(Point p) {
+	protected Pixel pixel(Point p) {
 		// dI/2 offset for odd lines : 
 		int oI = (p.j%2==0 ? 0 : dI/2);
 		return new Pixel(dI/2 + p.i*dI+oI, dJ/2 +p.j*dJ);
@@ -231,11 +243,6 @@ public class GameView extends FrameLayout  {
 		if (selected!=null) {
 			canvas.drawBitmap( iconSelected, null, toSquare( pixel(selected.point), diameter*12/10), null);
 		}
-		for (Player player : game.players) {
-			for (Peg peg : player.pegs()) {
-				canvas.drawBitmap( balls[player.color], null, toSquare( pixel( peg.point), diameter*9/10), null);
-			}
-		}
 		if (move==null) return;
 		for (Point p : move.points) {
 			canvas.drawBitmap( iconPointed, null, toSquare( pixel(p), diameter*12/10), null);
@@ -252,17 +259,22 @@ public class GameView extends FrameLayout  {
 	/**
 	 * @return a Rect instance representing a square centered on (@param x, @param y) with @param length  
 	 */
-	public Rect toSquare(Pixel l, int length) {
+	public static Rect toSquare(Pixel l, int length) {
 		return new Rect( l.x-length/2, l.y-length/2, l.x+length/2, l.y+length/2);
 	}
 
 	public void play(Move move, boolean animate) {
 		if (move==null) return;
+		Peg start = game.peg(move.point(0));
+		PegUI peg = findPeg(start);
 		boolean done = game.play(move);
+//		peg.animate(move);
 		if (done) {
 			init();
+			// TODO launch Move animation for the corresponding Peg
 		}
 		invalidate();
 	}
+	
 	
 }

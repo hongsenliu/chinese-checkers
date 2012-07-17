@@ -8,8 +8,12 @@ public class Peg implements Comparable<Peg> {
 	public Peg( Point p) {
 		this.point = p;
 	}
-	public Peg(int i, int j) {
+	private Peg(int i, int j) {
 		this( new Point(i,j));
+	}
+	public Peg(int i, int j, int color) {
+		this(i,j);
+		this.color = color;
 	}
 	
 	public String toString(){

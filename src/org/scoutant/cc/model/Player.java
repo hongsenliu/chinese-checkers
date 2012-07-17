@@ -46,7 +46,7 @@ public class Player {
 	}
 	
 	public Player add(int i, int j) {
-		return add( new Peg(i,j));
+		return add( new Peg(i,j, color));
 	}
 
 	public String toString() {

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -61,6 +63,30 @@ public class UI extends Activity {
 	private void play() {
 		Move move = game.ai.think(0, 0);
 		game.play(move, false);
+	}
+	
+	/**
+	 * Dealing with the “Bitmap Size Exceeds VM Budget” error.
+	 * @see http://www.alonsoruibal.com/bitmap-size-exceeds-vm-budget
+	 * <p>Just provide @param view.
+	 */
+	public static void unbindDrawables(View view) {
+	    if (view.getBackground() != null) {
+	        view.getBackground().setCallback(null);
+	    }
+	    if (view instanceof ViewGroup) {
+	        for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+	            unbindDrawables(((ViewGroup) view).getChildAt(i));
+	        }
+	        ((ViewGroup) view).removeAllViews();
+	    }
+	}	
+	
+	@Override
+	protected void onDestroy() {
+	    super.onDestroy();
+	    unbindDrawables( game);
+	    System.gc();
 	}
 	
 }
