@@ -26,5 +26,13 @@ public class Peg implements Comparable<Peg> {
 	public int compareTo(Peg that) {
 		return -(this.point.j - that.point.j);
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		Peg that = (Peg) o;
+		if (that==null) return false;
+		// consider color too?
+		return this.point.equals(that.point);
+	}
 
 }

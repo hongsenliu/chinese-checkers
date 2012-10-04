@@ -116,7 +116,8 @@ public class GameView extends FrameLayout  {
 			View v = getChildAt(i);
 			if (v instanceof PegUI) {
 				found = (PegUI) v;
-				if (found.peg.color == peg.color) return found;
+//				if (found.peg.color == peg.color && found.peg.equals(peg)) return found;
+				if (found.peg.equals(peg)) return found;
 			}
 		}
 		return null;
@@ -268,12 +269,11 @@ public class GameView extends FrameLayout  {
 		Peg start = game.peg(move.point(0));
 		PegUI peg = findPeg(start);
 		boolean done = game.play(move);
-//		peg.animate(move);
-		if (done) {
-			init();
-			// TODO launch Move animation for the corresponding Peg
-		}
-		invalidate();
+		peg.animate(move);
+//		if (done) {
+//			init();
+//		}
+//		invalidate();
 	}
 	
 	

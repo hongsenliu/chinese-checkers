@@ -14,17 +14,18 @@ import android.graphics.Rect;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 
 public class PegUI extends ImageView {
 	public static int[] icons = { R.drawable.red, R.drawable.green, R.drawable.pink, R.drawable.blue, R.drawable.violet, R.drawable.orange};
-//	public static int[] ins = { R.anim.red_in, R.anim.push_left_in,R.anim.push_left_in, R.anim.blue_in, R.anim.push_left_in, R.anim.push_left_in}; 
+	public static int[] ins = { R.anim.red_in, R.anim.push_left_in,R.anim.push_left_in, R.anim.blue_in, R.anim.push_left_in, R.anim.push_left_in}; 
 	protected Peg peg;
 	private int diameter;
 	private GameView game;
-//	private Animation wave;
+	private Animation wave;
 
 	public PegUI(Context context) {
 		super(context);
@@ -35,9 +36,18 @@ public class PegUI extends ImageView {
 		this.peg = peg;
 		this.game = game;
 //		wave = AnimationUtils.loadAnimation(context, ins[peg.color]);
+//		Pixel pixel = game.pixel( peg.point);
+//		Animation a = new TranslateAnimation(
+//				Animation.RELATIVE_TO_PARENT, 0, 
+//				Animation.RELATIVE_TO_PARENT, pixel.x, 
+//				Animation.RELATIVE_TO_PARENT, 0, 
+//				Animation.RELATIVE_TO_PARENT, pixel.y);
+//		a.setDuration(3000);
 		this.diameter = game.diameter*9/10;
 		setImageBitmap( BitmapFactory.decodeResource(context.getResources(), icons[peg.color]));
 		doLayout();
+//		startAnimation(wave);
+//		startAnimation(a);
 		}
 	
 	@Override
@@ -73,17 +83,18 @@ public class PegUI extends ImageView {
 		if (move==null) return;
 		List<Point> points = move.points;
 		if (points==null || points.size()< 2) return;
-		AnimationSet anim = new AnimationSet(false);
+		// TODO try true for performances...
+		AnimationSet anim = new AnimationSet(true);
 		for (int k=1; k<points.size(); k++) {
 			Pixel from	= game.pixel( points.get(k-1));
 			Pixel to	= game.pixel( points.get(k));
-			// TODO try true for performances...
-			Animation a = new TranslateAnimation(
-					Animation.ABSOLUTE, from.x, 
-					Animation.ABSOLUTE, to.x, 
-					Animation.ABSOLUTE, from.y, 
-					Animation.ABSOLUTE, to.y);
-			a.setDuration(3000);
+//			Animation a = new TranslateAnimation(
+//					Animation.ABSOLUTE, from.x-to.x, 
+//					Animation.ABSOLUTE, 0, 
+//					Animation.ABSOLUTE, from.y- to.y, 
+//					Animation.ABSOLUTE, 0);
+			Animation a = new TranslateAnimation(from.x-to.x, 0,from.y- to.y, 0);
+			a.setDuration(700);
 			anim.addAnimation( a);
 		}
 		this.startAnimation(anim);
