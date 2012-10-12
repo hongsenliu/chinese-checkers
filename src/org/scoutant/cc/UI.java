@@ -1,4 +1,4 @@
-package org.scoutant.cc;
+	package org.scoutant.cc;
 
 import org.scoutant.cc.model.Move;
 
@@ -54,6 +54,7 @@ public class UI extends Activity {
 		}
 		if (id == MENU_ITEM_ANIMATE) {
 			final PegUI peg = game.findPeg( game.game.player(0).peg(9));
+			/*
 //			peg.setVisibility(View.INVISIBLE);
 			Move move = new Move().add(0,12).add(5,2).add(6,5).add(5,8).add(7,13);
 			
@@ -62,7 +63,8 @@ public class UI extends Activity {
 //			Animation a = new TranslateAnimation(
 //					Animation.ABSOLUTE, -150, Animation.ABSOLUTE, 0,
 //					Animation.ABSOLUTE, -300, Animation.ABSOLUTE, 0);					
-			Animation a = new TranslateAnimation( -50, -80, -100, -30);
+//			Animation a = new TranslateAnimation( -50, -80, -100, -30);
+			Animation a = new TranslateAnimation( -0, -80, -100, -30);
 			a.setDuration(700);
 			a.setAnimationListener( new AnimationListener() {
 				@Override
@@ -78,13 +80,15 @@ public class UI extends Activity {
 					peg.startAnimation(b);
 				}
 			});
-			peg.startAnimation(a);
+			*/
 			
-//			AnimationSet set = new AnimationSet(false);
-//			set.addAnimation(a);
-//			set.addAnimation(a);
-//			peg.startAnimation(set);
+//			new MoveAnimation(peg)
+//			.add(-80, -100)
+//			.add(-40, -50)
+//			.start();
 			
+			Move move = new Move().add(8,13).add(6,8).add(10,8);
+			new MoveAnimation(peg, move).start();
 		}
 		return false;
 	}

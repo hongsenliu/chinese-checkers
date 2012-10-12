@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.scoutant.cc"
       android:versionCode="1" android:versionName="0.9">
+      <!--  TODO add restriction for only xLarge screens (tablets) -->
     <application android:icon="@drawable/scoutant" android:label="Chinese Checkers">
         <activity android:name=".UI" android:label="Chinese Checkers">
             <intent-filter>
@@ -11,4 +12,7 @@
         </activity>
     </application>
     <uses-sdk android:minSdkVersion="8" />
+    <!-- TODO for release at least 4.0.3 
+    <uses-sdk android:minSdkVersion="15" />
+     -->
 </manifest> 

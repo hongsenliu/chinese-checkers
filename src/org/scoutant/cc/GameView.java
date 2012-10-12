@@ -62,8 +62,8 @@ public class GameView extends FrameLayout  {
 	public UI ui;
 	public SharedPreferences prefs;
 	public boolean thinking=false;
-	private int dI;
-	private int dJ;
+	public int dI;
+	public int dJ;
 	private Bitmap hole ;
 	protected int diameter;
 	private Bitmap iconSelected; 

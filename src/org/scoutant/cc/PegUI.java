@@ -24,7 +24,7 @@ public class PegUI extends ImageView {
 	public static int[] ins = { R.anim.red_in, R.anim.push_left_in,R.anim.push_left_in, R.anim.blue_in, R.anim.push_left_in, R.anim.push_left_in}; 
 	protected Peg peg;
 	private int diameter;
-	private GameView game;
+	public GameView game;
 	private Animation wave;
 
 	public PegUI(Context context) {
