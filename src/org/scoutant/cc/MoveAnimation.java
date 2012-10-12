@@ -1,6 +1,7 @@
 package org.scoutant.cc;
 
 import org.scoutant.cc.model.Move;
+import org.scoutant.cc.model.Pixel;
 import org.scoutant.cc.model.Point;
 
 import android.view.View;
@@ -35,6 +36,7 @@ public class MoveAnimation {
 	
 	protected Animation buildAnimation(int dx, int dy) {
 		Animation a= new TranslateAnimation(x, dx, y, dy);
+		// TODO calculation duration against move lenght? So as to have a constant pace?
 		a.setDuration(DURATION);
 		a.setFillAfter(true);
 		x += dx;
@@ -62,20 +64,15 @@ public class MoveAnimation {
 		}
 	}
 	
-//	public MoveAnimation add(Point p) {
-//		
-//		return this;
-//	}
-	
-	// asuming peg actually is at position corresponding to first point in move...
+	// assuming peg actually is at position corresponding to first point in move...
 	public MoveAnimation( PegUI peg, Move move) {
 		this(peg);
 		Point from = move.first();
 		for (int k=1; k<move.points.size(); k++) {
 			Point to = move.point(k);
-			int dx = (to.i - from.i)*peg.game.dI;
-			int dy = (to.j - from.j)*peg.game.dJ;
-			this.add(dx, dy);
+			Pixel fp = peg.game.pixel(from);
+			Pixel tp = peg.game.pixel(to);
+			this.add(tp.x-fp.x, tp.y-fp.y);
 		}
 	}
 }
