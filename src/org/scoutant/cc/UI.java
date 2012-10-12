@@ -12,9 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.TranslateAnimation;
 
 public class UI extends Activity {
 	private static String tag = "activity";
@@ -54,39 +51,6 @@ public class UI extends Activity {
 		}
 		if (id == MENU_ITEM_ANIMATE) {
 			final PegUI peg = game.findPeg( game.game.player(0).peg(9));
-			/*
-//			peg.setVisibility(View.INVISIBLE);
-			Move move = new Move().add(0,12).add(5,2).add(6,5).add(5,8).add(7,13);
-			
-//			peg.animate(move);
-			
-//			Animation a = new TranslateAnimation(
-//					Animation.ABSOLUTE, -150, Animation.ABSOLUTE, 0,
-//					Animation.ABSOLUTE, -300, Animation.ABSOLUTE, 0);					
-//			Animation a = new TranslateAnimation( -50, -80, -100, -30);
-			Animation a = new TranslateAnimation( -0, -80, -100, -30);
-			a.setDuration(700);
-			a.setAnimationListener( new AnimationListener() {
-				@Override
-				public void onAnimationStart(Animation animation) {
-				}
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-				}
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					Animation b = new TranslateAnimation( -80, 0, -30, 0);
-					b.setDuration(700);
-					peg.startAnimation(b);
-				}
-			});
-			*/
-			
-//			new MoveAnimation(peg)
-//			.add(-80, -100)
-//			.add(-40, -50)
-//			.start();
-			
 			Move move = new Move().add(8,13).add(6,8).add(10,8);
 			new MoveAnimation(peg, move).start();
 		}

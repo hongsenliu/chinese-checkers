@@ -226,13 +226,7 @@ public class GameView extends FrameLayout  {
 	}
 	
 	private void drawBoard(Canvas canvas){
-		Log.d(tag, "onDraw");
-//		for (int j=0; j<=Board.sizeJ; j++){
-//			canvas.drawLine(0, j*dJ+1, sizeJ*dI, j*dJ+1, paint);
-//		}
-//		for (int i=0; i<= sizeI; i++) {
-//			canvas.drawLine(i*dI, 0, i*dI, sizeI*dJ, paint);
-//		}
+//		Log.d(tag, "onDraw");
 		for (int j=0; j<sizeJ; j++){
 			for (int i=0; i< sizeI; i++) {
 				Pixel l = pixel(new Point(i, j));
