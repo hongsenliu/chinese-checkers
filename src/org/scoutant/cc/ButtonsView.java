@@ -16,10 +16,8 @@ package org.scoutant.cc;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
@@ -37,10 +35,8 @@ public class ButtonsView extends FrameLayout {
 		super(context);
 		this.context = context;
 		setVisibility(INVISIBLE);
-		Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-//		int h = display.getHeight() - display.getWidth();
 		int h = 128;
-		setLayoutParams( new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, h, Gravity.TOP));
+		setLayoutParams( new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, h, Gravity.TOP));
 		cancel = button(R.drawable.cancel_128, doCancel, 0);
 		addView(cancel );
 		ok = button(R.drawable.checkmark_128, doOk, 1);
@@ -52,10 +48,6 @@ public class ButtonsView extends FrameLayout {
 	private ImageButton button(int src, OnClickListener l, int position) {
 		ImageButton btn = new ImageButton(context);
 		LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_VERTICAL);
-		Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		int margin = (display.getWidth() - 3*128)/3;
-		params.leftMargin = margin;
-		params.rightMargin = margin;
 		if (position==0) params.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
 		if (position==1) params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
 		btn.setLayoutParams(params);

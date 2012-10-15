@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class UI extends Activity {
+	@SuppressWarnings("unused")
 	private static String tag = "activity";
 	public static final int MENU_ITEM_PLAY = 10;
 	public static final int MENU_ITEM_ANIMATE = 20;
@@ -26,6 +27,7 @@ public class UI extends Activity {
 		setContentView( game);
 		super.onCreate(savedInstanceState);
 	}
+	
 	public int turn = 0;
 
 	@Override
@@ -38,7 +40,7 @@ public class UI extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
 		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, R.string.play).setIcon( R.drawable.player_play_41_48);
-		menu.add(Menu.NONE, MENU_ITEM_ANIMATE, Menu.NONE, "animate").setIcon( android.R.drawable.btn_default);
+//		menu.add(Menu.NONE, MENU_ITEM_ANIMATE, Menu.NONE, "animate").setIcon( android.R.drawable.btn_default);
 
 		return true;
 	}

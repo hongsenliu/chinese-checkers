@@ -36,7 +36,6 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
@@ -76,19 +75,20 @@ public class GameView extends FrameLayout  {
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		ui = (UI) context;
 		setWillNotDraw(false);
-		setLayoutParams( new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, Gravity.TOP));
+		setLayoutParams( new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.TOP));
 		Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-//		Log.i(tag, "width : " + display.getWidth() + ", height : " + display.getHeight());
 
 		setBackgroundResource(R.layout.linear_gradient);
 		getBackground().setDither(true);
 		
 		game = new Game();
 		ai = new AI(game);
-		dI = display.getWidth()/sizeI;
+		android.graphics.Point outSize = new android.graphics.Point();
+		display.getSize(outSize);
+		dI = outSize.x/sizeI;
 		dJ = Double.valueOf(0.8660254*dI).intValue();
 		diameter = Double.valueOf( 0.96*dI).intValue();
-		Log.i(tag, "width : " + display.getWidth() + ", height : " + display.getHeight() + ", dI : " + dI + ", dJ : " + dJ);
+		Log.i(tag, "width : " + outSize.x + ", height : " + outSize.y+ ", dI : " + dI + ", dJ : " + dJ);
 		
 		buttons = new ButtonsView(context);
 		addView( buttons);
@@ -262,12 +262,12 @@ public class GameView extends FrameLayout  {
 		if (move==null) return;
 		Peg start = game.peg(move.point(0));
 		PegUI peg = findPeg(start);
+		
 		boolean done = game.play(move);
-		peg.animate(move);
-//		if (done) {
-//			init();
-//		}
-//		invalidate();
+		if (done) {
+			peg.animate(move);
+			invalidate();
+		}
 	}
 	
 	
