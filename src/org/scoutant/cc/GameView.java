@@ -22,8 +22,10 @@ import org.scoutant.cc.model.Pixel;
 import org.scoutant.cc.model.Player;
 import org.scoutant.cc.model.Point;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -68,30 +70,28 @@ public class GameView extends FrameLayout  {
 	private Bitmap iconSelected; 
 	private Bitmap iconPointed; 
 	private Paint paint = new Paint();
+//	private Context context;
+	private FrameLayout.LayoutParams layoutParams = null;
 	
 	/** In equilateral triangle we have : 1² = (1/2)² + h²  => h = sqrt(3)/2 = 08660254 */
-	public GameView(Context context) {
+	public GameView(Activity context) {
 		super(context);
+//		this.context = context;
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		ui = (UI) context;
 		setWillNotDraw(false);
-		setLayoutParams( new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.TOP));
-		Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
-		setBackgroundResource(R.layout.linear_gradient);
+		setBackgroundColor(Color.RED);
+//		setBackgroundResource(R.layout.linear_gradient);
 		getBackground().setDither(true);
 		
 		game = new Game();
 		ai = new AI(game);
-		android.graphics.Point outSize = new android.graphics.Point();
-		display.getSize(outSize);
-		dI = outSize.x/sizeI;
-		dJ = Double.valueOf(0.8660254*dI).intValue();
-		diameter = Double.valueOf( 0.96*dI).intValue();
-		Log.i(tag, "width : " + outSize.x + ", height : " + outSize.y+ ", dI : " + dI + ", dJ : " + dJ);
+
+		processSize();
 		
 		buttons = new ButtonsView(context);
 		addView( buttons);
+		addView( new TurnView(context));
 		
 		BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
@@ -107,6 +107,34 @@ public class GameView extends FrameLayout  {
 				addView( new PegUI(context, peg, this));
 			}
 		}
+	}
+	
+	@Override
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
+		setLayoutParams( layoutParams);
+	}
+	
+	private void processSize() {
+		Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		android.graphics.Point outSize = new android.graphics.Point();
+		display.getSize(outSize);
+//		if (true) {
+		if (prefs.getBoolean("two-player", false)) { // portrait mode with buttons up or down according to who is the turn.
+			((Activity) getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			dI = outSize.x/sizeI;
+			dJ = Double.valueOf(0.8660254*dI).intValue();
+			// TODO test ok
+			layoutParams = new FrameLayout.LayoutParams(outSize.x, sizeJ*dJ, Gravity.TOP);
+			layoutParams.topMargin = (outSize.y-sizeJ*dJ)/2;
+		} else { // standard : landscape mode : one button on each side. 
+			dJ = Double.valueOf( outSize.y/sizeJ).intValue();
+			dI = Double.valueOf(dJ / 0.8660254).intValue();
+			layoutParams = new FrameLayout.LayoutParams(sizeI*dI, outSize.y, Gravity.TOP);
+			layoutParams.leftMargin = (outSize.x-sizeI*dI)/2;
+		}
+		Log.i(tag, "width : " + outSize.x + ", height : " + outSize.y+ ", dI : " + dI + ", dJ : " + dJ);
+		diameter = Double.valueOf( 0.96*dI).intValue();
 	}
 	
 	public PegUI findPeg(Peg peg) {
@@ -259,6 +287,7 @@ public class GameView extends FrameLayout  {
 	}
 
 	public void play(Move move, boolean animate) {
+		Log.d(tag, "playing move " + move);
 		if (move==null) return;
 		Peg start = game.peg(move.point(0));
 		PegUI peg = findPeg(start);

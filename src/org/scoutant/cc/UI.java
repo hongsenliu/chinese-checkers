@@ -69,7 +69,7 @@ public class UI extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	private void play() {
+	protected void play() {
 		Move move = game.ai.think(0, 0);
 		game.play(move, false);
 	}
