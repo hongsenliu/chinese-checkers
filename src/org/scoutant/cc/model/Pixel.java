@@ -10,7 +10,7 @@ public class Pixel extends Point {
 		super(x,y);
 	}
 	public Pixel (MotionEvent event) {
-		this(new Double(event.getRawX()).intValue(), new Double(event.getRawY()).intValue() );
+		this(  Float.valueOf(event.getX()).intValue(), Float.valueOf(event.getY()).intValue() );
 	}
 
 	/** @return distance between Pixels @param a and @param z. As square value! */

@@ -33,6 +33,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.preference.PreferenceManager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -47,6 +48,7 @@ import android.widget.FrameLayout;
  * http://commons.wikimedia.org/wiki/Category:Round_icons
  */
 public class GameView extends FrameLayout  {
+
 	public static int sizeI = Board.sizeI;
 	public static int sizeJ = Board.sizeJ;
 	
@@ -70,13 +72,10 @@ public class GameView extends FrameLayout  {
 	private Bitmap iconSelected; 
 	private Bitmap iconPointed; 
 	private Paint paint = new Paint();
-//	private Context context;
 	private FrameLayout.LayoutParams layoutParams = null;
 	
-	/** In equilateral triangle we have : 1² = (1/2)² + h²  => h = sqrt(3)/2 = 08660254 */
-	public GameView(Activity context) {
-		super(context);
-//		this.context = context;
+	public GameView(Context context, AttributeSet attrs) {
+		super(context, attrs);
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		setWillNotDraw(false);
 
@@ -91,7 +90,6 @@ public class GameView extends FrameLayout  {
 		
 		buttons = new ButtonsView(context);
 		addView( buttons);
-		addView( new TurnView(context));
 		
 		BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
@@ -115,6 +113,7 @@ public class GameView extends FrameLayout  {
 		setLayoutParams( layoutParams);
 	}
 	
+	/** In equilateral triangle we have : 1² = (1/2)² + h²  => h = sqrt(3)/2 = 08660254 */
 	private void processSize() {
 		Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		android.graphics.Point outSize = new android.graphics.Point();
@@ -167,12 +166,6 @@ public class GameView extends FrameLayout  {
 		invalidate();
 	}
 
-//	@Override
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		Log.d(tag, "KEY : " + keyCode);
-//		return true;
-//	}
-	
 	public void doTouch(MotionEvent event) {
 		int action = event.getAction(); 
 		if (action==MotionEvent.ACTION_DOWN) {

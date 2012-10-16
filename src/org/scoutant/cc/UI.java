@@ -1,4 +1,4 @@
-	package org.scoutant.cc;
+package org.scoutant.cc;
 
 import org.scoutant.cc.model.Move;
 
@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,11 +22,17 @@ public class UI extends Activity {
 	private GameView game;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		game = new GameView( UI.this);
-		setContentView( game);
-		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		game = (GameView) findViewById(R.id.game);
+		findViewById(R.id.turn).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				play();
+			}
+		});
 	}
 	
 	public int turn = 0;
