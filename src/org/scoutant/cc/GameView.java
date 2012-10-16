@@ -55,7 +55,6 @@ public class GameView extends FrameLayout  {
 	private static String tag = "view";
 	private static String touch = "touch";
 	public int size; 
-	public ButtonsView buttons;
 	public Peg selected; // ball
 	public Point pointed;  // board target point
 	public Move move; // current target move in construction
@@ -80,17 +79,12 @@ public class GameView extends FrameLayout  {
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		setWillNotDraw(false);
 
-		setBackgroundColor(Color.RED);
-//		setBackgroundResource(R.layout.linear_gradient);
-		getBackground().setDither(true);
+//		getBackground().setDither(true);
 		
 		game = new Game();
 		ai = new AI(game);
 
 		processSize();
-		
-		buttons = new ButtonsView(context);
-		addView( buttons);
 		
 		BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
@@ -162,7 +156,6 @@ public class GameView extends FrameLayout  {
 	
 	/** Initialize state so as to accept a fresh new move*/
 	public void init() {
-		buttons.reset();
 		buttonMgr.reset();
 		selected = null;
 		pointed = null;
@@ -206,7 +199,6 @@ public class GameView extends FrameLayout  {
 		// TODO ensure ball actually is one of his. Or no need and consider case : selected==null...
 		selected = game.peg(p);
 		Log.i(tag, "selected is now : " + selected);
-		buttons.setVisibility(VISIBLE);
 		buttonMgr.setVisibility(VISIBLE);
 	}
 	
@@ -225,7 +217,6 @@ public class GameView extends FrameLayout  {
 		boolean possible = game.valid( move);
 		Log.d(touch, "possible move : " + possible);
 		if (!possible) move.pop();
-		if (move.points.size()>1) buttons.setOkState( true);
 		if (move.points.size()>1) buttonMgr.setOkState( true);
 	}
 	
