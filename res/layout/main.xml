@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    >
+    <org.scoutant.cc.GameView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/game"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" 
+	/>
+    <ImageView 
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/turn"
+	    android:src="@drawable/kservices_1436_48"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:layout_gravity="right|top"
+	    android:contentDescription=" "
+        />
+    <ImageButton 
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/cancel"
+	    android:src="@drawable/cancel_128"
+	    android:layout_width="wrap_content"
+	    android:layout_height="match_parent" 
+	    android:layout_gravity="left|center_vertical"
+	    android:contentDescription="cancel"
+        />
+    <ImageButton 
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/ok"
+	    android:src="@drawable/checkmark_128"
+	    android:layout_width="wrap_content"
+	    android:layout_height="match_parent" 
+	    android:layout_gravity="right|center_vertical"
+	    android:contentDescription="ok"
+        />
+    
+</FrameLayout>

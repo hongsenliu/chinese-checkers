@@ -73,6 +73,7 @@ public class GameView extends FrameLayout  {
 	private Bitmap iconPointed; 
 	private Paint paint = new Paint();
 	private FrameLayout.LayoutParams layoutParams = null;
+	private ButtonsMgr buttonMgr;
 	
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -106,6 +107,8 @@ public class GameView extends FrameLayout  {
 			}
 		}
 	}
+
+	
 	
 	@Override
 	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -160,6 +163,7 @@ public class GameView extends FrameLayout  {
 	/** Initialize state so as to accept a fresh new move*/
 	public void init() {
 		buttons.reset();
+		buttonMgr.reset();
 		selected = null;
 		pointed = null;
 		move = null;
@@ -203,6 +207,7 @@ public class GameView extends FrameLayout  {
 		selected = game.peg(p);
 		Log.i(tag, "selected is now : " + selected);
 		buttons.setVisibility(VISIBLE);
+		buttonMgr.setVisibility(VISIBLE);
 	}
 	
 	/** User pretend to point a free hole as target for next step */
@@ -221,6 +226,7 @@ public class GameView extends FrameLayout  {
 		Log.d(touch, "possible move : " + possible);
 		if (!possible) move.pop();
 		if (move.points.size()>1) buttons.setOkState( true);
+		if (move.points.size()>1) buttonMgr.setOkState( true);
 	}
 	
 
@@ -290,6 +296,13 @@ public class GameView extends FrameLayout  {
 			peg.animate(move);
 			invalidate();
 		}
+	}
+
+
+
+	public void setButtonMgr(ButtonsMgr buttonMgr) {
+		this.buttonMgr = buttonMgr; 
+		
 	}
 	
 	

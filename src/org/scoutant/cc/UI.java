@@ -27,6 +27,10 @@ public class UI extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main);
 		game = (GameView) findViewById(R.id.game);
+		// TODO test 
+		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), findViewById(R.id.cancel));
+		// TODO 
+		game.setButtonMgr( buttonMgr);
 		findViewById(R.id.turn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
