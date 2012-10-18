@@ -232,13 +232,15 @@ public class Board {
 			if (a.isEven()) return is(a.i+dist/2, a.j+dist);
 			else return is(a.i+(dist+1)/2, a.j+dist);
 		case 4:
-			if (a.isEven()) return is(a.i-dist/2, a.j+dist);
+//			if (a.isEven()) return is(a.i-dist/2, a.j+dist);
+			if (a.isEven()) return is(a.i-(dist+1)/2, a.j+dist);
 			else return is(a.i-(dist+1)/2, a.j+dist);
 		case 0:
 			if (a.isOdd()) return is(a.i-dist/2, a.j-dist);
 			else return is(a.i-(dist+1)/2, a.j-dist);
 		case 1:
-			if (a.isEven()) return is(a.i+dist/2, a.j-dist);
+//			if (a.isEven()) return is(a.i+dist/2, a.j-dist);
+			if (a.isEven()) return is(a.i+(dist+1)/2, a.j-dist);
 			else return is(a.i+(dist+1)/2, a.j-dist);
 		default:
 			throw new IllegalArgumentException("Bad direction provided");
@@ -256,7 +258,7 @@ public class Board {
 			// we need to check that target is free
 			return !is(points.get(1));
 		}
-		// below only multi-step move. Each step is a jump.
+		// below only multi-step move. Each step is a jump. May be mono jump.
 		for (int i=0; i<points.size()-1; i++) {
 			Point a = points.get(i);
 			Point z = points.get(i+1);
