@@ -39,7 +39,7 @@ public class AI {
 	/**
 	 * @return the list of moves for given play. Considering only jumps.
 	 */
-	private List<Move> thinkUpToNMoves(int color, int level) {
+	protected List<Move> thinkUpToNMoves(int color, int level) {
 		// TODO level
 		track = new Board();
 		moves.clear();

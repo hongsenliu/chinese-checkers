@@ -3,8 +3,6 @@ package org.scoutant.cc.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.util.LangUtils;
-
 public class Move implements Comparable<Move> {
 	
 	public int score;
@@ -150,9 +148,9 @@ public class Move implements Comparable<Move> {
 		switch (player) {
 			case 0: return -(z.j-a.j);
 			case 3: return +(z.j-a.j);
-			case 1: return lenghtInDir1();
+			case 1: return lenghtInDir14(a,z);
 			case 2: throw new RuntimeException("TODO");
-			case 4: throw new RuntimeException("TODO");
+			case 4: return lenghtInDir14(a,z);
 			case 5: throw new RuntimeException("TODO");
 			default: throw new IllegalArgumentException("player ranging from 0 to 5...");
 		}
@@ -161,12 +159,60 @@ public class Move implements Comparable<Move> {
 	/**
 	 *<p>     1
 	 *<p>   *  2
-	 * decomposition in axes : dir 2 (same j) and in dir 1. looking for point (I,z.j) that is in dir 1 from a. 
+	 * Decomposition in axes : dir 2 (same j) and in dir 1. looking for point M(mi,z.j) that is in dir 1 from a.<p>
+	 * Middle point M(mi, z.j). A and M in same axe 1.<p>
+	 * Two cases : <ul>
+	 * <li>a.j and z.j differs by even nb of rows.
+	 * <li> odd number of rows
 	 */
-	private int lenghtInDir1(){
-		throw new RuntimeException("TODO");
+	protected static int lenghtInDir14(Point a, Point z){
+		Point m = null;
+		if (isEven(a, z)) {
+			m = decomposeEvenDir14(a, z);
+		} else {
+			m = decomposeOddDir14(a, z);
+		}
+		return Math.abs(m.j-a.j)+ Math.abs(z.i-m.i);
 	}
 	
+	protected static int lenghtInDir03(Point a, Point z) {
+		Point m = null;
+		if (isEven(a, z)) {
+			m = decomposeEvenDir03(a, z);
+		} else {
+			m = decomposeOddDir03(a, z);
+		}
+		return Math.abs(m.j-a.j)+ Math.abs(z.i-m.i);
+	}
+
+	private static boolean isEven(Point a, Point z) {
+		return ( (a.j-z.j)%2 == 0);
+	}
+	
+	/**
+	 *<p>     1
+	 *<p>   *  2
+	 * Decomposition in axes : dir 2 (same j) and in dir 1. looking for point M(mi,z.j) that is in dir 1 from a.<p>
+	 * Middle point M(mi, z.j). A and M in same axe 1.<p>
+	 * Two cases : <ul>
+	 * <li>a.j and z.j differs by even nb of rows.
+	 * <li> odd number of rows
+	 */
+	protected static Point decomposeEvenDir14( Point a, Point z) {
+		return new Point( a.i-(z.j-a.j)/2 , z.j);
+	}
+
+	protected static Point decomposeEvenDir03( Point a, Point z) {
+		return new Point( a.i+(z.j-a.j)/2 , z.j);
+	}
+	
+	// TODO refactor to single decomposeDir14?
+	protected static Point decomposeOddDir14( Point a, Point z) {
+		return decomposeEvenDir14(a, z);
+	}
+	protected static Point decomposeOddDir03( Point a, Point z) {
+		return new Point( a.i+(z.j-a.j)/2 + (z.j<a.j ? -1 : 1 ) , z.j);
+	}
 	
 	/** Points @param a and @param z are supposed to be in line with @param direction
 	 * @return corresponding length
@@ -187,5 +233,6 @@ public class Move implements Comparable<Move> {
 		// TODO consider a second criteria 'closest to axis'... (not to be trapped in another triangle)
 		return -(this.lenght( 0) - that.lenght(0));
 	}
+	
 	
 }

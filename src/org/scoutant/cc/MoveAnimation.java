@@ -3,7 +3,6 @@ package org.scoutant.cc;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.scoutant.cc.model.Log;
 import org.scoutant.cc.model.Move;
 import org.scoutant.cc.model.Point;
 
