@@ -212,7 +212,9 @@ public class Move implements Comparable<Move> {
 	@Override
 	public int compareTo(Move that) {
 		// TODO consider a second criteria 'closest to axis'... (not to be trapped in another triangle)
-		return -(this.lenght( 0) - that.lenght(0));
+		// TODO compare against player color!
+//		return -(this.lenght( 0) - that.lenght(0));
+		throw new IllegalAccessError( "Use MoveComparator instead! So as to consider player direction");
 	}
 	
 	

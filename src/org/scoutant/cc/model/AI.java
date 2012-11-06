@@ -72,7 +72,7 @@ public class AI {
 			Move move = new Move(peg.point);
 			visite( color, move);
 		}
-		Collections.sort(moves);
+		Collections.sort(moves, MoveComparator.comparators[color]);
 		return moves;
 	}
 	
