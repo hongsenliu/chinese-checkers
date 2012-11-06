@@ -3,6 +3,8 @@ package org.scoutant.cc.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.util.LangUtils;
+
 public class Move implements Comparable<Move> {
 	
 	public int score;
@@ -148,13 +150,23 @@ public class Move implements Comparable<Move> {
 		switch (player) {
 			case 0: return -(z.j-a.j);
 			case 3: return +(z.j-a.j);
-			case 1: throw new RuntimeException("TODO");
+			case 1: return lenghtInDir1();
 			case 2: throw new RuntimeException("TODO");
 			case 4: throw new RuntimeException("TODO");
 			case 5: throw new RuntimeException("TODO");
 			default: throw new IllegalArgumentException("player ranging from 0 to 5...");
 		}
 	}
+	
+	/**
+	 *<p>     1
+	 *<p>   *  2
+	 * decomposition in axes : dir 2 (same j) and in dir 1. looking for point (I,z.j) that is in dir 1 from a. 
+	 */
+	private int lenghtInDir1(){
+		throw new RuntimeException("TODO");
+	}
+	
 	
 	/** Points @param a and @param z are supposed to be in line with @param direction
 	 * @return corresponding length

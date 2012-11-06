@@ -232,14 +232,12 @@ public class Board {
 			if (a.isEven()) return is(a.i+dist/2, a.j+dist);
 			else return is(a.i+(dist+1)/2, a.j+dist);
 		case 4:
-//			if (a.isEven()) return is(a.i-dist/2, a.j+dist);
 			if (a.isEven()) return is(a.i-(dist+1)/2, a.j+dist);
 			else return is(a.i-(dist+1)/2, a.j+dist);
 		case 0:
 			if (a.isOdd()) return is(a.i-dist/2, a.j-dist);
 			else return is(a.i-(dist+1)/2, a.j-dist);
 		case 1:
-//			if (a.isEven()) return is(a.i+dist/2, a.j-dist);
 			if (a.isEven()) return is(a.i+(dist+1)/2, a.j-dist);
 			else return is(a.i+(dist+1)/2, a.j-dist);
 		default:

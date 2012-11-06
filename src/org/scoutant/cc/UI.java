@@ -20,6 +20,8 @@ public class UI extends Activity {
 	public static final int MENU_ITEM_PLAY = 10;
 	public static final int MENU_ITEM_ANIMATE = 20;
 	private GameView game;
+	public int turn = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,9 +29,7 @@ public class UI extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main);
 		game = (GameView) findViewById(R.id.game);
-		// TODO test 
 		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), findViewById(R.id.cancel));
-		// TODO 
 		game.setButtonMgr( buttonMgr);
 		findViewById(R.id.turn).setOnClickListener(new OnClickListener() {
 			@Override
@@ -39,7 +39,6 @@ public class UI extends Activity {
 		});
 	}
 	
-	public int turn = 0;
 
 	@Override
 	public void onAttachedToWindow() {
@@ -81,7 +80,9 @@ public class UI extends Activity {
 	}
 	
 	protected void play() {
-		Move move = game.ai.think(0, 0);
+		Move move = game.ai.think(turn, 0);
+		turn++;
+		turn = turn%6;
 		game.play(move, false);
 	}
 	
