@@ -80,7 +80,7 @@ public class UI extends Activity {
 	}
 	
 	protected void play() {
-		Move move = game.ai.think(turn, 0);
+		Move move = game.ai.think(turn, turn);
 		turn++;
 		turn = turn%6;
 		game.play(move, false);

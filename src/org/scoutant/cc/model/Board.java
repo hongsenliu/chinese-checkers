@@ -190,7 +190,7 @@ public class Board {
 		if (points.size()==0) return null;
 		Point t=null;
 		for (int k=0; k<length; k++) {
-			Log.d(tag, "p : " + p +" d : " + d + ", k : " + k + ", ball : " + ball);
+//			Log.d(tag, "p : " + p +" d : " + d + ", k : " + k + ", ball : " + ball);
 			t = points.get(k);
 			if ( is(t)) return null;
 		}

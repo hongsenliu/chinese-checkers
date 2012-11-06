@@ -7,10 +7,31 @@ import java.util.List;
 //TODO switch to platform Log when tests done...
 //import android.util.Log;
 
+/**
+ * Players in this order :
+ *<p>    3 
+ *<p> 2     4
+ *<p> 1     5
+ *<p>    0
+ *
+ *<p>Directions in the board : 
+ *<p>  0  1
+ *<p> 5    2
+ *<p>  4  3
+ *
+ */
 public class AI {
 	private static String tag = "ai";
 	// Consider as first directions pointing to opposite triangle.
-	public static final int[] dirs = {0, 1, 5, 2, 4, 3};  
+//	public static final int[] dirs0 = {0, 1, 5, 2, 4, 3};  
+	public static final int[][] dirs = {
+		{0, 1, 5, 2, 4, 3},  
+		{1, 2, 0, 3, 5, 4}, // 1  
+		{2, 3, 1, 4, 0, 5}, // 2 
+		{3, 4, 2, 5, 1, 0}, // 3 
+		{4, 5, 3, 0, 2, 1}, // 4 
+		{5, 0, 4, 1, 3, 2}, // 5 
+	};
 
 	private Game game;
 	private Board board;
@@ -56,8 +77,8 @@ public class AI {
 	}
 	
 	private void visite(int color, Move move) {
-		// TODO considers dirs different against players so as to search first for moves in nice direction.
-		for (int dir:dirs ) {
+		for (int dir:dirs[color] ) {
+			Log.d(tag, "** dir : " + dir);
 			visite(color, move, dir);
 		}
 	}
@@ -67,15 +88,14 @@ public class AI {
 //		Log.d(tag, "dir : " + dir +", jump to : " + p);
 		if (p==null) return;
 		if (track.is(p)) {
-//			Log.d(tag, "allready visited point " + p);
+			Log.d(tag, "already visited point " + p);
 			return;
 		}
 		track.set(p);
 		Move found = move.clone();
 		found.add(p);
-		// TODO player 0?
 		if (found.lenght( color)>0) {
-			Log.d(tag, "move ! " + found);
+			Log.d(tag, "move ! [ " + found.lenght(color) + " ] "+ found);
 			moves.add(found);
 		} 
 		Log.d(tag, "+++++++++++++++++++++++++++++++++++++++++++");

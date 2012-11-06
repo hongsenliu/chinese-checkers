@@ -53,7 +53,8 @@ public class Move implements Comparable<Move> {
 
 	public String toString() {
 		// TODO player?
-		String str = " [" + lenght(0) +" ] ";
+//		String str = " [" + lenght(0) +" ] ";
+		String str = "";
 		for (Point p : points) {
 			str += p + " ";
 		}
@@ -157,8 +158,7 @@ public class Move implements Comparable<Move> {
 	}
 	
 	protected static int lenghtForPlayer1(Point a, Point z) {
-//		Point m = isEven(a, z) ? decomposeEvenPlayer14(a, z) : decomposeOddPlayer14(a, z);    
-		Point m = isEven(a, z) ? decomposeEvenPlayer14(a, z) : decomposeEvenPlayer14(a, z);    
+		Point m = decomposePlayer14(a, z);    
 		return -(m.j-a.j) + z.i-m.i;
 	}
 	protected static int lenghtForPlayer4(Point a, Point z) { return -lenghtForPlayer1(a, z); }
@@ -183,7 +183,7 @@ public class Move implements Comparable<Move> {
 	 * <li>a.j and z.j differs by even nb of rows.
 	 * <li> odd number of rows
 	 */
-	protected static Point decomposeEvenPlayer14( Point a, Point z) {
+	protected static Point decomposePlayer14( Point a, Point z) {
 		return new Point( a.i-(z.j-a.j)/2 , z.j);
 	}
 
@@ -191,10 +191,6 @@ public class Move implements Comparable<Move> {
 		return new Point( a.i+(z.j-a.j)/2 , z.j);
 	}
 	
-	// TODO refactor to single decomposeDir14?
-	protected static Point decomposeOddPlayer14( Point a, Point z) {
-		return decomposeEvenPlayer14(a, z);
-	}
 	protected static Point decomposeOddPlayer25( Point a, Point z) {
 		return new Point( a.i+(z.j-a.j)/2 + (z.j<a.j ? -1 : 1 ) , z.j);
 	}
