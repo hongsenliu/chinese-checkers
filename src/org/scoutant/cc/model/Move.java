@@ -147,44 +147,29 @@ public class Move implements Comparable<Move> {
 		Point z = last();
 		switch (player) {
 			case 0: return -(z.j-a.j);
+			case 1: return lenghtForPlayer1(a,z);
+			case 2: return lenghtForPlayer2(a,z);
 			case 3: return +(z.j-a.j);
-			case 1: return lenghtInDir14(a,z);
-			case 2: throw new RuntimeException("TODO");
-			case 4: return lenghtInDir14(a,z);
-			case 5: throw new RuntimeException("TODO");
+			case 4: return lenghtForPlayer4(a,z);
+			case 5: return lenghtForPlayer5(a,z);
 			default: throw new IllegalArgumentException("player ranging from 0 to 5...");
 		}
 	}
 	
-	/**
-	 *<p>     1
-	 *<p>   *  2
-	 * Decomposition in axes : dir 2 (same j) and in dir 1. looking for point M(mi,z.j) that is in dir 1 from a.<p>
-	 * Middle point M(mi, z.j). A and M in same axe 1.<p>
-	 * Two cases : <ul>
-	 * <li>a.j and z.j differs by even nb of rows.
-	 * <li> odd number of rows
-	 */
-	protected static int lenghtInDir14(Point a, Point z){
-		Point m = null;
-		if (isEven(a, z)) {
-			m = decomposeEvenDir14(a, z);
-		} else {
-			m = decomposeOddDir14(a, z);
-		}
-		return Math.abs(m.j-a.j)+ Math.abs(z.i-m.i);
+	protected static int lenghtForPlayer1(Point a, Point z) {
+//		Point m = isEven(a, z) ? decomposeEvenPlayer14(a, z) : decomposeOddPlayer14(a, z);    
+		Point m = isEven(a, z) ? decomposeEvenPlayer14(a, z) : decomposeEvenPlayer14(a, z);    
+		return -(m.j-a.j) + z.i-m.i;
 	}
+	protected static int lenghtForPlayer4(Point a, Point z) { return -lenghtForPlayer1(a, z); }
 	
-	protected static int lenghtInDir03(Point a, Point z) {
-		Point m = null;
-		if (isEven(a, z)) {
-			m = decomposeEvenDir03(a, z);
-		} else {
-			m = decomposeOddDir03(a, z);
-		}
-		return Math.abs(m.j-a.j)+ Math.abs(z.i-m.i);
+	protected static int lenghtForPlayer2(Point a, Point z) {
+		Point m = isEven(a, z) ? decomposeEvenPlayer25(a, z) : decomposeOddPlayer25(a, z);    
+		return (m.j-a.j) + z.i-m.i;
 	}
+	protected static int lenghtForPlayer5 (Point a, Point z) { return -lenghtForPlayer2(a, z); }
 
+	
 	private static boolean isEven(Point a, Point z) {
 		return ( (a.j-z.j)%2 == 0);
 	}
@@ -198,19 +183,19 @@ public class Move implements Comparable<Move> {
 	 * <li>a.j and z.j differs by even nb of rows.
 	 * <li> odd number of rows
 	 */
-	protected static Point decomposeEvenDir14( Point a, Point z) {
+	protected static Point decomposeEvenPlayer14( Point a, Point z) {
 		return new Point( a.i-(z.j-a.j)/2 , z.j);
 	}
 
-	protected static Point decomposeEvenDir03( Point a, Point z) {
+	protected static Point decomposeEvenPlayer25( Point a, Point z) {
 		return new Point( a.i+(z.j-a.j)/2 , z.j);
 	}
 	
 	// TODO refactor to single decomposeDir14?
-	protected static Point decomposeOddDir14( Point a, Point z) {
-		return decomposeEvenDir14(a, z);
+	protected static Point decomposeOddPlayer14( Point a, Point z) {
+		return decomposeEvenPlayer14(a, z);
 	}
-	protected static Point decomposeOddDir03( Point a, Point z) {
+	protected static Point decomposeOddPlayer25( Point a, Point z) {
 		return new Point( a.i+(z.j-a.j)/2 + (z.j<a.j ? -1 : 1 ) , z.j);
 	}
 	

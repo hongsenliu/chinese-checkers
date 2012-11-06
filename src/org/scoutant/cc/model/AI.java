@@ -56,6 +56,7 @@ public class AI {
 	}
 	
 	private void visite(int color, Move move) {
+		// TODO considers dirs different against players so as to search first for moves in nice direction.
 		for (int dir:dirs ) {
 			visite(color, move, dir);
 		}
