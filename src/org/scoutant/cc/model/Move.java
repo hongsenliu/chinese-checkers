@@ -52,8 +52,6 @@ public class Move implements Comparable<Move> {
 	}
 
 	public String toString() {
-		// TODO player?
-//		String str = " [" + lenght(0) +" ] ";
 		String str = "";
 		for (Point p : points) {
 			str += p + " ";
@@ -206,16 +204,37 @@ public class Move implements Comparable<Move> {
 		return Math.abs(z.j-a.j);
 	}
 
-	/**
-	 * Compare 2 moves against their length. So that a Collections.sort(.) puts at first the longest moves. 
-	 */
 	@Override
 	public int compareTo(Move that) {
-		// TODO consider a second criteria 'closest to axis'... (not to be trapped in another triangle)
-		// TODO compare against player color!
-//		return -(this.lenght( 0) - that.lenght(0));
 		throw new IllegalAccessError( "Use MoveComparator instead! So as to consider player direction");
 	}
+
+	public int axisLengh(int player) {
+		Point z = last();
+		switch (player) {
+			case 0: 
+			case 3: return Math.abs( z.i-Board.radiusI);
+			case 1: 
+			case 4: return axisLengh14(z);
+			case 2: 
+			case 5: return axisLengh25(z);
+			default: throw new IllegalArgumentException("player ranging from 0 to 5...");
+		}
+		
+	}
+
+
+	/**
+	 * Axis is (0,12)<-->(12,4). A representation for even rows is : 2*i+3*j=36. Distance to axis is 2*z.i + 3*z.j-36;
+	 */
+	protected int axisLengh14(Point z) {
+		return Math.abs( 2*z.i + 3*z.j - 36 );
+	}
 	
-	
+	/**
+	 * Axis is (0,4)<-->(12,12). A representation for even rows is : 2*i-3*j=-12. Distance to axis is 2*z.i - 3*z.j+12;
+	 */
+	protected int axisLengh25(Point z) {
+		return Math.abs( 2*z.i - 3*z.j +12 );
+	}
 }

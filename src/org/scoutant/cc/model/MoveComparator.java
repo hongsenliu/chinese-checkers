@@ -2,6 +2,10 @@ package org.scoutant.cc.model;
 
 import java.util.Comparator;
 
+/**
+ * Compare 2 moves against their length, according to player direction.
+ * So that a Collections.sort(., comparator) puts at first the longest moves.  
+ */
 public class MoveComparator implements Comparator<Move> {
 
 	public static final MoveComparator[] comparators = {
@@ -19,9 +23,15 @@ public class MoveComparator implements Comparator<Move> {
 		this.player = player;
 	}
 	
+	/**
+	 * @return a number representing the difference of rows of @param a and @param b. According to player direction.
+	 * As a second level criteria: move ending closest to board axis is preferred... 
+	 */
 	@Override
 	public int compare(Move a, Move b) {
-		return b.lenght(player) - a.lenght(player);
+		int rowDiff = b.lenght(player) - a.lenght(player);
+		int axisDiff = b.axisLengh(player) - a.axisLengh(player);
+		return 2*Board.sizeJ*rowDiff - axisDiff;
 	}
 
 }
