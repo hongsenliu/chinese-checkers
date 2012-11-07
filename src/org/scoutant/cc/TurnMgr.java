@@ -1,5 +1,7 @@
 package org.scoutant.cc;
 
+import org.scoutant.cc.model.Peg;
+
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -22,6 +24,8 @@ public class TurnMgr {
 		turn = turn%6;
 		updateView();
 	}
+
+	// TODO add a fade-out and fade-in animation?
 	private void updateView(){
 		int resId = PegUI.icons[turn];
 		view.setImageResource(resId);
@@ -30,5 +34,8 @@ public class TurnMgr {
 		layoutParams.bottomMargin = 20;
 		view.setLayoutParams( layoutParams);
 	}
-	
+
+	public boolean allowed(Peg peg){
+		return ( peg.color == turn);
+	}
 }

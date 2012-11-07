@@ -75,6 +75,7 @@ public class GameView extends FrameLayout  {
 	private ButtonsMgr buttonMgr;
 	public int height=-1;
 	public int width=-1;
+	private TurnMgr turnMgr;
 	
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -103,7 +104,9 @@ public class GameView extends FrameLayout  {
 		}
 	}
 
-	
+	public void setTurnMgr(TurnMgr turnMgr){
+		this.turnMgr = turnMgr;
+	}
 	
 	@Override
 	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -162,6 +165,7 @@ public class GameView extends FrameLayout  {
 		selected = null;
 		pointed = null;
 		move = null;
+		turnMgr.update();
 		invalidate();
 	}
 
@@ -197,9 +201,13 @@ public class GameView extends FrameLayout  {
 	/** User pretend to select one of his balls */
 	private void select(Point p) {
 		if (!game.board.is(p)) return;
-		// retrieve ball under selection
 		// TODO ensure ball actually is one of his. Or no need and consider case : selected==null...
-		selected = game.peg(p);
+		Peg peg = game.peg(p);
+		if (!turnMgr.allowed(peg)) {
+			// TODO animation showing bad player?
+			return;
+		}
+		selected = peg;
 		Log.i(tag, "selected is now : " + selected);
 		buttonMgr.setVisibility(VISIBLE);
 	}

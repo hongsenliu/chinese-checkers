@@ -81,13 +81,3 @@ public class PegUI extends ImageView {
 	}
 }
 
-
-//AnimationSet anim = new AnimationSet(true);
-//for (int k=1; k<points.size(); k++) {
-//	Pixel from	= game.pixel( points.get(k-1));
-//	Pixel to	= game.pixel( points.get(k));
-//	Animation a = new TranslateAnimation(from.x-to.x, 0,from.y- to.y, 0);
-//	a.setDuration(700);
-//	anim.addAnimation( a);
-//}
-//this.startAnimation(anim);

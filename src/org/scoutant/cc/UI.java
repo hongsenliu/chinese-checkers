@@ -21,7 +21,6 @@ public class UI extends Activity {
 	public static final int MENU_ITEM_PLAY = 10;
 	public static final int MENU_ITEM_ANIMATE = 20;
 	private GameView game;
-	public ImageView turnView = null;
 	private TurnMgr turnMgr;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +31,15 @@ public class UI extends Activity {
 		game = (GameView) findViewById(R.id.game);
 		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), findViewById(R.id.cancel));
 		game.setButtonMgr( buttonMgr);
-		turnView = (ImageView) findViewById(R.id.turn);
-		turnView.setOnClickListener(new OnClickListener() {
+		buttonMgr.resize();
+		turnMgr = new TurnMgr( (ImageView) findViewById(R.id.turn), game.height/5);
+		game.setTurnMgr(turnMgr);
+		findViewById(R.id.turn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				play();
 			}
 		});
-		buttonMgr.resize();
-		turnMgr = new TurnMgr( turnView, game.height/5);
 	}
 	
 	@Override
@@ -84,8 +83,8 @@ public class UI extends Activity {
 	protected void play() {
 		//TODO manage level
 		Move move = game.ai.think(turnMgr.player(), 0);
-		turnMgr.update();
 		game.play(move, false);
+		game.init();
 	}
 	
 	/**
