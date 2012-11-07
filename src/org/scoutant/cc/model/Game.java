@@ -123,10 +123,12 @@ public class Game implements org.scoutant.Serializable {
 	@Override
 	public String serialize() {
 		String str= "";
-		str += moves.size();
+		str += moves.size()+"\n";
 		for (Move move : moves) {
 			str+= move.serialize() +"\n";
 		}
 		return str;
 	}
+	// no direct deserialization : we will replay the list of moves instead. To have the UIs in sync with the game state...
+	
 }

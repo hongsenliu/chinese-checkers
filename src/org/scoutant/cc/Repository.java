@@ -55,12 +55,10 @@ public class Repository {
 			String line;
 			reader.readLine(); // first line give the # of moves...
 			while ((line = reader.readLine()) != null)   {
-				String[] data = line.split(":");
-				int i = Integer.valueOf(data[0]);
-//				Move move = new Move(piece, i, j);
-//				Log.d(tag, "created move : " + move);
-//				list.add(move);
+				Move move = Move.deserialize(line);
+				list.add(move);
 			}
+			Log.i(tag, "# of moves to replay : " + list.size());
 //			newgame();
 //			game.replay( list);
 		} catch (Exception e) {

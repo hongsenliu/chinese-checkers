@@ -250,4 +250,13 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 		}
 		return str;
 	}
+	public static Move deserialize(String str) {
+		String[] data = str.split(":");
+		// not considering the last...
+		Move move = new Move();
+		for (String s:data) {
+			move.add( Point.desialize(s));
+		}
+		return move;
+	}
 }

@@ -55,6 +55,14 @@ public class Point implements org.scoutant.Serializable {
 	public String serialize() {
 		return String.format( "%d,%d", i, j);
 	}
+	public static Point desialize(String str) {
+		if (str==null || str.length()==0) return null;
+		String[] data = str.split(",");
+		if (data.length!=2) throw new IllegalArgumentException("Point shall comply to format : 'i,j' ");
+		int i = Integer.valueOf(data[0]);
+		int j = Integer.valueOf(data[1]);
+		return new Point(i,j);
+	}
 }
 
 ///** @return a representation of the peg */

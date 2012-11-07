@@ -42,6 +42,8 @@ public class UI extends Activity {
 			}
 		});
 		repository = new Repository(this, game);
+		// TODO testing...
+		repository.restore();
 	}
 	
 	@Override
