@@ -80,7 +80,6 @@ public class GameView extends FrameLayout  {
 		super(context, attrs);
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		setWillNotDraw(false);
-
 //		getBackground().setDither(true);
 		
 		game = new Game();

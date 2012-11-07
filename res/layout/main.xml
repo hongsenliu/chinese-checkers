@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     android:background="@layout/linear_gradient"
     >
-    <!-- 
-     -->
     <org.scoutant.cc.GameView
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/game"
@@ -19,8 +17,8 @@
 	    android:src="@drawable/kservices_1436_48"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
-	    android:layout_gravity="right|top"
-	    android:contentDescription=" "
+	    android:layout_gravity="bottom|right"
+	    android:contentDescription=""
         />
     <ImageButton 
 		xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,7 +27,6 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
 	    android:layout_gravity="left|center_vertical"
-	    android:contentDescription="cancel"
 	    android:background="@android:color/transparent"
 	    android:scaleType="fitCenter"
         />
@@ -40,7 +37,6 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
 	    android:layout_gravity="right|center_vertical"
-	    android:contentDescription="ok"
 	    android:background="@android:color/transparent"
 	    android:scaleType="fitCenter"
         />

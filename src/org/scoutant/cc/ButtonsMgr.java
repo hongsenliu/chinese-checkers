@@ -13,13 +13,11 @@
 
 package org.scoutant.cc;
 
-import android.app.LauncherActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
 
 public class ButtonsMgr {
 
