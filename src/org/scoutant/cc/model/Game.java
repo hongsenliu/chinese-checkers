@@ -5,7 +5,7 @@ import java.util.List;
 
 //import android.util.Log;
 
-public class Game {
+public class Game implements org.scoutant.Serializable {
 	
 	private static String tag = "model";
 
@@ -14,6 +14,7 @@ public class Game {
 	public Player player(int index) {
 		return players.get(index);
 	}
+	private List<Move> moves = new ArrayList<Move>();
 	
 	/**
 	 * creating players in this order :
@@ -83,7 +84,9 @@ public class Game {
 		Peg peg = peg( move.point(0));
 		if (peg==null) return false;
 		Point point = move.point( move.points.size()-1);
-		return move( peg, point);
+		boolean done = move( peg, point);
+		if (done) moves.add(move);
+		return done;
 	}
 	
 	
@@ -111,5 +114,19 @@ public class Game {
 		msg += "------------------------------------------\n";
 		return msg;
 	}
-	
+
+	// TODO manage game over!
+	public boolean over() {
+		return false;
+	}
+
+	@Override
+	public String serialize() {
+		String str= "";
+		str += moves.size();
+		for (Move move : moves) {
+			str+= move.serialize() +"\n";
+		}
+		return str;
+	}
 }

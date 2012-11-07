@@ -1,6 +1,6 @@
 package org.scoutant.cc.model;
 
-public class Point {
+public class Point implements org.scoutant.Serializable {
 	public int i;
 	public int j;
 	
@@ -44,11 +44,6 @@ public class Point {
 		Point other = (Point) obj;
 		return (i==other.i) && (j==other.j);
 	}
-
-	/** @return a representation of the peg */
-	public static String serialize(Point p) {
-		return String.format( ":%d:%d", p.i, p.j);
-	}
 	
 	public boolean isOdd() {
 		return j%2 == 1; 
@@ -56,4 +51,13 @@ public class Point {
 	public boolean isEven() {
 		return j%2 == 0; 
 	}
+	@Override
+	public String serialize() {
+		return String.format( "%d,%d", i, j);
+	}
 }
+
+///** @return a representation of the peg */
+//public static String serialize(Point p) {
+//	return String.format( ":%d:%d", p.i, p.j);
+//}

@@ -3,7 +3,7 @@ package org.scoutant.cc.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Move implements Comparable<Move> {
+public class Move implements Comparable<Move>, org.scoutant.Serializable {
 	
 	public int score;
 	public List<Point> points = new ArrayList<Point>();
@@ -236,5 +236,18 @@ public class Move implements Comparable<Move> {
 	 */
 	protected int axisLengh25(Point z) {
 		return Math.abs( 2*z.i - 3*z.j +12 );
+	}
+
+	/**
+	 * @return a string representation : a list of Point, separated by colons.
+	 * Example : 5,14:6,12:4,8:
+	 */
+	@Override
+	public String serialize() {
+		String str = "";
+		for (Point p : points) {
+			str += p.serialize()+":";
+		}
+		return str;
 	}
 }

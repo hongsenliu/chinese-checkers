@@ -22,6 +22,7 @@ public class UI extends Activity {
 	public static final int MENU_ITEM_ANIMATE = 20;
 	private GameView game;
 	private TurnMgr turnMgr;
+	private Repository repository;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class UI extends Activity {
 				play();
 			}
 		});
+		repository = new Repository(this, game);
 	}
 	
 	@Override
@@ -51,7 +53,7 @@ public class UI extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, R.string.play).setIcon( R.drawable.player_play_41_48);
+		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, "save").setIcon( R.drawable.player_play_41_48);
 
 		return true;
 	}
@@ -60,12 +62,8 @@ public class UI extends Activity {
 		super.onOptionsItemSelected(item);
 		int id = item.getItemId();
 		if (id == MENU_ITEM_PLAY) {
-			play();
-		}
-		if (id == MENU_ITEM_ANIMATE) {
-			final PegUI peg = game.findPeg( game.game.player(0).peg(9));
-			Move move = new Move().add(8,13).add(6,8).add(10,8);
-			new MoveAnimation(peg, move).start();
+//			play();
+			repository.save();
 		}
 		return false;
 	}
