@@ -160,12 +160,12 @@ public class GameView extends FrameLayout  {
 	}
 	
 	/** Initialize state so as to accept a fresh new move*/
-	public void init() {
+	public void init(boolean changeTurn) {
 		buttonMgr.reset();
 		selected = null;
 		pointed = null;
 		move = null;
-		turnMgr.update();
+		if ( changeTurn) turnMgr.update();
 		invalidate();
 	}
 

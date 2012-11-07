@@ -84,7 +84,7 @@ public class UI extends Activity {
 		//TODO manage level
 		Move move = game.ai.think(turnMgr.player(), 0);
 		game.play(move, false);
-		game.init();
+		game.init(true);
 	}
 	
 	/**
