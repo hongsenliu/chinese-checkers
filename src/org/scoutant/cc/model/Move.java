@@ -259,4 +259,13 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 		}
 		return move;
 	}
+	
+	// TODO refactor with Collections.reserse() ?
+	public Move reverse() {
+		Move move = new Move();
+		for (int i=points.size()-1; i>=0; i--) {
+			move.add(points.get(i));
+		}
+		return move;
+	}
 }

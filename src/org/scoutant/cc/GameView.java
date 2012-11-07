@@ -162,12 +162,11 @@ public class GameView extends FrameLayout  {
 	}
 	
 	/** Initialize state so as to accept a fresh new move*/
-	public void init(boolean changeTurn) {
+	public void init() {
 		buttonMgr.reset();
 		selected = null;
 		pointed = null;
 		move = null;
-		if ( changeTurn) turnMgr.update();
 		invalidate();
 	}
 
@@ -296,7 +295,8 @@ public class GameView extends FrameLayout  {
 		
 		boolean done = game.play(move);
 		if (done) {
-			peg.animate(move);
+			if (animate) peg.animate(move);
+			turnMgr.update();
 			invalidate();
 		}
 	}
@@ -310,7 +310,18 @@ public class GameView extends FrameLayout  {
 	
 	public void replay(List<Move> list) {
 		for (Move move:list) {
-			play(move, true);
+			play(move, false);
 		}
 	}
+	
+	/**
+	 * play back the last human move and potentially the intermediate AI moves.
+	 */
+	public void back() {
+		Move move = game.last().reverse();
+		play(move, true);
+		if (game.pop()) turnMgr.pop();
+		if (game.pop()) turnMgr.pop();
+	}
+	
 }

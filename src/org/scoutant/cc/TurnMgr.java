@@ -38,4 +38,10 @@ public class TurnMgr {
 	public boolean allowed(Peg peg){
 		return ( peg.color == turn);
 	}
+
+	public void pop() {
+		turn+=5;
+		turn = turn%6;
+		updateView();
+	}
 }

@@ -59,13 +59,14 @@ public class ButtonsMgr {
 	private OnClickListener doOk = new OnClickListener() {
 		public void onClick(View v) {
 			game.game.play( game.move);
-			game.init(true);
+			game.turnMgr.update();
+			game.init();
 		}
 	};
 	private OnClickListener doCancel = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(tag, "cancel...");
-			game.init(false);
+			game.init();
 		}
 	};
 

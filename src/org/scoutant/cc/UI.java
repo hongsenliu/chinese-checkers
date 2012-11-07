@@ -42,7 +42,10 @@ public class UI extends Activity {
 			}
 		});
 		repository = new Repository(this, game);
-		// TODO testing...
+	}
+	@Override
+	protected void onStart() {
+		super.onStart();
 		repository.restore();
 	}
 	
@@ -55,7 +58,7 @@ public class UI extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, "save").setIcon( R.drawable.player_play_41_48);
+		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, "back").setIcon( R.drawable.player_play_41_48);
 
 		return true;
 	}
@@ -64,8 +67,8 @@ public class UI extends Activity {
 		super.onOptionsItemSelected(item);
 		int id = item.getItemId();
 		if (id == MENU_ITEM_PLAY) {
-//			play();
-			repository.save();
+//			repository.save();
+			game.back();
 		}
 		return false;
 	}
@@ -83,8 +86,8 @@ public class UI extends Activity {
 	protected void play() {
 		//TODO manage level
 		Move move = game.ai.think(turnMgr.player(), 0);
-		game.play(move, false);
-		game.init(true);
+		game.play(move, true);
+		game.init();
 	}
 	
 	/**
@@ -105,8 +108,15 @@ public class UI extends Activity {
 	}	
 	
 	@Override
+	protected void onStop() {
+		repository.save();
+		super.onStop();
+	}
+	
+	@Override
 	protected void onDestroy() {
 	    super.onDestroy();
+	    // TODO save game on exit!
 	    unbindDrawables( game);
 	    System.gc();
 	}

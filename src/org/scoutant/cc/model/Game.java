@@ -16,6 +16,12 @@ public class Game implements org.scoutant.Serializable {
 		return players.get(index);
 	}
 	public List<Move> moves = new ArrayList<Move>();
+	public Move last() { return moves.get(moves.size()-1);}
+	public boolean pop() {
+		if (moves.size() <= 0) return false;
+		moves.remove(moves.size()-1);
+		return true;
+	}
 	
 	/**
 	 * creating players in this order :
@@ -130,6 +136,7 @@ public class Game implements org.scoutant.Serializable {
 		return str;
 	}
 	// no direct deserialization : we will replay the list of moves instead. To have the UIs in sync with the game state...
+
 	
 	
 }

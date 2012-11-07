@@ -47,6 +47,7 @@ public class Repository {
 	/** 
 	 * sources a list of moves like this sample : <ul>
 	 * <li>3
+	 * <li>3
 	 * <li>5,14:6,12:
 	 * <li>2,12:4,12:8,12:
 	 * <li>1,6:3,6: 
@@ -59,8 +60,7 @@ public class Repository {
 			String line;
 			reader.readLine(); // first line give the # of moves...
 			// second line gives the turn data
-			// TODO manage turn!
-			reader.readLine();
+			String dataTurn = reader.readLine();
 			while ((line = reader.readLine()) != null)   {
 				Move move = Move.deserialize(line);
 				list.add(move);
@@ -68,6 +68,9 @@ public class Repository {
 			Log.i(tag, "# of moves to replay : " + list.size());
 //			newgame();
 			game.replay( list);
+			// TODO manage turn!
+			// Normally game state turn should be equal to deserialization turn data...
+			Log.i(tag, "turn data : " + dataTurn + ", game turn : " + game.turnMgr.player());
 		} catch (Exception e) {
 			Log.e(tag, "yep error is :", e);
 		}
