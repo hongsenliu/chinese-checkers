@@ -45,7 +45,7 @@ public class PegUI extends ImageView {
 		LayoutParams params = new LayoutParams(diameter, diameter, Gravity.TOP);
 		Pixel pixel = game.pixel( peg.point);
 		Rect rect = toSquare(pixel, diameter);
-		params.setMargins(rect.left, rect.top, rect.right, rect.bottom);
+		params.setMargins(rect.left-1, rect.top-1, rect.right, rect.bottom);
 		setLayoutParams(params);
 	}
 	

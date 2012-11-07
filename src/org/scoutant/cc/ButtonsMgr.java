@@ -13,9 +13,13 @@
 
 package org.scoutant.cc;
 
+import android.app.LauncherActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 
 public class ButtonsMgr {
 
@@ -66,4 +70,20 @@ public class ButtonsMgr {
 			game.init();
 		}
 	};
+
+	public void resize() {
+		int h = game.height;
+		Log.d(tag, "game height : " + h);
+		if (h<=0) return;
+		int m = (game.width - h)/2;
+		if (m<=0) return;
+		// let's the buttons be in middle of region with width m...
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(m,h, Gravity.LEFT);
+		params.leftMargin=20;
+		cancel.setLayoutParams(params);
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(m,h, Gravity.RIGHT);
+		layoutParams.rightMargin=20;
+		ok.setLayoutParams(layoutParams);
+	}
+	
 }

@@ -5,6 +5,7 @@ import org.scoutant.cc.model.Move;
 import android.app.Activity;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,8 +38,12 @@ public class UI extends Activity {
 				play();
 			}
 		});
+		buttonMgr.resize();
 	}
 	
+
+	
+
 
 	@Override
 	public void onAttachedToWindow() {

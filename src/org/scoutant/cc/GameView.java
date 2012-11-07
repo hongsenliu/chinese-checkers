@@ -73,6 +73,8 @@ public class GameView extends FrameLayout  {
 	private Paint paint = new Paint();
 	private FrameLayout.LayoutParams layoutParams = null;
 	private ButtonsMgr buttonMgr;
+	public int height=-1;
+	public int width=-1;
 	
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -115,7 +117,6 @@ public class GameView extends FrameLayout  {
 		Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		android.graphics.Point outSize = new android.graphics.Point();
 		display.getSize(outSize);
-//		if (true) {
 		if (prefs.getBoolean("two-player", false)) { // portrait mode with buttons up or down according to who is the turn.
 			((Activity) getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			dI = outSize.x/sizeI;
@@ -131,6 +132,8 @@ public class GameView extends FrameLayout  {
 		}
 		Log.i(tag, "width : " + outSize.x + ", height : " + outSize.y+ ", dI : " + dI + ", dJ : " + dJ);
 		diameter = Double.valueOf( 0.96*dI).intValue();
+		height = outSize.y;
+		width = outSize.x;
 	}
 	
 	public PegUI findPeg(Peg peg) {
