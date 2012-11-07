@@ -19,7 +19,7 @@ public class UI extends Activity {
 	@SuppressWarnings("unused")
 	private static String tag = "activity";
 	public static final int MENU_ITEM_PLAY = 10;
-	public static final int MENU_ITEM_ANIMATE = 20;
+	public static final int MENU_ITEM_NEW = 20;
 	private GameView game;
 	private TurnMgr turnMgr;
 	private Repository repository;
@@ -29,20 +29,32 @@ public class UI extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main);
-		game = (GameView) findViewById(R.id.game);
-		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), findViewById(R.id.cancel));
-		game.setButtonMgr( buttonMgr);
-		buttonMgr.resize();
-		turnMgr = new TurnMgr( (ImageView) findViewById(R.id.turn), game.height/5);
-		game.setTurnMgr(turnMgr);
 		findViewById(R.id.turn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				play();
 			}
 		});
+		findViewById(R.id.menu).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openOptionsMenu();
+			}
+		});
+		game = (GameView) findViewById(R.id.game);
+		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), findViewById(R.id.cancel));
+		game.setButtonMgr( buttonMgr);
+		buttonMgr.resize();
 		repository = new Repository(this, game);
+		newgame();
 	}
+	
+	private void newgame() {
+		game.reset();
+		turnMgr = new TurnMgr( (ImageView) findViewById(R.id.turn), game.height/5);
+		game.setTurnMgr(turnMgr);
+	}
+	
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -59,6 +71,7 @@ public class UI extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
 		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, "back").setIcon( R.drawable.player_play_41_48);
+		menu.add(Menu.NONE, MENU_ITEM_NEW, Menu.NONE, "new").setIcon( R.drawable.restart_48);
 
 		return true;
 	}
@@ -69,6 +82,9 @@ public class UI extends Activity {
 		if (id == MENU_ITEM_PLAY) {
 //			repository.save();
 			game.back();
+		}
+		if (id == MENU_ITEM_NEW) {
+			newgame();
 		}
 		return false;
 	}

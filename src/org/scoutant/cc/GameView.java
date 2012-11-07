@@ -78,18 +78,16 @@ public class GameView extends FrameLayout  {
 	public int height=-1;
 	public int width=-1;
 	protected TurnMgr turnMgr;
+	private Context context;
 	
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.context = context;
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		setWillNotDraw(false);
 //		getBackground().setDither(true);
 		
-		game = new Game();
-		ai = new AI(game);
-
 		processSize();
-		
 		BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
         hole = BitmapFactory.decodeResource(context.getResources(), R.drawable.steel);
@@ -99,11 +97,19 @@ public class GameView extends FrameLayout  {
 		paint.setStrokeWidth(0.2f);
 		paint.setColor(Color.BLACK);
 
+		reset();
+	}
+
+	public void reset() {
+		game = new Game();
+		ai = new AI(game);
+		removeAllViews();
 		for (Player player : game.players) {
 			for (Peg peg : player.pegs()) {
 				addView( new PegUI(context, peg, this));
 			}
 		}
+		invalidate();
 	}
 
 	public void setTurnMgr(TurnMgr turnMgr){
