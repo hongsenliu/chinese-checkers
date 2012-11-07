@@ -13,6 +13,8 @@
 
 package org.scoutant.cc;
 
+import java.util.List;
+
 import org.scoutant.cc.model.AI;
 import org.scoutant.cc.model.Board;
 import org.scoutant.cc.model.Game;
@@ -75,7 +77,7 @@ public class GameView extends FrameLayout  {
 	private ButtonsMgr buttonMgr;
 	public int height=-1;
 	public int width=-1;
-	private TurnMgr turnMgr;
+	protected TurnMgr turnMgr;
 	
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -306,5 +308,9 @@ public class GameView extends FrameLayout  {
 		
 	}
 	
-	
+	public void replay(List<Move> list) {
+		for (Move move:list) {
+			play(move, true);
+		}
+	}
 }

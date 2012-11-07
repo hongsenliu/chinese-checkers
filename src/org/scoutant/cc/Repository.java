@@ -30,7 +30,11 @@ public class Repository {
 			fos = context.openFileOutput("moves.txt", Context.MODE_PRIVATE);
 			if (fos==null) return;
 			if (!game.game.over()) {
-				fos.write( game.game.serialize().getBytes());
+				String str = "";
+				str += game.game.moves.size()+"\n";
+				str += game.turnMgr.player()+"\n";
+				str += game.game.serialize();
+				fos.write( str.getBytes());
 				Log.i(tag, "saving game \n" + game.game.serialize() );
 			} // if game is over we do not save it, so as to open a blank game next time
 			fos.close();
@@ -54,13 +58,16 @@ public class Repository {
 			BufferedReader reader = new BufferedReader( new InputStreamReader(fis));
 			String line;
 			reader.readLine(); // first line give the # of moves...
+			// second line gives the turn data
+			// TODO manage turn!
+			reader.readLine();
 			while ((line = reader.readLine()) != null)   {
 				Move move = Move.deserialize(line);
 				list.add(move);
 			}
 			Log.i(tag, "# of moves to replay : " + list.size());
 //			newgame();
-//			game.replay( list);
+			game.replay( list);
 		} catch (Exception e) {
 			Log.e(tag, "yep error is :", e);
 		}

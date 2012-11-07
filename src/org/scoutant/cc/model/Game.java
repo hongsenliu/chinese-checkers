@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Game implements org.scoutant.Serializable {
 	
+	@SuppressWarnings("unused")
 	private static String tag = "model";
 
 	public List<Player> players = new ArrayList<Player>();
@@ -14,7 +15,7 @@ public class Game implements org.scoutant.Serializable {
 	public Player player(int index) {
 		return players.get(index);
 	}
-	private List<Move> moves = new ArrayList<Move>();
+	public List<Move> moves = new ArrayList<Move>();
 	
 	/**
 	 * creating players in this order :
@@ -80,7 +81,7 @@ public class Game implements org.scoutant.Serializable {
 	 * @return true if done.   
 	 */
 	public boolean play(Move move) {
-		Log.d(tag, "playing move " + move);
+//		Log.d(tag, "playing move " + move);
 		Peg peg = peg( move.point(0));
 		if (peg==null) return false;
 		Point point = move.point( move.points.size()-1);
@@ -123,12 +124,12 @@ public class Game implements org.scoutant.Serializable {
 	@Override
 	public String serialize() {
 		String str= "";
-		str += moves.size()+"\n";
 		for (Move move : moves) {
 			str+= move.serialize() +"\n";
 		}
 		return str;
 	}
 	// no direct deserialization : we will replay the list of moves instead. To have the UIs in sync with the game state...
+	
 	
 }
