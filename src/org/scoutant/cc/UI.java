@@ -5,7 +5,6 @@ import org.scoutant.cc.model.Move;
 import android.app.Activity;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 public class UI extends Activity {
@@ -23,8 +21,8 @@ public class UI extends Activity {
 	public static final int MENU_ITEM_PLAY = 10;
 	public static final int MENU_ITEM_ANIMATE = 20;
 	private GameView game;
-	public int turn = 0;
 	public ImageView turnView = null;
+	private TurnMgr turnMgr;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,7 +40,7 @@ public class UI extends Activity {
 			}
 		});
 		buttonMgr.resize();
-		updateTurnView();
+		turnMgr = new TurnMgr( turnView, game.height/5);
 	}
 	
 	@Override
@@ -55,7 +53,6 @@ public class UI extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
 		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, R.string.play).setIcon( R.drawable.player_play_41_48);
-//		menu.add(Menu.NONE, MENU_ITEM_ANIMATE, Menu.NONE, "animate").setIcon( android.R.drawable.btn_default);
 
 		return true;
 	}
@@ -85,8 +82,9 @@ public class UI extends Activity {
 	}
 	
 	protected void play() {
-		Move move = game.ai.think(turn, turn);
-		updateTurn();
+		//TODO manage level
+		Move move = game.ai.think(turnMgr.player(), 0);
+		turnMgr.update();
 		game.play(move, false);
 	}
 	
@@ -114,18 +112,4 @@ public class UI extends Activity {
 	    System.gc();
 	}
 
-	private void updateTurn(){
-		turn++;
-		turn = turn%6;
-		updateTurnView();
-	}
-	private void updateTurnView(){
-		int resId = PegUI.icons[turn];
-		turnView.setImageResource(resId);
-		int d = game.height/5;
-		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(d, d, Gravity.RIGHT|Gravity.BOTTOM);
-		layoutParams.rightMargin = 20;
-		layoutParams.bottomMargin = 20;
-		turnView.setLayoutParams( layoutParams);
-	}
 }
