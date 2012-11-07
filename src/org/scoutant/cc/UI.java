@@ -20,6 +20,7 @@ public class UI extends Activity {
 	private static String tag = "activity";
 	public static final int MENU_ITEM_PLAY = 10;
 	public static final int MENU_ITEM_NEW = 20;
+	public static final int MENU_ITEM_PLAY12 = 12;
 	private GameView game;
 	private TurnMgr turnMgr;
 	private Repository repository;
@@ -70,7 +71,8 @@ public class UI extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, "back").setIcon( R.drawable.player_play_41_48);
+		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, "back").setIcon( R.drawable.left_48);
+		menu.add(Menu.NONE, MENU_ITEM_PLAY12, Menu.NONE, "play 12").setIcon( R.drawable.player_play_41_48);
 		menu.add(Menu.NONE, MENU_ITEM_NEW, Menu.NONE, "new").setIcon( R.drawable.restart_48);
 
 		return true;
@@ -85,6 +87,11 @@ public class UI extends Activity {
 		}
 		if (id == MENU_ITEM_NEW) {
 			newgame();
+		}
+		if (id == MENU_ITEM_PLAY12) {
+			for (int i=0; i<12; i++) {
+				play();
+			}
 		}
 		return false;
 	}

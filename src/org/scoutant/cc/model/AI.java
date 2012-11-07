@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 //TODO switch to platform Log when tests done...
-//import android.util.Log;
 
 /**
  * Players in this order :
@@ -23,7 +22,6 @@ import java.util.List;
 public class AI {
 	private static String tag = "ai";
 	// Consider as first directions pointing to opposite triangle.
-//	public static final int[] dirs0 = {0, 1, 5, 2, 4, 3};  
 	public static final int[][] dirs = {
 		{0, 1, 5, 2, 4, 3},  
 		{1, 2, 0, 3, 5, 4}, // 1  
@@ -44,8 +42,13 @@ public class AI {
 	}
 
 	public Move think(int color, int level) {
-		List<Move> moves = thinkUpToNMoves(color, level);
-		
+		List<Move> moves = thinkUpToNJumps(color, level);
+
+		if (moves.size()<=8) {
+			// let's consider hops too
+			thinkHops(color, level);
+			Collections.sort(moves, MoveComparator.comparators[color]);
+		}
 		if (moves.size()==0) {
 			// TODO endgame
 			Log.d(tag, "no more moves... for player : " + color);
@@ -57,10 +60,30 @@ public class AI {
 	}
 
 	// TODO consider hops only at least
+	protected void thinkHops(int color, int level) {
+		Player player = game.player(color);
+		for (Peg peg : player.pegs()) {
+			Log.d(tag, "**** hops ?");
+			// consider only positive hops
+			for (int i=0; i<2; i++) {
+				int dir = dirs[color][i];
+				Point p = board.hop(peg.point, dir);
+				if (p!=null && !board.is(p)) {
+					// target is a hole not occupied by a peg
+					Move move = new Move( peg.point);
+					move.add(p);
+					moves.add( move);
+					Log.d(tag, "can hop : " + move);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * @return the list of moves for given play. Considering only jumps.
 	 */
-	protected List<Move> thinkUpToNMoves(int color, int level) {
+	// TODO reactor removing method return
+	protected List<Move> thinkUpToNJumps(int color, int level) {
 		// TODO level
 		track = new Board();
 		moves.clear();
@@ -73,6 +96,7 @@ public class AI {
 			visite( color, move);
 		}
 		Collections.sort(moves, MoveComparator.comparators[color]);
+		Log.d(tag, "# of jumps : " + moves.size());
 		return moves;
 	}
 	
@@ -94,7 +118,9 @@ public class AI {
 		track.set(p);
 		Move found = move.clone();
 		found.add(p);
-		if (found.lenght( color)>0) {
+//		if (found.lenght( color)>0) {
+		// TODO many if considering zero lenght move even in middle game?
+		if (found.lenght( color)>=0) {
 			Log.d(tag, "move ! [ " + found.lenght(color) + " ] "+ found);
 			moves.add(found);
 		} 

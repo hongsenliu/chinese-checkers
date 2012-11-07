@@ -2,15 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.scoutant.cc"
       android:versionCode="1" android:versionName="0.9">
+      <!-- only 10 during dev to enable option menu to appear in any case...
     <uses-sdk android:minSdkVersion="15" />
-	<uses-feature android:name="android.hardware.touchscreen" android:required="true"/>
+       -->
+    <uses-sdk android:minSdkVersion="10" />
+    	<uses-feature android:name="android.hardware.touchscreen" android:required="true"/>
 	<supports-screens android:smallScreens="false" android:normalScreens="false" 
 	    android:largeScreens="true" android:xlargeScreens="true"/>
     <application android:icon="@drawable/scoutant" android:label="Chinese Checkers">
         <activity android:name=".UI" android:label="Chinese Checkers" 
-            android:screenOrientation="reverseLandscape"
+            android:screenOrientation="landscape"
             >
             <!-- 
+            android:screenOrientation="reverseLandscape"
              -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
