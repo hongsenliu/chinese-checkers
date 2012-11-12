@@ -197,7 +197,16 @@ public class Board {
 		return t;
 	}
 
-	public boolean valid(Point a, Point z) {
+	/**
+	 * @return true if points @param a and @param z are extremities of a valid jump : <ul>
+	 * <li> z is a free hole
+	 * <li> a and z are in same line
+	 * <li> distance between a and z is even
+	 * <li> middle point is a ball
+	 * <li> but middle point cannot be the move's origin, which is @param origin 
+	 * <li> all other intermediate holes are free   
+	 */
+	public boolean valid(Point a, Point z, Point origin) {
 		if (a.equals(z)) return true;
 		if(is(z)) return false;
 		int dir = Move.direction(a, z);
@@ -209,6 +218,10 @@ public class Board {
 		// below only true jumps, we just have to check : 1) a ball in the middle and 2) no other balls in the way.
 		Point middle = Move.middle(a, z);
 		if(!is(middle)) return false;
+		if (middle.equals(origin)) {
+			Log.d(tag, "cannot jump over one-self!");
+			return false;
+		}
 		// Checks no other balls in the way (but the one in the middle of course)
 		for (int k=1; k<l/2; k++) {
 			if (dir==2 || dir==5) {
@@ -261,7 +274,7 @@ public class Board {
 			Point a = points.get(i);
 			Point z = points.get(i+1);
 			if (Move.isHop(a,z)) return false;
-			if ( !valid(a, z)) return false;
+			if ( !valid(a, z, points.get(0))) return false;
 		}
 		return true;
 	}
@@ -297,6 +310,4 @@ public class Board {
 		}
 		return points;
 	}
-
-	
 }

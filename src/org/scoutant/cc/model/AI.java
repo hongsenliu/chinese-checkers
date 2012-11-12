@@ -59,6 +59,9 @@ public class AI {
 		return move ;
 	}
 
+	// TODO performance : consider a LOG constant to actually log only if ON!
+	
+	
 	// TODO consider hops only at least
 	protected void thinkHops(int color, int level) {
 		Player player = game.player(color);

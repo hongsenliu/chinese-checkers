@@ -24,6 +24,7 @@ import org.scoutant.cc.model.Pixel;
 import org.scoutant.cc.model.Player;
 import org.scoutant.cc.model.Point;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -123,6 +124,7 @@ public class GameView extends FrameLayout  {
 	}
 	
 	/** In equilateral triangle we have : 1² = (1/2)² + h²  => h = sqrt(3)/2 = 08660254 */
+	@SuppressLint("NewApi")
 	private void processSize() {
 		Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		android.graphics.Point outSize = new android.graphics.Point();
@@ -131,7 +133,6 @@ public class GameView extends FrameLayout  {
 			((Activity) getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			dI = outSize.x/sizeI;
 			dJ = Double.valueOf(0.8660254*dI).intValue();
-			// TODO test ok
 			layoutParams = new FrameLayout.LayoutParams(outSize.x, sizeJ*dJ, Gravity.TOP);
 			layoutParams.topMargin = (outSize.y-sizeJ*dJ)/2;
 		} else { // standard : landscape mode : one button on each side. 
@@ -177,31 +178,29 @@ public class GameView extends FrameLayout  {
 	}
 
 	public void doTouch(MotionEvent event) {
-		int action = event.getAction(); 
-		if (action==MotionEvent.ACTION_DOWN) {
-			Pixel e = new Pixel( event);
-			Point p = point(e);
-			if (!Board.hole(p)) return;
-			// coordinate of the center of corresponding cell
-			Pixel o = pixel(p);
-			Log.d(touch, "down on " + e + ", p is : " + p + ", center o : " + o);
-			Point n = new Point (p.i, p.j + ( e.y<o.y ? -1 : + 1));
-			// when click in a corner we may be nearer a row up or below 
-			Point s = p;
-			// Yes, 'Neighbor' may actually be closer, if it is a hole it is worth a check
-			if ( Board.hole(n)) {
-				Pixel oN = pixel(n);
-				int dO = Pixel.distance(e, o);
-				int dN = Pixel.distance(e, oN);
-				Log.d(touch, "neighbour " + n + ", oN " + oN + ", dist O : " + dO + ", dist N : " + dN);
-				if (dN<dO) Log.i(tag, "Neighboor refining with : " + n);
-				s = ( dN<dO ? n : p);
-			}
-			Log.i(touch, "touched : " + s);
-			if (selected==null || (pointed==null && game.board.is(s))) select( s);
-			else point( s);
-			invalidate();
+		if (event.getAction() != MotionEvent.ACTION_DOWN) return;
+		Pixel e = new Pixel( event);
+		Point p = point(e);
+		if (!Board.hole(p)) return;
+		// coordinate of the center of corresponding cell
+		Pixel o = pixel(p);
+		Log.d(touch, "down on " + e + ", p is : " + p + ", center o : " + o);
+		Point n = new Point (p.i, p.j + ( e.y<o.y ? -1 : + 1));
+		// when click in a corner we may be nearer a row up or below 
+		Point s = p;
+		// Yes, 'Neighbor' may actually be closer, if it is a hole it is worth a check
+		if ( Board.hole(n)) {
+			Pixel oN = pixel(n);
+			int dO = Pixel.distance(e, o);
+			int dN = Pixel.distance(e, oN);
+			Log.d(touch, "neighbour " + n + ", oN " + oN + ", dist O : " + dO + ", dist N : " + dN);
+			if (dN<dO) Log.i(tag, "Neighboor refining with : " + n);
+			s = ( dN<dO ? n : p);
 		}
+		Log.i(touch, "touched : " + s);
+		if (selected==null || (pointed==null && game.board.is(s))) select( s);
+		else point( s);
+		invalidate();
 	}
 
 	
