@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//TODO switch to platform Log when tests done...
-
 /**
  * Players in this order :
  *<p>    3 
@@ -23,7 +21,7 @@ public class AI {
 	private static String tag = "ai";
 	// Consider as first directions pointing to opposite triangle.
 	public static final int[][] dirs = {
-		{0, 1, 5, 2, 4, 3},  
+		{0, 1, 5, 2, 4, 3}, // optimal directions for player : 0  
 		{1, 2, 0, 3, 5, 4}, // 1  
 		{2, 3, 1, 4, 0, 5}, // 2 
 		{3, 4, 2, 5, 1, 0}, // 3 
@@ -42,8 +40,7 @@ public class AI {
 	}
 
 	public Move think(int color, int level) {
-		List<Move> moves = thinkUpToNJumps(color, level);
-
+		thinkUpToNJumps(color, level);
 		if (moves.size()<=8) {
 			// let's consider hops too
 			thinkHops(color, level);
@@ -61,8 +58,6 @@ public class AI {
 
 	// TODO performance : consider a LOG constant to actually log only if ON!
 	
-	
-	// TODO consider hops only at least
 	protected void thinkHops(int color, int level) {
 		Player player = game.player(color);
 		for (Peg peg : player.pegs()) {
@@ -85,22 +80,20 @@ public class AI {
 	/**
 	 * @return the list of moves for given play. Considering only jumps.
 	 */
-	// TODO reactor removing method return
-	protected List<Move> thinkUpToNJumps(int color, int level) {
+	protected void thinkUpToNJumps(int color, int level) {
 		// TODO level
-		track = new Board();
 		moves.clear();
 		Player player = game.player(color);
 		for (Peg peg : player.pegs()) {
 			Log.d(tag, "*********************************************************************************");
 			Log.d(tag, "peg : " + peg );
 			Log.d(tag, "*********************************************************************************");
+			track = new Board();
 			Move move = new Move(peg.point);
 			visite( color, move);
 		}
 		Collections.sort(moves, MoveComparator.comparators[color]);
 		Log.d(tag, "# of jumps : " + moves.size());
-		return moves;
 	}
 	
 	private void visite(int color, Move move) {
@@ -121,8 +114,7 @@ public class AI {
 		track.set(p);
 		Move found = move.clone();
 		found.add(p);
-//		if (found.lenght( color)>0) {
-		// TODO many if considering zero lenght move even in middle game?
+		// TODO many if considering zero length move even in middle game?
 		if (found.lenght( color)>=0) {
 			Log.d(tag, "move ! [ " + found.lenght(color) + " ] "+ found);
 			moves.add(found);
