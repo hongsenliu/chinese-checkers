@@ -218,10 +218,10 @@ public class Board {
 		// below only true jumps, we just have to check : 1) a ball in the middle and 2) no other balls in the way.
 		Point middle = Move.middle(a, z);
 		if(!is(middle)) return false;
-		if (middle.equals(origin)) {
-			Log.d(tag, "cannot jump over one-self!");
-			return false;
-		}
+//		if (middle.equals(origin)) {
+//			Log.d(tag, "cannot jump over one-self!");
+//			return false;
+//		}
 		// Checks no other balls in the way (but the one in the middle of course)
 		for (int k=1; k<l/2; k++) {
 			if (dir==2 || dir==5) {
@@ -251,7 +251,8 @@ public class Board {
 			if (a.isOdd()) return is(a.i-dist/2, a.j-dist);
 			else return is(a.i-(dist+1)/2, a.j-dist);
 		case 1:
-			if (a.isEven()) return is(a.i+(dist+1)/2, a.j-dist);
+//			if (a.isEven()) return is(a.i+(dist+1)/2, a.j-dist);
+			if (a.isEven()) return is(a.i+(dist)/2, a.j-dist);
 			else return is(a.i+(dist+1)/2, a.j-dist);
 		default:
 			throw new IllegalArgumentException("Bad direction provided");
@@ -274,7 +275,9 @@ public class Board {
 			Point a = points.get(i);
 			Point z = points.get(i+1);
 			if (Move.isHop(a,z)) return false;
-			if ( !valid(a, z, points.get(0))) return false;
+			boolean isValid = valid(a, z, points.get(0));
+//			if ( !valid(a, z, points.get(0))) return false;
+			if ( !isValid) return false;
 		}
 		return true;
 	}
