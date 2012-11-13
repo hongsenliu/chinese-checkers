@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class AI {
 	private static String tag = "ai";
-	// Consider as first directions pointing to opposite triangle.
+	/** Consider as first directions pointing to opposite triangle. */
 	public static final int[][] dirs = {
 		{0, 1, 5, 2, 4, 3}, // optimal directions for player : 0  
 		{1, 2, 0, 3, 5, 4}, // 1  
@@ -33,18 +33,23 @@ public class AI {
 	private Board board;
 	private Board track;
 	private List<Move> moves = new ArrayList<Move>();
+	private MoveComparator[] comparators = new MoveComparator[6]; 
 	public AI(Game game) {
 		this.game = game;
 		board = game.board;
 		track = new Board();
+		for (int i=0; i<6; i++) {
+			comparators[i] = new MoveComparator(game, i);
+		}
 	}
 
+	
 	public Move think(int color, int level) {
 		thinkUpToNJumps(color, level);
 		if (moves.size()<=8) {
 			// let's consider hops too
 			thinkHops(color, level);
-			Collections.sort(moves, MoveComparator.comparators[color]);
+			Collections.sort(moves, comparators[color]);
 		}
 		if (moves.size()==0) {
 			// TODO endgame
@@ -92,7 +97,7 @@ public class AI {
 			Move move = new Move(peg.point);
 			visite( color, move);
 		}
-		Collections.sort(moves, MoveComparator.comparators[color]);
+		Collections.sort(moves, comparators[color]);
 		Log.d(tag, "# of jumps : " + moves.size());
 	}
 	
