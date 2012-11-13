@@ -183,7 +183,7 @@ public class Board {
 		Point ball = ball(p,d);
 		if (ball==null) return null;
 		// let's checks all points till target actually are free and actually are hole!
-		int length = Move.lenght(p, ball, d);
+		int length = Move.length(p, ball, d);
 		// we are jumping out of board if the nb of points below does not reach the length to middle point
 		List<Point> points = points(ball,d);
 		if (points.size()<length) return null;
@@ -211,7 +211,7 @@ public class Board {
 		if(is(z)) return false;
 		int dir = Move.direction(a, z);
 		if (dir==-1) return false;
-		int l = Move.lenght(a, z, dir);
+		int l = Move.length(a, z, dir);
 		if (l<= 1) return true;
 		// length must be even
 		if (l%2!=0) return false;
@@ -314,4 +314,87 @@ public class Board {
 		}
 		return points;
 	}
+	
+	private static final int[][] lengthJI_0 = { 
+		{ -1, -1, -1, -1, -1, -1,  0, -1, -1, -1, -1, -1, -1 }, //   0
+
+		  { -1, -1, -1, -1, -1,  1,  1, -1, -1, -1, -1, -1, -1 }, // 1
+
+		{ -1, -1, -1, -1, -1,  2,  2,  2, -1, -1, -1, -1, -1 }, //   2
+
+		  { -1, -1, -1, -1,  3,  3,  3,  3, -1, -1, -1, -1, -1 }, // 3
+			
+		{  8,  7,  6,  5,  4,  4,  4,  4,  4,  5,  6,  7,  8 }, //   4
+		
+		  {  8,  7,  6,  5,  5,  5,  5,  5,  5,  6,  7,  8, -1 }, // 5
+			
+		{ -1,  8,  7,  6,  6,  6,  6,  6,  6,  6,  7,  8,  -1 }, //  6
+		
+		  { -1,  8,  7,  7,  7,  7,  7,  7,  7,  7,  8, -1, -1 }, // 7
+			
+		{ -1, -1,  8,  8,  8,  8,  8,  8,  8,  8,  8, -1,  -1 }, //  8 ----------------
+
+		  { -1,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9, -1, -1 }, // 9
+	
+		{ -1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,  -1 }, // 10
+
+		  { 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, -1 }, //11
+	
+		{ 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 }, //  12
+	
+		  { -1, -1, -1, -1, 13, 13, 13, 13, -1, -1, -1, -1, -1 }, //13
+	
+		{ -1, -1, -1, -1, -1, 14, 14, 14, -1, -1, -1, -1, -1 }, //  14
+
+		  { -1, -1, -1, -1, -1, 15, 15, -1, -1, -1, -1, -1, -1 }, //15
+	
+		{ -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1 }, //  16	
+	};
+	private static final int[][] lengthJI_1 = { 
+		{ -1, -1, -1, -1, -1, -1,  8, -1, -1, -1, -1, -1, -1 }, //   0
+
+		  { -1, -1, -1, -1, -1,  8,  7, -1, -1, -1, -1, -1, -1 }, // 1
+
+		{ -1, -1, -1, -1, -1,  8,  7,  6, -1, -1, -1, -1, -1 }, //   2
+
+		  { -1, -1, -1, -1,  8,  7,  6,  5, -1, -1, -1, -1, -1 }, // 3
+			
+		{ 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0 }, //   4
+		
+		  { 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1, -1 }, // 5
+			
+		{ -1, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  -1 }, //  6
+		
+		  { -1, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3, -1, -1 }, // 7
+			
+		{ -1, -1, 12, 11, 10,  9,  8,  7,  6,  5,  4, -1,  -1 }, //  8 ----------------
+
+		  { -1, 13, 12, 11, 10,  9,  8,  7,  6,  5,  5, -1, -1 }, // 9
+	
+		{ -1, 14, 13, 12, 11, 10,  9,  8,  7,  6,  6,  6,  -1 }, // 10
+
+		  { 15, 14, 13, 12, 11, 10,  9,  8,  7, 7,  7,  7, -1 }, //11
+	
+		{ 16, 15, 14, 13, 12, 11, 10,  9,  8,  8, 8,  8,  8 }, //  12
+	
+		  { -1, -1, -1, -1, 12, 11, 10,  9, -1, -1, -1, -1, -1 }, //13
+	
+		{ -1, -1, -1, -1, -1, 12, 11, 10, -1, -1, -1, -1, -1 }, //  14
+
+		  { -1, -1, -1, -1, -1, 12, 11, -1, -1, -1, -1, -1, -1 }, //15
+	
+		{ -1, -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1, -1 }, //  16	
+	};
+	public static int length(int player, Point p) {
+		switch (player) {
+		case 0: return lengthJI_0[p.j][p.i]; 
+		case 1: return lengthJI_1[p.j][p.i];
+		case 3: return lengthJI_0[16-p.j][p.i]; 
+		case 2: return lengthJI_1[16-p.j][p.i]; 
+		case 5: return lengthJI_1[p.j][12-p.i]; 
+		case 4: return lengthJI_1[16-p.j][12-p.i]; 
+		default: throw new IllegalArgumentException("player ranging from 0 to 5...");
+		}
+	}
+	
 }

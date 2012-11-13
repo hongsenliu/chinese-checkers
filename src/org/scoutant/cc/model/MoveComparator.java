@@ -27,10 +27,9 @@ public class MoveComparator implements Comparator<Move> {
 	 * @return a number representing the difference of rows of @param a and @param b. According to player direction.
 	 * As a second level criteria: move ending closest to board axis is preferred... 
 	 */
-	// TODO malus when move ending in another's triangle...
 	@Override
 	public int compare(Move a, Move b) {
-		int rowDiff = b.lenght(player) - a.lenght(player);
+		int rowDiff = b.length(player) - a.length(player);
 		int axisDiff = b.axisLengh(player) - a.axisLengh(player);
 		return 2*Board.sizeJ*rowDiff - axisDiff;
 	}

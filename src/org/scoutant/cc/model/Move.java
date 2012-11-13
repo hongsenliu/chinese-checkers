@@ -65,7 +65,7 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 		if ( !Board.hole(a) || !Board.hole(z)) return false;
 		int dir = direction(a,z);
 		if (dir==-1) return false; // not in same line
-		int l = lenght(a, z, dir);
+		int l = length(a, z, dir);
 		if (l==1) return true; // it's a hop
 		if (l%2==1) return false; // length cannot be odd!
 		return true;
@@ -137,72 +137,19 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 		return -1;
 	}
 	
-	/**
-	 * @return distance between first and last point.
-	 * <p>Distance as number of rows for given @param player.
-	 * <p>But if origin point is in next-to-target triangle, we have to add the same-row distance to get out of it...
-	 * <p>O  O  O  O 
-	 * <p> O  O  O  
-	 * <p>O  O  O   
-	 * <p> O  O  O  
-	 */
-	// TODO refactor length calculation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public int lenght(int player) {
-		Point a = this.point(0);
-		Point z = last();
-		switch (player) {
-			case 0: return -(z.j-a.j);
-			case 1: return lenghtForPlayer1(a,z);
-			case 2: return lenghtForPlayer2(a,z);
-			case 3: return +(z.j-a.j);
-			case 4: return lenghtForPlayer4(a,z);
-			case 5: return lenghtForPlayer5(a,z);
-			default: throw new IllegalArgumentException("player ranging from 0 to 5...");
-		}
-	}
-	
-	protected static int lenghtForPlayer1(Point a, Point z) {
-		Point m = decomposePlayer14(a, z);    
-		return -(m.j-a.j) + z.i-m.i;
-	}
-	protected static int lenghtForPlayer4(Point a, Point z) { return -lenghtForPlayer1(a, z); }
-	
-	protected static int lenghtForPlayer2(Point a, Point z) {
-		Point m = isEven(a, z) ? decomposeEvenPlayer25(a, z) : decomposeOddPlayer25(a, z);    
-		return (m.j-a.j) + z.i-m.i;
-	}
-	protected static int lenghtForPlayer5 (Point a, Point z) { return -lenghtForPlayer2(a, z); }
 
-	
-	private static boolean isEven(Point a, Point z) {
-		return ( (a.j-z.j)%2 == 0);
-	}
-	
 	/**
-	 *<p>     1
-	 *<p>   *  2
-	 * Decomposition in axes : dir 2 (same j) and in dir 1. looking for point M(mi,z.j) that is in dir 1 from a.<p>
-	 * Middle point M(mi, z.j). A and M in same axe 1.<p>
-	 * Two cases : <ul>
-	 * <li>a.j and z.j differs by even nb of rows.
-	 * <li> odd number of rows
+	 * @return scalar distance between first and last point.
 	 */
-	protected static Point decomposePlayer14( Point a, Point z) {
-		return new Point( a.i-(z.j-a.j)/2 , z.j);
-	}
-
-	protected static Point decomposeEvenPlayer25( Point a, Point z) {
-		return new Point( a.i+(z.j-a.j)/2 , z.j);
+	public int length(int player) {
+		return Board.length(player, this.point(0)) - Board.length(player, last()); 
 	}
 	
-	protected static Point decomposeOddPlayer25( Point a, Point z) {
-		return new Point( a.i+(z.j-a.j)/2 + (z.j<a.j ? -1 : 1 ) , z.j);
-	}
 	
-	/** Points @param a and @param z are supposed to be in line with @param direction
+	/** Points @param a and @param z are supposed to be in line with @param direction.
 	 * @return corresponding length
 	 */
-	public static int lenght(Point a, Point z, int direction) {
+	public static int length(Point a, Point z, int direction) {
 		if (a.equals(z)) return 0;
 		int dir = direction(a, z);
 		if (dir==-1) return -1;
@@ -228,7 +175,6 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 		}
 		
 	}
-
 
 	/**
 	 * Axis is (0,12)<-->(12,4). A representation for even rows is : 2*i+3*j=36. Distance to axis is 2*z.i + 3*z.j-36;

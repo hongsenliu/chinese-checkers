@@ -115,8 +115,8 @@ public class AI {
 		Move found = move.clone();
 		found.add(p);
 		// TODO many if considering zero length move even in middle game?
-		if (found.lenght( color)>=0) {
-			Log.d(tag, "move ! [ " + found.lenght(color) + " ] "+ found);
+		if (found.length( color)>=0) {
+			Log.d(tag, "move ! [ " + found.length(color) + " ] "+ found);
 			moves.add(found);
 		} 
 		Log.d(tag, "+++++++++++++++++++++++++++++++++++++++++++");
