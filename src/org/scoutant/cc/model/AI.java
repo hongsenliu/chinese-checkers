@@ -32,7 +32,7 @@ public class AI {
 	private Game game;
 	private Board board;
 	private Board track;
-	private List<Move> moves = new ArrayList<Move>();;
+	private List<Move> moves = new ArrayList<Move>();
 	public AI(Game game) {
 		this.game = game;
 		board = game.board;
@@ -123,4 +123,7 @@ public class AI {
 		visite( color, found.clone());
 		Log.d(tag, "-------------------------------------------");
 	}
+
+	/** for test purpose */
+	protected List<Move> moves() { return moves; }
 }

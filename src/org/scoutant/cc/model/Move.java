@@ -139,8 +139,14 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 	
 	/**
 	 * @return distance between first and last point.
-	 * <p> Distance as number of rows for given @param player .
+	 * <p>Distance as number of rows for given @param player.
+	 * <p>But if origin point is in next-to-target triangle, we have to add the same-row distance to get out of it...
+	 * <p>O  O  O  O 
+	 * <p> O  O  O  
+	 * <p>O  O  O   
+	 * <p> O  O  O  
 	 */
+	// TODO refactor length calculation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public int lenght(int player) {
 		Point a = this.point(0);
 		Point z = last();

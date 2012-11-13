@@ -109,7 +109,12 @@ public class UI extends Activity {
 	protected void play() {
 		//TODO manage level
 		Move move = game.ai.think(turnMgr.player(), 0);
-		game.play(move, true);
+		if (move==null) {
+			// for dev only
+			turnMgr.update();
+		} else {
+			game.play(move, true);
+		}
 		game.init();
 	}
 	
