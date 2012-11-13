@@ -9,6 +9,8 @@ import java.util.Comparator;
 public class MoveComparator implements Comparator<Move> {
 
 	private int player;
+	// TODO game needed?
+	@SuppressWarnings("unused")
 	private Object game;
 
 	public MoveComparator(Game game, int player) {

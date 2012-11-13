@@ -47,6 +47,8 @@ public class PegUI extends ImageView {
 		Rect rect = toSquare(pixel, diameter);
 		params.setMargins(rect.left-1, rect.top-1, rect.right, rect.bottom);
 		setLayoutParams(params);
+		// TODO and for ANdroid level > 16?
+		setAlpha( peg.equals( game.selected) ? 95 : 255);
 	}
 	
 	@Override
