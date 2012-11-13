@@ -116,7 +116,6 @@ public class Board {
 		ji = tab;
 	}
 	
-	
 	public boolean is(int i, int j) {
 		return ji[j][i];
 	}
@@ -137,7 +136,6 @@ public class Board {
 	public void reset(int i, int j) {
 		ji[j][i] = false;
 	}
-
 	
 	/** 
 	 * Hop to neighbor hole in provided direction @param d 
@@ -315,6 +313,9 @@ public class Board {
 		return points;
 	}
 	
+	/**
+	 * length to rich end-point of target triangle for player 0 
+	 */
 	private static final int[][] lengthJI_0 = { 
 		{ -1, -1, -1, -1, -1, -1,  0, -1, -1, -1, -1, -1, -1 }, //   0
 
@@ -350,6 +351,9 @@ public class Board {
 	
 		{ -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1 }, //  16	
 	};
+	/**
+	 * length to rich end-point of target triangle for player 1 
+	 */
 	private static final int[][] lengthJI_1 = { 
 		{ -1, -1, -1, -1, -1, -1,  8, -1, -1, -1, -1, -1, -1 }, //   0
 
@@ -385,6 +389,9 @@ public class Board {
 	
 		{ -1, -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1, -1 }, //  16	
 	};
+	/**
+	 * @return length to rich end-point of target triangle for @param player, from provided point @param p 
+	 */
 	public static int length(int player, Point p) {
 		switch (player) {
 		case 0: return lengthJI_0[p.j][p.i]; 

@@ -107,6 +107,11 @@ public class AI {
 		Point p = board.jump(move.last(), dir);
 //		Log.d(tag, "dir : " + dir +", jump to : " + p);
 		if (p==null) return;
+		Point middle = Move.middle(p, move.last());
+		if (move.point(0).equals(middle)) {
+			Log.d(tag, "excluding jump over origin peg.");
+			return;
+		}
 		if (track.is(p)) {
 			Log.d(tag, "already visited point " + p);
 			return;
