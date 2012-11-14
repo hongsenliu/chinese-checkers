@@ -22,6 +22,7 @@ public class UI extends Activity {
 	private static String tag = "activity";
 	public static final int REQUEST_MENU = 90;
 	
+	// TODO remove std menu stuff 
 	public static final int MENU_ITEM_PLAY = 10;
 	public static final int MENU_ITEM_NEW = 20;
 	public static final int MENU_ITEM_PLAY12 = 12;

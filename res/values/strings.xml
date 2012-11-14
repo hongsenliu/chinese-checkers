@@ -11,13 +11,23 @@
 	<string name="back">Back one move</string>
 	<string name="cancel">Cancel</string>
 
+	<string name="menu">Menu</string>
+
+
 	<string name="newnew">New</string>
 	<string name="delete">Delete</string>
 	<string name="undo">Undo</string>
 
+
+
 	<!-- dev -->
 	<string name="play">Play!</string>
 	<string name="resume">Resume</string>
+
+	<string name="players">players</string>
+
+
+	<string name="nb_players"># of players</string>
 	
 	<!-- app -->
 	
