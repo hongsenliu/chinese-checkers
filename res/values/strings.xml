@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<string name="chinese_checkers">Chinese Checkers</string>
+	
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
 
 	<string name="help">Help</string>
 	<string name="preferences">Settings</string>
 
-	<string name="back">Back</string>
+	<string name="back">Back one move</string>
 	<string name="cancel">Cancel</string>
 
 	<string name="newnew">New</string>
@@ -16,6 +17,7 @@
 
 	<!-- dev -->
 	<string name="play">Play!</string>
+	<string name="resume">Resume</string>
 	
 	<!-- app -->
 	
@@ -41,5 +43,7 @@
 	<string name="now">OK</string>
 	<string name="later">Later</string>
 	<string name="never">No</string>
-
+	
+	<string name="i_like_it">I like it</string>
+	
 </resources>

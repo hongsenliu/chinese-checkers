@@ -14,7 +14,7 @@
     <ImageView 
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/menu"
-	    android:src="@drawable/help_48"
+	    android:src="@drawable/scoutant"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
 	    android:layout_gravity="top|right"
@@ -34,7 +34,7 @@
     <ImageButton 
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/cancel"
-	    android:src="@drawable/cancel_128"
+	    android:src="@drawable/cancel_256"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
 	    android:layout_gravity="left|center_vertical"
@@ -44,7 +44,7 @@
     <ImageButton 
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/ok"
-	    android:src="@drawable/checkmark_128"
+	    android:src="@drawable/checkmark_256"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
 	    android:layout_gravity="right|center_vertical"

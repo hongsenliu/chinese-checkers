@@ -46,9 +46,11 @@ public class AI {
 	
 	public Move think(int color, int level) {
 		thinkUpToNJumps(color, level);
-		if (moves.size()<=8) {
+		Log.d(tag, "# of jumps : " + moves.size());
+		if (moves.size()<=4) {
 			// let's consider hops too
 			thinkHops(color, level);
+			Log.d(tag, "# of moves including hops : " + moves.size());
 			Collections.sort(moves, comparators[color]);
 		}
 		if (moves.size()==0) {

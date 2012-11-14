@@ -3,8 +3,10 @@ package org.scoutant.cc;
 import org.scoutant.cc.model.Move;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,8 @@ import android.widget.ImageView;
 public class UI extends Activity {
 	@SuppressWarnings("unused")
 	private static String tag = "activity";
+	public static final int REQUEST_MENU = 90;
+	
 	public static final int MENU_ITEM_PLAY = 10;
 	public static final int MENU_ITEM_NEW = 20;
 	public static final int MENU_ITEM_PLAY12 = 12;
@@ -39,7 +43,9 @@ public class UI extends Activity {
 		findViewById(R.id.menu).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openOptionsMenu();
+//				 openOptionsMenu();
+				Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+				startActivityForResult(intent, REQUEST_MENU);
 			}
 		});
 		game = (GameView) findViewById(R.id.game);
@@ -48,6 +54,8 @@ public class UI extends Activity {
 		buttonMgr.resize();
 		repository = new Repository(this, game);
 		newgame();
+
+		repository.restore();
 	}
 	
 	private void newgame() {
@@ -59,7 +67,7 @@ public class UI extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		repository.restore();
+//		repository.restore();
 	}
 	
 	@Override
@@ -68,12 +76,13 @@ public class UI extends Activity {
 		getWindow().setFormat( PixelFormat.RGBA_8888);
 	}
 
+	// TODO remove menu
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, "back").setIcon( R.drawable.left_48);
-		menu.add(Menu.NONE, MENU_ITEM_PLAY12, Menu.NONE, "play 12").setIcon( R.drawable.player_play_41_48);
-		menu.add(Menu.NONE, MENU_ITEM_NEW, Menu.NONE, "new").setIcon( R.drawable.restart_48);
+		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, "back").setIcon( R.drawable.left_128);
+		menu.add(Menu.NONE, MENU_ITEM_PLAY12, Menu.NONE, "play 12").setIcon( R.drawable.player_play_41_128);
+		menu.add(Menu.NONE, MENU_ITEM_NEW, Menu.NONE, "new").setIcon( R.drawable.restart_128);
 
 		return true;
 	}
@@ -137,16 +146,29 @@ public class UI extends Activity {
 	
 	@Override
 	protected void onStop() {
-		repository.save();
+//		repository.save();
 		super.onStop();
 	}
 	
 	@Override
 	protected void onDestroy() {
+		repository.save();
 	    super.onDestroy();
 	    // TODO save game on exit!
 	    unbindDrawables( game);
 	    System.gc();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Log.d(tag, "requestCode : " + requestCode + ", resultCode : " + resultCode);
+		if (requestCode == REQUEST_MENU) {
+			if (resultCode == MenuActivity.RESULT_BACK) game.back();
+			if (resultCode == MenuActivity.RESULT_NEW_GAME) newgame();
+			if (resultCode == MenuActivity.RESULT_QUIT) finish();
+			if (resultCode == MenuActivity.RESULT_HELP) { /* TODO Help */ }
+			if (resultCode == MenuActivity.RESULT_LOVE) { /* TODO launch User review */ }
+		}
+	}
 }
