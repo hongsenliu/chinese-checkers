@@ -1,6 +1,7 @@
 package org.scoutant.cc;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -47,8 +48,7 @@ public class NbPlayersActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			save(nb);
-			// TODO start Human vs Machine activity
-			finish();
+			startActivityForResult( new Intent(getApplicationContext(), HumanVsMachineActivity.class), 0);
 		}
 	}
 
@@ -59,6 +59,10 @@ public class NbPlayersActivity extends Activity {
 		
 	}
 	
-	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == UI.RESULT_QUIT) finish();
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 	
 }

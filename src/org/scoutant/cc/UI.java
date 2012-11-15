@@ -21,6 +21,7 @@ public class UI extends Activity {
 	@SuppressWarnings("unused")
 	private static String tag = "activity";
 	public static final int REQUEST_MENU = 90;
+	public static final int RESULT_QUIT = -1;
 	
 	// TODO remove std menu stuff 
 	public static final int MENU_ITEM_PLAY = 10;
@@ -167,7 +168,10 @@ public class UI extends Activity {
 		if (requestCode == REQUEST_MENU) {
 			if (resultCode == MenuActivity.RESULT_BACK) game.back();
 			if (resultCode == MenuActivity.RESULT_NEW_GAME) newgame();
-			if (resultCode == MenuActivity.RESULT_QUIT) finish();
+			if (resultCode == MenuActivity.RESULT_QUIT)  {
+				setResult(UI.RESULT_QUIT);
+				finish();
+			}
 			if (resultCode == MenuActivity.RESULT_HELP) { /* TODO Help */ }
 			if (resultCode == MenuActivity.RESULT_LOVE) { /* TODO launch User review */ }
 		}
