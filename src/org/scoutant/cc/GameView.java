@@ -303,6 +303,7 @@ public class GameView extends FrameLayout  {
 			if (animate) peg.animate(move);
 			turnMgr.update();
 			invalidate();
+			prefs.edit().putBoolean(UI.KEY_GAME_ON, true).commit();
 		}
 	}
 

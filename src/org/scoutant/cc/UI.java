@@ -2,7 +2,6 @@ package org.scoutant.cc;
 
 import org.scoutant.cc.model.Move;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -17,11 +16,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-public class UI extends Activity {
+public class UI extends BaseActivity {
 	@SuppressWarnings("unused")
 	private static String tag = "activity";
 	public static final int REQUEST_MENU = 90;
-	public static final int RESULT_QUIT = -1;
 	
 	// TODO remove std menu stuff 
 	public static final int MENU_ITEM_PLAY = 10;
@@ -45,7 +43,6 @@ public class UI extends Activity {
 		findViewById(R.id.menu).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				 openOptionsMenu();
 				Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
 				startActivityForResult(intent, REQUEST_MENU);
 			}
@@ -55,21 +52,22 @@ public class UI extends Activity {
 		game.setButtonMgr( buttonMgr);
 		buttonMgr.resize();
 		repository = new Repository(this, game);
-		newgame();
+		initgame();
 
 		repository.restore();
 	}
 	
 	private void newgame() {
+		prefs.edit().putBoolean( KEY_GAME_ON, false).commit();
+		Log.d(tag, "setting key_game_on to false... ");
+		prefs.edit().putInt( NbPlayersActivity.KEY_NB_PLAYERS, -1).commit();
+		initgame();
+	}
+	
+	private void initgame() {
 		game.reset();
 		turnMgr = new TurnMgr( (ImageView) findViewById(R.id.turn), game.height/5);
 		game.setTurnMgr(turnMgr);
-	}
-	
-	@Override
-	protected void onStart() {
-		super.onStart();
-//		repository.restore();
 	}
 	
 	@Override
@@ -93,7 +91,6 @@ public class UI extends Activity {
 		super.onOptionsItemSelected(item);
 		int id = item.getItemId();
 		if (id == MENU_ITEM_PLAY) {
-//			repository.save();
 			game.back();
 		}
 		if (id == MENU_ITEM_NEW) {
@@ -147,16 +144,9 @@ public class UI extends Activity {
 	}	
 	
 	@Override
-	protected void onStop() {
-//		repository.save();
-		super.onStop();
-	}
-	
-	@Override
 	protected void onDestroy() {
+		super.onDestroy();
 		repository.save();
-	    super.onDestroy();
-	    // TODO save game on exit!
 	    unbindDrawables( game);
 	    System.gc();
 	}
@@ -164,12 +154,13 @@ public class UI extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.d(tag, "requestCode : " + requestCode + ", resultCode : " + resultCode);
 		if (requestCode == REQUEST_MENU) {
 			if (resultCode == MenuActivity.RESULT_BACK) game.back();
-			if (resultCode == MenuActivity.RESULT_NEW_GAME) newgame();
+			if (resultCode == MenuActivity.RESULT_NEW_GAME) { 
+				newgame();
+				finish();
+			}
 			if (resultCode == MenuActivity.RESULT_QUIT)  {
-				setResult(UI.RESULT_QUIT);
 				finish();
 			}
 			if (resultCode == MenuActivity.RESULT_HELP) { /* TODO Help */ }

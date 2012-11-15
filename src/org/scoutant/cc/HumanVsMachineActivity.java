@@ -1,23 +1,16 @@
 package org.scoutant.cc;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 
-public class HumanVsMachineActivity extends Activity {
+public class HumanVsMachineActivity extends BaseActivity {
 	public static final String KEY_NB_PLAYERS = "nb_players";
-	
-	public static final int RESULT_HELP = 9;
-	private static final int REQUEST_UI = 11;
-	private SharedPreferences prefs;
 	
 	private static final int[] ids = { R.id.player_0, R.id.player_1, R.id.player_2, R.id.player_3, R.id.player_4, R.id.player_5 };
 	private static final String[] keys = { "h_vs_m_0",  "h_vs_m_1", "h_vs_m_2", "h_vs_m_3", "h_vs_m_4", "h_vs_m_5"};
@@ -27,10 +20,19 @@ public class HumanVsMachineActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		setContentView(R.layout.human_vs_machine);
 		for (int i=0; i<ids.length; i++) populate( i);
 		findViewById(R.id.play).setOnClickListener( new StartListener());
+		if (gameOn()) {
+			startActivity( new Intent(getApplicationContext(), UI.class));
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if ( gameOn()) finish();
+		if ( prefs.getInt(NbPlayersActivity.KEY_NB_PLAYERS, 99) < 0 ) finish(); 
 	}
 	
 	@Override
@@ -44,7 +46,6 @@ public class HumanVsMachineActivity extends Activity {
 		super.onOptionsItemSelected(item);
 		switch(item.getItemId()) {
 			case R.id.menu_item_help:
-//				startActivity( new Intent(this, HelpActivity.class));
 				break;
 			default: return super.onOptionsItemSelected(item);
 		}
@@ -58,37 +59,16 @@ public class HumanVsMachineActivity extends Activity {
 			return;
 		}
 		cbs[player] = view;
-//		view.setOnClickListener( new PlayerListener( player));
 		boolean checked = prefs.getBoolean(keys[player], true);
 		view.setChecked(checked);
 	}
 	
-//	private class PlayerListener implements OnClickListener {
-//		private int player;
-//		private PlayerListener(int player) {
-//			this.player = player;
-//		}
-//		@Override
-//		public void onClick(View v) {
-//			Log.d(tag, "player : " + player);
-//		}
-//	}
-
 	private class StartListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			save();
-			startActivityForResult( new Intent(getApplicationContext(), UI.class), REQUEST_UI);
+			startActivity( new Intent(getApplicationContext(), UI.class));
 		}
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == UI.RESULT_QUIT) {
-			setResult(UI.RESULT_QUIT);
-			finish();
-		}
-		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	private void save() {
@@ -98,7 +78,4 @@ public class HumanVsMachineActivity extends Activity {
         }
         editor.commit();
 	}
-	
-	
-	
 }
