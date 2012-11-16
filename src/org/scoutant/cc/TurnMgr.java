@@ -2,7 +2,6 @@ package org.scoutant.cc;
 
 import org.scoutant.cc.model.Peg;
 
-import android.content.Context;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -12,7 +11,6 @@ public class TurnMgr {
 	private int d;
 	private BaseActivity activity;
 
-//	public TurnMgr(ImageView turnView, int d) {
 	public TurnMgr(BaseActivity activity, ImageView turnView, int d) {
 		this.activity = activity;
 		this.view = turnView;

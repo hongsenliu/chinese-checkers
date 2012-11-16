@@ -1,9 +1,23 @@
+/*
+* Copyright (C) 2012- stephane coutant
+*
+* This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+* without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>
+*/
+
 package org.scoutant.cc;
 
 import org.scoutant.cc.model.Move;
 
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -37,7 +51,8 @@ public class UI extends BaseActivity {
 		findViewById(R.id.turn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				play();
+//				play();
+				new AITask().execute( turnMgr.player());
 			}
 		});
 		findViewById(R.id.menu).setOnClickListener(new OnClickListener() {
@@ -66,7 +81,6 @@ public class UI extends BaseActivity {
 	
 	private void initgame() {
 		game.reset();
-//		turnMgr = new TurnMgr( (ImageView) findViewById(R.id.turn), game.height/5);
 		turnMgr = new TurnMgr( this, (ImageView) findViewById(R.id.turn), game.height/5);
 		game.setTurnMgr(turnMgr);
 	}
@@ -115,18 +129,6 @@ public class UI extends BaseActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	protected void play() {
-		//TODO manage level
-		Move move = game.ai.think(turnMgr.player(), 0);
-		if (move==null) {
-			// for dev only
-			turnMgr.update();
-		} else {
-			game.play(move, true);
-		}
-		game.init();
-	}
-	
 	/**
 	 * Dealing with the “Bitmap Size Exceeds VM Budget” error.
 	 * @see http://www.alonsoruibal.com/bitmap-size-exceeds-vm-budget
@@ -168,4 +170,35 @@ public class UI extends BaseActivity {
 			if (resultCode == MenuActivity.RESULT_LOVE) { /* TODO launch User review */ }
 		}
 	}
+	
+	protected void play() {
+		//TODO manage level
+		Move move = game.ai.think(turnMgr.player(), 0);
+		if (move==null) {
+			// for dev only
+			turnMgr.update();
+		} else {
+			game.play(move, true);
+		}
+		game.init();
+	}
+	
+	private class AITask extends AsyncTask<Integer, Void, Move> {
+		@Override
+		protected Move doInBackground(Integer... params) {
+			Move move = game.ai.think(turnMgr.player(), 0);
+			return move;
+		}
+		@Override
+		protected void onPostExecute(Move move) {
+			game.play(move, true);
+			game.init();
+			int turn = turnMgr.player();
+			if (ai(turn)) {
+				Log.d(tag, "thinking for : " + turn);
+				new AITask().execute(turn);
+			}
+		}
+	}
+	
 }
