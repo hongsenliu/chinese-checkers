@@ -13,7 +13,6 @@ public class HumanVsMachineActivity extends BaseActivity {
 	public static final String KEY_NB_PLAYERS = "nb_players";
 	
 	private static final int[] ids = { R.id.player_0, R.id.player_1, R.id.player_2, R.id.player_3, R.id.player_4, R.id.player_5 };
-	private static final String[] keys = { "h_vs_m_0",  "h_vs_m_1", "h_vs_m_2", "h_vs_m_3", "h_vs_m_4", "h_vs_m_5"};
 	private CheckBox[] cbs = new CheckBox[6]; 
 	
 	private static String tag = "activity";
@@ -59,8 +58,8 @@ public class HumanVsMachineActivity extends BaseActivity {
 			return;
 		}
 		cbs[player] = view;
-		boolean checked = prefs.getBoolean(keys[player], true);
-		view.setChecked(checked);
+		view.setVisibility( playing(player) ? View.VISIBLE : View.INVISIBLE);
+		view.setChecked(  ai(player) ? true: false );
 	}
 	
 	private class StartListener implements OnClickListener {

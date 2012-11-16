@@ -22,6 +22,7 @@ public class Peg implements Comparable<Peg> {
 	/**
 	 * So as to consider as first candidate the pegs closest to bottom
 	 */
+	// TODO reconsider the ordering against player. this is valid only for player 0!!!
 	@Override
 	public int compareTo(Peg that) {
 		return -(this.point.j - that.point.j);

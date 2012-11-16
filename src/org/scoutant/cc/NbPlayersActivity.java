@@ -17,9 +17,9 @@ public class NbPlayersActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.nb_players);
-		bind(R.id.players_2, 2);
-		bind(R.id.players_3, 3);
-		bind(R.id.players_6, 6);
+		bind(R.id.players_2, 2, new boolean[] { true, false, false, true , false, false});
+		bind(R.id.players_3, 3, new boolean[] { true, false, true , false, true , false});
+		bind(R.id.players_6, 6, new boolean[] { true, true , true , true , true , true });
 		creating=true;
 		if ( gameOn() ) {
 			startActivity( new Intent(getApplicationContext(), UI.class));
@@ -36,7 +36,7 @@ public class NbPlayersActivity extends BaseActivity {
 		if ( gameOn()) finish();
 	}
 	
-	private void bind(int viewId, int nbPlayers) {
+	private void bind(int viewId, int nbPlayers, boolean[] playings) {
 		View view = findViewById(viewId);
 		if (view == null) {
 			Log.e(tag, "No View ! ");

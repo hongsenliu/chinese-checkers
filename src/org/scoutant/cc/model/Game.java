@@ -20,6 +20,11 @@ public class Game implements org.scoutant.Serializable {
 		moves.remove(moves.size()-1);
 		return true;
 	}
+
+	public Game( ) {
+		this( new boolean[] { true, true, true, true, true, true } );
+	}
+
 	
 	/**
 	 * creating players in this order :
@@ -28,7 +33,7 @@ public class Game implements org.scoutant.Serializable {
 	 *<p> 1     5
 	 *<p>    0
 	 */
-	public Game() {
+	public Game( boolean[] playings ) {
 		board = new Board();
 		int color=0;
 		players.add( new Player( 6, 0, color++).add( 6,16).add( 5,15).add( 6,15).add( 5,14).add( 6,14).add( 7,14).add( 4,13).add( 5,13).add( 6,13).add( 7,13) ); // 0
@@ -37,7 +42,9 @@ public class Game implements org.scoutant.Serializable {
 		players.add( new Player( 6,16, color++).add( 6, 0).add( 5, 1).add( 6, 1).add( 5, 2).add( 6, 2).add( 7, 2).add( 4, 3).add( 5, 3).add( 6, 3).add( 7, 3) ); // 3
 		players.add( new Player( 0,12, color++).add( 9, 4).add(10, 4).add(11, 4).add(12, 4).add( 9, 5).add(10, 5).add(11, 5).add(10, 6).add(11, 6).add(10, 7) ); // 4
 		players.add( new Player( 0, 4, color++).add( 9,12).add(10,12).add(11,12).add(12,12).add( 9,11).add(10,11).add(11,11).add(10,10).add(11,10).add(10, 9) ); // 5
-		for (Player player : players) {
+		for (int i=0; i<6; i++) {
+			Player player = players.get(i);
+			if (!playings[i]) player.clear();
 			for (Peg peg : player.pegs()) {
 				board.set(peg.point);
 			}

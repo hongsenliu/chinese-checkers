@@ -34,6 +34,10 @@ public class Player {
 		peg.color = this.color;
 		return this;
 	}
+	public void clear() {
+		pegs.clear();
+	}
+	
 	public Peg peg(int index) {
 		return pegs.get(index);
 	}

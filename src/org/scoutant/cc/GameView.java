@@ -102,7 +102,7 @@ public class GameView extends FrameLayout  {
 	}
 
 	public void reset() {
-		game = new Game();
+		game = new Game( BaseActivity.playings(context));
 		ai = new AI(game);
 		removeAllViews();
 		for (Player player : game.players) {
