@@ -2,6 +2,7 @@ package org.scoutant.cc;
 
 import org.scoutant.cc.model.Peg;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,7 +21,13 @@ public class TurnMgr {
 
 	private int turn = 0;
 	public int player() { return turn;}
+	
+	/** @return true is current player is AI  */
+	public boolean isAI() { return activity.ai(turn); }
 
+	/** @return true is current player is human  */
+	public boolean ishuman() { return !isAI(); }
+	
 	public void update() {
 		turn++;
 		turn = turn%6;
@@ -46,6 +53,9 @@ public class TurnMgr {
 	public void pop() {
 		turn+=5;
 		turn = turn%6;
-		updateView();
+		if (activity.playing(turn)){
+			Log.d("activity", "turn is now : " + turn);
+			updateView();
+		} else pop(); 
 	}
 }

@@ -322,13 +322,26 @@ public class GameView extends FrameLayout  {
 	}
 	
 	/**
-	 * play back the last human move and potentially the intermediate AI moves.
+	 * play back the last human move and potentially all the AI moves in-between
 	 */
 	public void back() {
+		boolean done = false;
+		for (int i=0; i<6; i++) {
+			if (done) return;
+			back1move();
+			if (turnMgr.ishuman()) done = true; 
+		}
+	}
+	
+	/**
+	 * play back the last move
+	 */
+	private void back1move() {
 		Move move = game.last().reverse();
 		play(move, true);
 		if (game.pop()) turnMgr.pop();
 		if (game.pop()) turnMgr.pop();
 	}
+	
 	
 }

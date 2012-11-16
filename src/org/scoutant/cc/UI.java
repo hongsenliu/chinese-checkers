@@ -154,7 +154,9 @@ public class UI extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_MENU) {
-			if (resultCode == MenuActivity.RESULT_BACK) game.back();
+			if (resultCode == MenuActivity.RESULT_BACK) {
+				game.back();
+			}
 			if (resultCode == MenuActivity.RESULT_NEW_GAME) { 
 				newgame();
 				finish();
