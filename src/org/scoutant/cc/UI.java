@@ -17,7 +17,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 public class UI extends BaseActivity {
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	private static String tag = "activity";
 	public static final int REQUEST_MENU = 90;
 	
@@ -66,7 +66,8 @@ public class UI extends BaseActivity {
 	
 	private void initgame() {
 		game.reset();
-		turnMgr = new TurnMgr( (ImageView) findViewById(R.id.turn), game.height/5);
+//		turnMgr = new TurnMgr( (ImageView) findViewById(R.id.turn), game.height/5);
+		turnMgr = new TurnMgr( this, (ImageView) findViewById(R.id.turn), game.height/5);
 		game.setTurnMgr(turnMgr);
 	}
 	

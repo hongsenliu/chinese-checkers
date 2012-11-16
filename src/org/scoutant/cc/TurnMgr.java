@@ -2,6 +2,7 @@ package org.scoutant.cc;
 
 import org.scoutant.cc.model.Peg;
 
+import android.content.Context;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -9,8 +10,11 @@ import android.widget.ImageView;
 public class TurnMgr {
 	private ImageView view;
 	private int d;
+	private BaseActivity activity;
 
-	public TurnMgr(ImageView turnView, int d) {
+//	public TurnMgr(ImageView turnView, int d) {
+	public TurnMgr(BaseActivity activity, ImageView turnView, int d) {
+		this.activity = activity;
 		this.view = turnView;
 		this.d = d;
 		updateView();
@@ -22,7 +26,9 @@ public class TurnMgr {
 	public void update() {
 		turn++;
 		turn = turn%6;
-		updateView();
+		if (activity.playing(turn)){
+			updateView();
+		} else update();
 	}
 
 	// TODO add a fade-out and fade-in animation?

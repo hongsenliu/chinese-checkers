@@ -12,7 +12,6 @@ public abstract class BaseActivity extends Activity {
 	
 	protected static final String[] keys = { "h_vs_m_0",  "h_vs_m_1", "h_vs_m_2", "h_vs_m_3", "h_vs_m_4", "h_vs_m_5"};
 	
-	@SuppressWarnings("unused")
 	private static String tag = "activity";
 	public static final String KEY_GAME_ON = "game_on";
 	protected SharedPreferences prefs;
