@@ -59,7 +59,7 @@ public class HumanVsMachineActivity extends BaseActivity {
 		}
 		cbs[player] = view;
 		view.setVisibility( playing(player) ? View.VISIBLE : View.INVISIBLE);
-		view.setChecked(  ai(player) ? true: false );
+		view.setChecked(  ai(player) ? false: true);
 	}
 	
 	private class StartListener implements OnClickListener {

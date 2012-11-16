@@ -13,6 +13,8 @@
 
 package org.scoutant.cc;
 
+import org.scoutant.Command;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -26,11 +28,13 @@ public class ButtonsMgr {
 	private View ok;
 
 	private GameView game;
+	private Command startAI;
 
-	public ButtonsMgr(GameView game, View ok, View cancel) {
+	public ButtonsMgr(GameView game, View ok, Command startAI, View cancel) {
 		this.game = game;
 		this.ok = ok;
 		this.ok.setOnClickListener(doOk);
+		this.startAI = startAI;
 		this.cancel = cancel;
 		this.cancel.setOnClickListener(doCancel);
 		setVisibility(View.INVISIBLE);
@@ -61,6 +65,7 @@ public class ButtonsMgr {
 			game.game.play( game.move);
 			game.turnMgr.update();
 			game.init();
+			startAI.execute();
 		}
 	};
 	private OnClickListener doCancel = new OnClickListener() {

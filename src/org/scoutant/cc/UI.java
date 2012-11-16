@@ -13,6 +13,8 @@
 
 package org.scoutant.cc;
 
+import org.scoutant.Command;
+import org.scoutant.CommandListener;
 import org.scoutant.cc.model.Move;
 
 import android.content.Intent;
@@ -48,13 +50,7 @@ public class UI extends BaseActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main);
-		findViewById(R.id.turn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-//				play();
-				new AITask().execute( turnMgr.player());
-			}
-		});
+		findViewById(R.id.turn).setOnClickListener(new CommandListener( new StartAICommand()));
 		findViewById(R.id.menu).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -63,7 +59,7 @@ public class UI extends BaseActivity {
 			}
 		});
 		game = (GameView) findViewById(R.id.game);
-		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), findViewById(R.id.cancel));
+		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), new StartAICommand(), findViewById(R.id.cancel));
 		game.setButtonMgr( buttonMgr);
 		buttonMgr.resize();
 		repository = new Repository(this, game);
@@ -191,14 +187,32 @@ public class UI extends BaseActivity {
 		}
 		@Override
 		protected void onPostExecute(Move move) {
+			if (move==null) turnMgr.update();
 			game.play(move, true);
 			game.init();
 			int turn = turnMgr.player();
+			
 			if (ai(turn)) {
 				Log.d(tag, "thinking for : " + turn);
 				new AITask().execute(turn);
 			}
 		}
 	}
-	
+
+	private class StartAICommand implements Command {
+		@Override
+		public boolean execute() {
+			new AITask().execute( turnMgr.player());
+			return false;
+		}
+		
+	}
 }
+
+//findViewById(R.id.turn).setOnClickListener(new OnClickListener() {
+//@Override
+//public void onClick(View v) {
+////	play();
+//	new AITask().execute( turnMgr.player());
+//}
+//});
