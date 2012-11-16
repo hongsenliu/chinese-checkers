@@ -14,6 +14,7 @@ package org.scoutant.cc.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -45,13 +46,15 @@ public class AI {
 	private Board board;
 	private Board track;
 	private List<Move> moves = new ArrayList<Move>();
-	private MoveComparator[] comparators = new MoveComparator[6]; 
+	private Comparator<Move>[] comparators = new MoveComparator[6]; 
+	private Comparator<Move>[] endgameComparators = new MoveComparator[6]; 
 	public AI(Game game) {
 		this.game = game;
 		board = game.board;
-		track = new Board();
+//		track = new Board();
 		for (int i=0; i<6; i++) {
 			comparators[i] = new MoveComparator( new MoveEvaluator(i));
+			endgameComparators[i] = new MoveComparator( new EndgameMoveEvaluator(i));
 		}
 	}
 
@@ -63,7 +66,8 @@ public class AI {
 			// let's consider hops too
 			thinkHops(color, level);
 			Log.d(tag, "# of moves including hops : " + moves.size());
-			Collections.sort(moves, comparators[color]);
+//			Collections.sort(moves, comparators[color]);
+			Collections.sort(moves, endgameComparators[color]);
 		}
 		if (moves.size()==0) {
 			// TODO endgame
@@ -107,8 +111,8 @@ public class AI {
 			Log.d(tag, "*********************************************************************************");
 			Log.d(tag, "peg : " + peg );
 			Log.d(tag, "*********************************************************************************");
-			track = new Board();
 			Move move = new Move(peg.point);
+			track = new Board();
 			visite( color, move);
 		}
 		Collections.sort(moves, comparators[color]);
@@ -117,7 +121,7 @@ public class AI {
 	
 	private void visite(int color, Move move) {
 		for (int dir:dirs[color] ) {
-			Log.d(tag, "** dir : " + dir);
+//			Log.d(tag, "** dir : " + dir);
 			visite(color, move, dir);
 		}
 	}
@@ -133,19 +137,22 @@ public class AI {
 		}
 		if (track.is(p)) {
 			Log.d(tag, "already visited point " + p);
+			if (color == 5 && p.i==2 && p.j==7) Log.d(tag, track.toString(7, 10));
 			return;
 		}
 		track.set(p);
+		Log.d(tag, "setting track : " + p);
 		Move found = move.clone();
 		found.add(p);
+		Log.d(tag, "move ? [ " + found.length(color) + " ] "+ found);
 		// TODO many if considering zero length move even in middle game?
 		if (found.length( color)>=0) {
 			Log.d(tag, "move ! [ " + found.length(color) + " ] "+ found);
 			moves.add(found);
 		} 
-		Log.d(tag, "+++++++++++++++++++++++++++++++++++++++++++");
+//		Log.d(tag, "+++++++++++++++++++++++++++++++++++++++++++");
 		visite( color, found.clone());
-		Log.d(tag, "-------------------------------------------");
+//		Log.d(tag, "-------------------------------------------");
 	}
 
 	/** for test purpose */

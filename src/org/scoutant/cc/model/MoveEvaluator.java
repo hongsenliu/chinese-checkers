@@ -2,8 +2,7 @@ package org.scoutant.cc.model;
 
 /**
  * Core of the game, the AI evaluation function: <p>
- * @return a scalar representing the difference of AI evaluation function for @param a and @param b.
- * <p>According to (in following order) : <ul> 
+ * @return a scalar representing, in following order : <ul> 
  * <li>player direction, 
  * <li>distance to target point
  * <li>distance to axis as second level
