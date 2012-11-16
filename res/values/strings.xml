@@ -27,8 +27,8 @@
 	<string name="players">players</string>
 
 
-	<string name="nb_players"># of players</string>
-	<string name="human_vs_machine">Choose Human or Machine for each player</string>
+	<string name="nb_players"># of units</string>
+	<string name="human_vs_machine">Human or Machine?</string>
 	
 	<!-- app -->
 	

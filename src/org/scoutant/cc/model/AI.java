@@ -51,7 +51,7 @@ public class AI {
 		board = game.board;
 		track = new Board();
 		for (int i=0; i<6; i++) {
-			comparators[i] = new MoveComparator(game, i);
+			comparators[i] = new MoveComparator( new MoveEvaluator(i));
 		}
 	}
 
