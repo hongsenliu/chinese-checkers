@@ -142,7 +142,13 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 	 * @return scalar distance between first and last point.
 	 */
 	public int length(int player) {
-		return Board.length(player, this.point(0)) - Board.length(player, last()); 
+		int a = Board.length(player, this.point(0));
+		if (a<0) throw new IllegalAccessError("BUG ON LENGTH---------------------------");
+		int z = Board.length(player, last());
+		if (z<0) throw new IllegalAccessError("BUG ON LENGTH---------------------------");
+		// TODO restore shorter :
+//		return Board.length(player, this.point(0)) - Board.length(player, last());
+		return a-z;
 	}
 	
 	

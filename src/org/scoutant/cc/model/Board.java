@@ -393,13 +393,20 @@ public class Board {
 	 * @return length to rich end-point of target triangle for @param player, from provided point @param p 
 	 */
 	public static int length(int player, Point p) {
+		int i;
 		switch (player) {
 		case 0: return lengthJI_0[p.j][p.i]; 
 		case 1: return lengthJI_1[p.j][p.i];
 		case 3: return lengthJI_0[16-p.j][p.i]; 
 		case 2: return lengthJI_1[16-p.j][p.i]; 
-		case 5: return lengthJI_1[p.j][12-p.i]; 
-		case 4: return lengthJI_1[16-p.j][12-p.i]; 
+//		case 5: return lengthJI_1[p.j][12-p.i]; 
+		case 5:
+			i = p.isEven() ? 12-p.i : 11 -p.i ; 
+			return lengthJI_1[p.j][i]; 
+//		case 4: return lengthJI_1[16-p.j][12-p.i];
+		case 4: 
+			i = p.isEven() ? 12-p.i : 11 -p.i ; 
+			return lengthJI_1[16-p.j][i]; 
 		default: throw new IllegalArgumentException("player ranging from 0 to 5...");
 		}
 	}

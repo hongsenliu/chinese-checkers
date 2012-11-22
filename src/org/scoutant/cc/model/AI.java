@@ -117,6 +117,9 @@ public class AI {
 		}
 		Collections.sort(moves, comparators[color]);
 		Log.d(tag, "# of jumps : " + moves.size());
+		for (Move move :moves) {
+			Log.d(tag, "move : [ " + move.length(color) + " ] "+ move);
+		}
 	}
 	
 	private void visite(int color, Move move) {

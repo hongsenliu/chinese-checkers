@@ -9,7 +9,8 @@ public class Log {
 	}
 
 	public static void d(String tag, String msg) {
-		System.out.println(msg);
+//		System.out.println(msg);
+		android.util.Log.d(tag, msg);
 	}
 
 	public static void d(String tag, Object o) {
