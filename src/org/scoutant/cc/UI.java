@@ -19,12 +19,11 @@ import org.scoutant.cc.model.Move;
 
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.inputmethodservice.Keyboard;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -37,10 +36,6 @@ public class UI extends BaseActivity {
 	private static String tag = "activity";
 	public static final int REQUEST_MENU = 90;
 	
-	// TODO remove std menu stuff 
-	public static final int MENU_ITEM_PLAY = 10;
-	public static final int MENU_ITEM_NEW = 20;
-	public static final int MENU_ITEM_PLAY12 = 12;
 	private GameView game;
 	private TurnMgr turnMgr;
 	private Repository repository;
@@ -54,8 +49,7 @@ public class UI extends BaseActivity {
 		findViewById(R.id.menu).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-				startActivityForResult(intent, REQUEST_MENU);
+				startMenu();
 			}
 		});
 		game = (GameView) findViewById(R.id.game);
@@ -75,6 +69,11 @@ public class UI extends BaseActivity {
 		initgame();
 	}
 	
+	private void startMenu() {
+		Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+		startActivityForResult(intent, REQUEST_MENU);
+	}
+	
 	private void initgame() {
 		game.reset();
 		turnMgr = new TurnMgr( this, (ImageView) findViewById(R.id.turn), game.height/5);
@@ -87,40 +86,12 @@ public class UI extends BaseActivity {
 		getWindow().setFormat( PixelFormat.RGBA_8888);
 	}
 
-	// TODO remove menu
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.clear();
-		menu.add(Menu.NONE, MENU_ITEM_PLAY, Menu.NONE, "back").setIcon( R.drawable.left_128);
-		menu.add(Menu.NONE, MENU_ITEM_PLAY12, Menu.NONE, "play 12").setIcon( R.drawable.player_play_41_128);
-		menu.add(Menu.NONE, MENU_ITEM_NEW, Menu.NONE, "new").setIcon( R.drawable.restart_128);
-
-		return true;
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
-		int id = item.getItemId();
-		if (id == MENU_ITEM_PLAY) {
-			game.back();
-		}
-		if (id == MENU_ITEM_NEW) {
-			newgame();
-		}
-		if (id == MENU_ITEM_PLAY12) {
-			for (int i=0; i<12; i++) {
-				play();
-			}
-		}
-		return false;
-	}
-	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch(keyCode) {
-			case KeyEvent.KEYCODE_SEARCH:
-				play();
-			    return true;
+		// TODO manage double back to exit and single back do nothing
+		if ( keyCode == KeyEvent.KEYCODE_MENU) {
+			startMenu();
+			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -211,11 +182,3 @@ public class UI extends BaseActivity {
 		
 	}
 }
-
-//findViewById(R.id.turn).setOnClickListener(new OnClickListener() {
-//@Override
-//public void onClick(View v) {
-////	play();
-//	new AITask().execute( turnMgr.player());
-//}
-//});
