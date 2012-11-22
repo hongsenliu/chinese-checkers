@@ -74,7 +74,7 @@ public class GameView extends FrameLayout  {
 	protected int diameter;
 	private Bitmap iconSelected; 
 	private Bitmap iconPointed; 
-	private Paint paint = new Paint();
+//	private Paint paint = new Paint();
 	private FrameLayout.LayoutParams layoutParams = null;
 	private ButtonsMgr buttonMgr;
 	public int height=-1;
@@ -96,8 +96,9 @@ public class GameView extends FrameLayout  {
         iconSelected = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring2);
         iconPointed = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring3);
 
-		paint.setStrokeWidth(0.2f);
-		paint.setColor(Color.BLACK);
+        // TODO remove
+//		paint.setStrokeWidth(0.2f);
+//		paint.setColor(Color.BLACK);
 
 		reset();
 	}

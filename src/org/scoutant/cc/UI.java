@@ -195,6 +195,7 @@ public class UI extends BaseActivity {
 			int turn = turnMgr.player();
 			
 			if (ai(turn)) {
+				Log.d(tag, "\n"  +"##################################################################################################################");
 				Log.d(tag, "thinking for : " + turn);
 				new AITask().execute(turn);
 			}

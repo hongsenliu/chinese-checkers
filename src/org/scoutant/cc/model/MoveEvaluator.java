@@ -16,6 +16,9 @@ public class MoveEvaluator implements Evaluator<Move> {
 	public MoveEvaluator(int player) {
 		this.player = player;
 	}
+	
+	// TODO add criteria including # of jumps : idea is to enforce jumping on same row so as to let free target hole for next peg move along on same track...
+	// TODO reinforce playing a peg that is still in origin triangle : so as to naturally eliminate pegs trapped by incoming opponent pegs
 	@Override
 	public int evaluate (Move m) {
 		int target = m.length(player);

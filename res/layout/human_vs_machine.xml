@@ -8,20 +8,9 @@
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_marginTop="25dp"
+	    android:layout_marginTop="15dp"
 	    android:layout_marginLeft="100dp"
         >
-        <!-- 
-	   	<ImageView 
-			xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:src="@drawable/action_forward_128"
-		    android:layout_width="256dp"
-		    android:layout_height="256dp"
-		    android:scaleType="fitXY"
-		    android:translationX="180dp"
-	        />
-         -->
-        
 	   	<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:id="@+id/player_0"
 		    android:button="@drawable/human_machine_checkbox_selector"
@@ -91,5 +80,4 @@
 	    android:layout_alignParentRight="true"
 	    android:layout_centerHorizontal="true"
         />
-    
 </RelativeLayout>

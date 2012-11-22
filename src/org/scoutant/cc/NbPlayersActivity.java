@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -36,6 +37,23 @@ public class NbPlayersActivity extends BaseActivity {
 		if ( gameOn()) finish();
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu ( final android.view.Menu menu ) {
+		getMenuInflater().inflate(R.menu.menu_help, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected ( final MenuItem item ) {
+		super.onOptionsItemSelected(item);
+		switch(item.getItemId()) {
+			case R.id.menu_item_help:
+				break;
+			default: return super.onOptionsItemSelected(item);
+		}
+		return true;
+	}
+
 	private void bind(int viewId, int nbPlayers, boolean[] playings) {
 		View view = findViewById(viewId);
 		if (view == null) {

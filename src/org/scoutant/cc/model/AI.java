@@ -83,6 +83,7 @@ public class AI {
 	
 	protected void thinkHops(int color, int level) {
 		Player player = game.player(color);
+		// TODO exclude peg that has reached target!
 		for (Peg peg : player.pegs()) {
 			Log.d(tag, "**** hops ?");
 			// consider only positive hops
@@ -139,15 +140,11 @@ public class AI {
 			return;
 		}
 		if (track.is(p)) {
-			Log.d(tag, "already visited point " + p);
-			if (color == 5 && p.i==2 && p.j==7) Log.d(tag, track.toString(7, 10));
 			return;
 		}
 		track.set(p);
-		Log.d(tag, "setting track : " + p);
 		Move found = move.clone();
 		found.add(p);
-		Log.d(tag, "move ? [ " + found.length(color) + " ] "+ found);
 		// TODO many if considering zero length move even in middle game?
 		if (found.length( color)>=0) {
 			Log.d(tag, "move ! [ " + found.length(color) + " ] "+ found);
