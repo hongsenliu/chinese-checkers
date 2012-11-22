@@ -66,7 +66,6 @@ public class NbPlayersActivity extends BaseActivity {
 	
 	private class NbPlayersListener implements OnClickListener {
 		private int nb;
-
 		private NbPlayersListener(int nb) {
 			this.nb = nb;
 		}

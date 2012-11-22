@@ -10,8 +10,8 @@
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/players_2"
 	    android:src="@drawable/shot_2_256"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
 	    android:layout_gravity="center" 
 	    android:layout_weight="1"
         />
@@ -19,8 +19,8 @@
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/players_3"
 	    android:src="@drawable/shot_3_256"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
 	    android:layout_gravity="center" 
 	    android:layout_weight="1"
         />
@@ -28,8 +28,8 @@
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/players_6"
 	    android:src="@drawable/shot_6_256"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
 	    android:layout_gravity="center" 
 	    android:layout_weight="1"
         />

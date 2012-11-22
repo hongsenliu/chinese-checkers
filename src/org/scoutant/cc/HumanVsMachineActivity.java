@@ -25,6 +25,7 @@ public class HumanVsMachineActivity extends BaseActivity {
 		if (gameOn()) {
 			startActivity( new Intent(getApplicationContext(), UI.class));
 		}
+		// TODO resize and reposition so as to full the space in a tablet?
 	}
 
 	@Override
