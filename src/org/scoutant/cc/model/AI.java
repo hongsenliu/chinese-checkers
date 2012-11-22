@@ -60,7 +60,7 @@ public class AI {
 
 	
 	public Move think(int color, int level) {
-		thinkUpToNJumps(color, level);
+		thinJumps(color, level);
 		Log.d(tag, "# of jumps : " + moves.size());
 		if (moves.size()<=4) {
 			// let's consider hops too
@@ -86,8 +86,8 @@ public class AI {
 		// TODO exclude peg that has reached target!
 		for (Peg peg : player.pegs()) {
 			Log.d(tag, "**** hops ?");
-			// consider only positive hops
-			for (int i=0; i<2; i++) {
+			// do not consider negative hops, would be necessary in a multi-turn AI...
+			for (int i=0; i<4; i++) {
 				int dir = dirs[color][i];
 				Point p = board.hop(peg.point, dir);
 				if (p!=null && !board.is(p)) {
@@ -104,7 +104,7 @@ public class AI {
 	/**
 	 * @return the list of moves for given play. Considering only jumps.
 	 */
-	protected void thinkUpToNJumps(int color, int level) {
+	protected void thinJumps(int color, int level) {
 		// TODO level
 		moves.clear();
 		Player player = game.player(color);
