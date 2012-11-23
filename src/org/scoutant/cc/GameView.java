@@ -74,13 +74,15 @@ public class GameView extends FrameLayout  {
 	protected int diameter;
 	private Bitmap iconSelected; 
 	private Bitmap iconPointed; 
-//	private Paint paint = new Paint();
 	private FrameLayout.LayoutParams layoutParams = null;
 	private ButtonsMgr buttonMgr;
 	public int height=-1;
 	public int width=-1;
 	protected TurnMgr turnMgr;
 	private Context context;
+	public AnimationMgr animationMgr = new AnimationMgr();
+	
+	public MoveAnimation animation=null;
 	
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -95,10 +97,6 @@ public class GameView extends FrameLayout  {
         hole = BitmapFactory.decodeResource(context.getResources(), R.drawable.steel);
         iconSelected = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring2);
         iconPointed = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring3);
-
-        // TODO remove
-//		paint.setStrokeWidth(0.2f);
-//		paint.setColor(Color.BLACK);
 
 		reset();
 	}
@@ -302,9 +300,10 @@ public class GameView extends FrameLayout  {
 		
 		boolean done = game.play(move);
 		if (done) {
-			if (animate) peg.animate(move);
+			if (animate) {
+				peg.animate(move);
+			}
 			turnMgr.update();
-			invalidate();
 			prefs.edit().putBoolean(UI.KEY_GAME_ON, true).commit();
 		}
 	}

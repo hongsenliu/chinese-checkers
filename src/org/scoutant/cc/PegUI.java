@@ -70,7 +70,9 @@ public class PegUI extends ImageView {
 		if (move==null) return;
 		List<Point> points = move.points;
 		if (points==null || points.size()< 2) return;
-		new MoveAnimation( this, move).start();
+		MoveAnimation animation = new MoveAnimation( this, move);
+//		animation.start();
+		game.animationMgr.add(animation);
 	}
 
 	/**

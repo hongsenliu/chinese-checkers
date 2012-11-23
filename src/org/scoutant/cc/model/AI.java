@@ -136,7 +136,7 @@ public class AI {
 	private static void log(int player, List<Move> moves) {
 		Log.d(tag, "# of moves : " + moves.size());		
 		for (Move move :moves) {
-			log(player, move);
+//			log(player, move);
 		}
 	}
 	

@@ -7,6 +7,7 @@ import org.scoutant.cc.model.Move;
 import org.scoutant.cc.model.Point;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 
@@ -36,8 +37,10 @@ public class MoveAnimation {
 			Point to = move.point(k);
 			this.add( move.point(k-1), to);
 		}
+		
+//		peg.game.animationMgr.add( this);
 	}
-
+	
 	public void add(Point from, Point to) {
 		int dx = dx(first,to);
 		int dy = dy(first,to);
@@ -53,8 +56,12 @@ public class MoveAnimation {
 	public void start() {
 		AnimatorSet set = new AnimatorSet();
 		set.playSequentially(animators);
-		// TODO add an animator listener with hook on onAnimationEnd()
-//		set.addListener(listener)
+		set.addListener( new AnimatorListener() {
+			@Override public void onAnimationStart(Animator animation) { }
+			@Override public void onAnimationRepeat(Animator animation) { }
+			@Override public void onAnimationEnd(Animator animation) { peg.game.animationMgr.done(); }
+			@Override public void onAnimationCancel(Animator animation) { peg.game.animationMgr.done(); }
+		});
 		set.start();
 	}
 

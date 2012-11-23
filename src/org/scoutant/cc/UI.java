@@ -38,6 +38,7 @@ public class UI extends BaseActivity {
 	private GameView game;
 	private TurnMgr turnMgr;
 	private Repository repository;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

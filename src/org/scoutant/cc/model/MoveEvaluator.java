@@ -32,16 +32,16 @@ public class MoveEvaluator implements Evaluator<Move> {
 	public int evaluate (Move m) {
 		int target = m.length(player);
 		int axis = m.axisLengh(player);
-		int origin = Board.length(player, m.point(0));
-		int is0Peg = origins[player].equals( m.point(0)) ? 1 : 0;
+		int origin = Board.length(player, m.first());
+		int is0Peg = origins[player].equals( m.first()) ? 1 : 0;
 		return 2*Board.sizeJ*target - axis + origin/2 + Board.sizeJ*leavingTriangle(player, m) + m.points.size() + 2*Board.sizeJ*is0Peg;
 	}
 
 	private static int leavingTriangle(int player,final Move m) {
 //		if (m==null || m.point(0)==null || m.last()== null ) return 0;
 		// TODO remove assert.
-		if (m==null || m.point(0)==null || m.last()== null ) throw new IllegalAccessError("Move shall have at least 2 points!");
-		return (Board.length(player, m.point(0))>12 && Board.length(player, m.last()) <= 12 ? 1 : 0);
+		if (m==null || m.first()==null || m.last()== null ) throw new IllegalAccessError("Move shall have at least 2 points!");
+		return (Board.length(player, m.first())>12 && Board.length(player, m.last()) <= 12 ? 1 : 0);
 	}
 
 }
