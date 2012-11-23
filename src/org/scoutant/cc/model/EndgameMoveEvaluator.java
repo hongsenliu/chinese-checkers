@@ -6,6 +6,15 @@ package org.scoutant.cc.model;
  * <li>player direction, 
  * <li>distance to target point
  * <li>distance to axis as second level
+ * <li>bonus for move entering into target triangle (from outsite) 
+ * <li>malus for player move with peg already into triangle
+ * <p> TODO Consider this end-game situation :
+ * <li>. . X . .
+ * <li> . X X X
+ * <li>  X X X
+ * <li>   X X
+ * <li>    X
+ * <p>It's a two-move situation...
  */
 public class EndgameMoveEvaluator implements Evaluator<Move> {
 	
@@ -18,7 +27,16 @@ public class EndgameMoveEvaluator implements Evaluator<Move> {
 	public int evaluate (Move m) {
 		int target = m.length(player);
 		int axis = m.axisLengh(player);
-		return 2*Board.sizeJ*target - axis;
+		int intoTriangle = enteringTriangle(player, m); 
+		int alreadyIntoTriangle = Board.length(player, m.point(0))<4 ? 1 : 0; 
+		return 1*Board.sizeJ*target - axis  + Board.sizeJ*intoTriangle - Board.sizeJ/2*alreadyIntoTriangle;
 	}
 
+	private static int enteringTriangle(int player,final Move m) {
+//		if (m==null || m.point(0)==null || m.last()== null ) return 0;
+		// TODO remove assert.
+		if (m==null || m.point(0)==null || m.last()== null ) throw new IllegalAccessError("Move shall have at least 2 points!");
+		return (Board.length(player, m.point(0))>=4 && Board.length(player, m.last()) < 4 ? 1 : 0);
+	}
+	
 }

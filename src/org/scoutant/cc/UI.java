@@ -19,7 +19,6 @@ import org.scoutant.cc.model.Move;
 
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.inputmethodservice.Keyboard;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;

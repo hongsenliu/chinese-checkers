@@ -53,6 +53,8 @@ public class MoveAnimation {
 	public void start() {
 		AnimatorSet set = new AnimatorSet();
 		set.playSequentially(animators);
+		// TODO add an animator listener with hook on onAnimationEnd()
+//		set.addListener(listener)
 		set.start();
 	}
 

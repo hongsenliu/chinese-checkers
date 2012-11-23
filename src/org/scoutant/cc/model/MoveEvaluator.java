@@ -18,19 +18,19 @@ public class MoveEvaluator implements Evaluator<Move> {
 	}
 	
 	// TODO add criteria including # of jumps : idea is to enforce jumping on same row so as to let free target hole for next peg move along on same track...
-	// TODO reinforce playing a peg that is still in origin triangle : so as to naturally eliminate pegs trapped by incoming opponent pegs
 	@Override
 	public int evaluate (Move m) {
 		int target = m.length(player);
 		int axis = m.axisLengh(player);
 		int origin = Board.length(player, m.point(0));
-		int intoTriangle = intoTriangle(player, m); 
-		return 2*Board.sizeJ*target - axis - origin/4 + intoTriangle;
+		return 2*Board.sizeJ*target - axis + origin/2 + Board.sizeJ*leavingTriangle(player, m);
 	}
 
-	private static int intoTriangle(int player,final Move m) {
-		if (m==null || m.last()== null ) return 0;
-		return (Board.length(player, m.last()) < 4 ? 1 : 0);
+	private static int leavingTriangle(int player,final Move m) {
+//		if (m==null || m.point(0)==null || m.last()== null ) return 0;
+		// TODO remove assert.
+		if (m==null || m.point(0)==null || m.last()== null ) throw new IllegalAccessError("Move shall have at least 2 points!");
+		return (Board.length(player, m.point(0))>12 && Board.length(player, m.last()) <= 12 ? 1 : 0);
 	}
 
 }

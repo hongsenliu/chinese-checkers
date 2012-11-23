@@ -65,12 +65,12 @@ public class AI {
 		if (moves.size()<=4) {
 			// let's consider hops too
 			thinkHops(color, level);
-			Log.d(tag, "# of moves including hops : " + moves.size());
-//			Collections.sort(moves, comparators[color]);
 			Collections.sort(moves, endgameComparators[color]);
+			Log.d(tag, "# of moves including hops : " + moves.size());
+			log(color);
 		}
 		if (moves.size()==0) {
-			// TODO endgame
+			// TODO end of game
 			Log.d(tag, "no more moves... for player : " + color);
 			return null;
 		}
@@ -95,7 +95,7 @@ public class AI {
 					Move move = new Move( peg.point);
 					move.add(p);
 					moves.add( move);
-					Log.d(tag, "can hop : " + move);
+					log(color, move);
 				}
 			}
 		}
@@ -117,22 +117,32 @@ public class AI {
 			visite( color, move);
 		}
 		Collections.sort(moves, comparators[color]);
-		Log.d(tag, "# of jumps : " + moves.size());
-		for (Move move :moves) {
-			Log.d(tag, "move : [ " + move.length(color) + " ] "+ move);
-		}
+		log(color);
 	}
 	
 	private void visite(int color, Move move) {
 		for (int dir:dirs[color] ) {
-//			Log.d(tag, "** dir : " + dir);
 			visite(color, move, dir);
 		}
 	}
 	
+	private static void log(int player, Move move) {
+		Log.d(tag, "move ! [ " + move.length(player) + " ] < " + new MoveEvaluator(player).evaluate(move) + ", "  + new EndgameMoveEvaluator(player).evaluate(move) + "> " + move);
+	}
+	private void log(int player) {
+		log(player, moves);
+	}
+	
+	private static void log(int player, List<Move> moves) {
+		Log.d(tag, "# of moves : " + moves.size());		
+		for (Move move :moves) {
+			log(player, move);
+		}
+	}
+	
+	
 	private void visite(int color, Move move, int dir) {
 		Point p = board.jump(move.last(), dir);
-//		Log.d(tag, "dir : " + dir +", jump to : " + p);
 		if (p==null) return;
 		Point middle = Move.middle(p, move.last());
 		if (move.point(0).equals(middle)) {
@@ -147,8 +157,8 @@ public class AI {
 		found.add(p);
 		// TODO many if considering zero length move even in middle game?
 		if (found.length( color)>=0) {
-			Log.d(tag, "move ! [ " + found.length(color) + " ] "+ found);
 			moves.add(found);
+			log(color, found);
 		} 
 //		Log.d(tag, "+++++++++++++++++++++++++++++++++++++++++++");
 		visite( color, found.clone());
