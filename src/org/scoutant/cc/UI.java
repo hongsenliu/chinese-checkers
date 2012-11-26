@@ -40,6 +40,7 @@ public class UI extends BaseActivity {
 	private Repository repository;
 	private Command startAI = new StartAI();
 	private Command mayStartAI = new MayStartAI();
+	private int resultCode = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class UI extends BaseActivity {
 			}
 		});
 		game = (GameView) findViewById(R.id.game);
-		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), new StartAI(), findViewById(R.id.cancel));
+		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), new MayStartAI(), findViewById(R.id.cancel));
 		game.setButtonMgr( buttonMgr);
 		game.setMayStartAI( mayStartAI);
 		
@@ -117,6 +118,26 @@ public class UI extends BaseActivity {
 	    }
 	}	
 	
+	
+	/**
+	 * When resuming from an interrupted sequence of AI, here we launch AI till next human player.
+	 * But not for feature 'back on move'.
+	 */
+	@Override
+		protected void onResume() {
+			super.onResume();
+			if (resultCode!= MenuActivity.RESULT_BACK) mayStartAI.execute();
+			resultCode = 0;
+		}
+	
+	@Override
+		protected void onPause() {
+			for (MoveAnimation animation : game.pending) {
+				if (animation!=null) animation.cancel();
+			}
+			super.onPause();
+		}
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -128,6 +149,7 @@ public class UI extends BaseActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		this.resultCode = resultCode ;  
 		if (requestCode == REQUEST_MENU) {
 			if (resultCode == MenuActivity.RESULT_BACK) {
 				game.back();
@@ -144,18 +166,6 @@ public class UI extends BaseActivity {
 		}
 	}
 	
-//	protected void play() {
-//		//TODO manage level
-//		Move move = game.ai.think(turnMgr.player(), 0);
-//		if (move==null) {
-//			// for dev only
-//			turnMgr.update();
-//		} else {
-//			game.play(move, true);
-//		}
-//		game.init();
-//	}
-	
 	private class AITask extends AsyncTask<Integer, Void, Move> {
 		@Override
 		protected Move doInBackground(Integer... params) {
@@ -167,9 +177,8 @@ public class UI extends BaseActivity {
 		@Override
 		protected void onPostExecute(Move move) {
 			if (move==null) turnMgr.update();
-			game.play(move, true, true);
+			game.play(move, true, mayStartAI);
 			game.init();
-//			mayStartAI.execute();
 		}
 	}
 

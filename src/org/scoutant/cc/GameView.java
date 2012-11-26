@@ -14,6 +14,7 @@
 
 package org.scoutant.cc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.scoutant.Command;
@@ -79,9 +80,8 @@ public class GameView extends FrameLayout  {
 	public int width=-1;
 	protected TurnMgr turnMgr;
 	private Context context;
-//	public AnimationMgr animationMgr = new AnimationMgr();
 	
-	public MoveAnimation animation=null;
+	public List<MoveAnimation> pending=new ArrayList<MoveAnimation>();
 	public Command maystartAI;
 	
 	public GameView(Context context, AttributeSet attrs) {
@@ -295,8 +295,7 @@ public class GameView extends FrameLayout  {
 		return new Rect( l.x-length/2, l.y-length/2, l.x+length/2, l.y+length/2);
 	}
 
-//	public void play(Move move, boolean animate) {
-	public void play(Move move, boolean animate, boolean think) {
+	public void play(Move move, boolean animate, Command whenDone) {
 		Log.d(tag, "playing move " + move);
 		if (move==null) return;
 		Peg start = game.peg(move.point(0));
@@ -305,13 +304,10 @@ public class GameView extends FrameLayout  {
 		boolean done = game.play(move);
 		if (done) {
 			if (animate) {
-				peg.animate(move, think);
+				peg.animate(move, whenDone);
 			}
 			turnMgr.update();
 			prefs.edit().putBoolean(UI.KEY_GAME_ON, true).commit();
-//			if (think) {
-//				maystartAI.execute();
-//			}
 		}
 	}
 
@@ -322,7 +318,7 @@ public class GameView extends FrameLayout  {
 	
 	public void replay(List<Move> list) {
 		for (Move move:list) {
-			play(move, false, false);
+			play(move, false, null);
 		}
 	}
 	
@@ -330,12 +326,13 @@ public class GameView extends FrameLayout  {
 	 * play back the last human move and potentially all the AI moves in-between
 	 */
 	public void back() {
-		boolean done = false;
-		for (int i=0; i<6; i++) {
-			if (done) return;
-			back1move();
-			if (turnMgr.ishuman()) done = true; 
+		// TODO first kill all play animation that mas still be waiting to be done. Use case : 'Menu' before end of animation and Back...
+		for (MoveAnimation animation : pending) {
+			if (animation!=null) animation.cancel();
 		}
+		pending.clear();
+		// TODO clear also every time a human play!
+		back1move();
 	}
 	
 	/**
@@ -343,10 +340,18 @@ public class GameView extends FrameLayout  {
 	 */
 	private void back1move() {
 		Move move = game.last().reverse();
-		play(move, true, false);
+		play(move, true, new MayBackOneMove());
 		if (game.pop()) turnMgr.pop();
 		if (game.pop()) turnMgr.pop();
 	}
 	
+	private class MayBackOneMove implements Command {
+		@Override
+		public void execute() {
+			if (turnMgr.isAI()) {
+				back1move();
+			}
+		}
+	}
 	
 }

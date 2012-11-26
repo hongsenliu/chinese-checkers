@@ -2,6 +2,7 @@ package org.scoutant.cc;
 
 import java.util.List;
 
+import org.scoutant.Command;
 import org.scoutant.cc.model.Move;
 import org.scoutant.cc.model.Peg;
 import org.scoutant.cc.model.Pixel;
@@ -66,12 +67,13 @@ public class PegUI extends ImageView {
 	 * Animate the Peg so as to move along the path corresponding to provided
 	 * @param move
 	 */
-	public void animate(Move move, boolean think) {
+	public void animate(Move move, Command whenDone) {
 		if (move==null) return;
 		List<Point> points = move.points;
 		if (points==null || points.size()< 2) return;
 		MoveAnimation animation = new MoveAnimation( this, move);
-		animation.start(think);
+		game.pending.add(animation);
+		animation.start( whenDone);
 	}
 
 	/**

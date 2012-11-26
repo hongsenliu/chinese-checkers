@@ -3,6 +3,7 @@ package org.scoutant.cc;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.scoutant.Command;
 import org.scoutant.cc.model.Move;
 import org.scoutant.cc.model.Point;
 
@@ -10,6 +11,7 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.util.Log;
 
 public class MoveAnimation {
 	@SuppressWarnings("unused")
@@ -23,6 +25,7 @@ public class MoveAnimation {
 	private int Dy;
 	
 	private List<Animator> animators = new ArrayList<Animator>();
+	private AnimatorSet set = new AnimatorSet();
 
 	// assuming peg actually is at position corresponding to first point in move...
 	public MoveAnimation( PegUI peg, Move move) {
@@ -37,8 +40,6 @@ public class MoveAnimation {
 			Point to = move.point(k);
 			this.add( move.point(k-1), to);
 		}
-		
-//		peg.game.animationMgr.add( this);
 	}
 	
 	public void add(Point from, Point to) {
@@ -52,21 +53,25 @@ public class MoveAnimation {
 		translateXY.setDuration( Math.max(di, dj)*DURATION);
 		animators.add(translateXY);
 	}
-	
-	public void start(boolean thinkAfterAnimation) {
-		AnimatorSet set = new AnimatorSet();
+
+	public void start(final Command whenDone) {
+		set = new AnimatorSet();
 		set.playSequentially(animators);
-		if (thinkAfterAnimation) {
+		if (whenDone!=null) {
 			set.addListener( new AnimatorListener() {
 				@Override public void onAnimationStart(Animator animation) { }
 				@Override public void onAnimationRepeat(Animator animation) { }
-				@Override public void onAnimationEnd(Animator animation) { peg.game.maystartAI.execute(); }
-				@Override public void onAnimationCancel(Animator animation) { peg.game.maystartAI.execute(); }
+				@Override public void onAnimationEnd(Animator animation) { whenDone.execute(); }
+				@Override public void onAnimationCancel(Animator animation) { }
 			});
 		}
 		set.start();
 	}
-
+	public void cancel() {
+		peg.clearAnimation();
+		set.removeAllListeners();
+	}
+	
 	private int dx(Point from, Point to) {
 		return peg.game.pixel(to).x - peg.game.pixel(from).x; 
 	}
