@@ -18,10 +18,3 @@ public class MoveComparator implements Comparator<Move> {
 		return (evaluator.evaluate(b) - evaluator.evaluate(a));
 	}
 }
-// TODO clean
-//int targetDiff = b.length(player) - a.length(player);
-//int axisDiff = b.axisLengh(player) - a.axisLengh(player);
-//int originDiff = Board.length(player, b.point(0)) - Board.length(player, a.point(0));
-//int intoTriangleDiff = intoTriangle(player, b) - intoTriangle(player, a); 
-//return 2*Board.sizeJ*targetDiff - axisDiff - originDiff/4 + intoTriangleDiff;
-//}

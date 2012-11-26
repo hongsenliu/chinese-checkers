@@ -51,7 +51,6 @@ public class AI {
 	public AI(Game game) {
 		this.game = game;
 		board = game.board;
-//		track = new Board();
 		for (int i=0; i<6; i++) {
 			comparators[i] = new MoveComparator( new MoveEvaluator(i));
 			endgameComparators[i] = new MoveComparator( new EndgameMoveEvaluator(i));
@@ -59,12 +58,12 @@ public class AI {
 	}
 
 	
-	public Move think(int color, int level) {
-		thinJumps(color, level);
+	public Move think(int color) {
+		thinkJumps(color);
 		Log.d(tag, "# of jumps : " + moves.size());
 		if (moves.size()<=4) {
 			// let's consider hops too
-			thinkHops(color, level);
+			thinkHops(color);
 			Collections.sort(moves, endgameComparators[color]);
 			Log.d(tag, "# of moves including hops : " + moves.size());
 			log(color);
@@ -81,7 +80,7 @@ public class AI {
 
 	// TODO performance : consider a LOG constant to actually log only if ON!
 	
-	protected void thinkHops(int color, int level) {
+	protected void thinkHops(int color) {
 		Player player = game.player(color);
 		// TODO exclude peg that has reached target!
 		for (Peg peg : player.pegs()) {
@@ -104,8 +103,7 @@ public class AI {
 	/**
 	 * @return the list of moves for given play. Considering only jumps.
 	 */
-	protected void thinJumps(int color, int level) {
-		// TODO level
+	protected void thinkJumps(int color) {
 		moves.clear();
 		Player player = game.player(color);
 		for (Peg peg : player.pegs()) {
@@ -136,7 +134,7 @@ public class AI {
 	private static void log(int player, List<Move> moves) {
 		Log.d(tag, "# of moves : " + moves.size());		
 		for (Move move :moves) {
-//			log(player, move);
+			log(player, move);
 		}
 	}
 	

@@ -8,25 +8,26 @@ public class Player {
 
 	/** Each player has a set of ten balls */ 
 	private List<Peg> pegs = new ArrayList<Peg>();
+	private PegComparator comparator=null;
 	
-	// TODO Or ensure sort in done only once when a move is done...
 	public List<Peg> pegs() {
-		Collections.sort(pegs);
+		Collections.sort(pegs, comparator);
 		return pegs;
 	}
 	
 	public Point goal;
 	public int color;
 	
-	public Player(Point goal) {
+	private Player(Point goal) {
 		this.goal = goal;
 	}
-	public Player(int i, int j) {
+	private Player(int i, int j) {
 		this(new Point(i,j));
 	}
 	public Player(int i, int j, int color) {
 		this(i,j);
 		this.color = color;
+		comparator = new PegComparator(color);
 	}
 	
 	public Player add(Peg peg) {

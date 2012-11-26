@@ -171,7 +171,7 @@ public class UI extends BaseActivity {
 		protected Move doInBackground(Integer... params) {
 			Log.d(tag, "\n"  +"##################################################################################################################");
 			Log.d(tag, "thinking for : " + turnMgr.player());
-			Move move = game.ai.think(turnMgr.player(), 0);
+			Move move = game.ai.think(turnMgr.player());
 			return move;
 		}
 		@Override
