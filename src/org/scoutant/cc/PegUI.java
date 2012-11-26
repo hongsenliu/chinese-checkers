@@ -66,13 +66,12 @@ public class PegUI extends ImageView {
 	 * Animate the Peg so as to move along the path corresponding to provided
 	 * @param move
 	 */
-	public void animate(Move move) {
+	public void animate(Move move, boolean think) {
 		if (move==null) return;
 		List<Point> points = move.points;
 		if (points==null || points.size()< 2) return;
 		MoveAnimation animation = new MoveAnimation( this, move);
-//		animation.start();
-		game.animationMgr.add(animation);
+		animation.start(think);
 	}
 
 	/**

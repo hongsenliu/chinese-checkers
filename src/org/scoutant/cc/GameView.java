@@ -16,6 +16,7 @@ package org.scoutant.cc;
 
 import java.util.List;
 
+import org.scoutant.Command;
 import org.scoutant.cc.model.AI;
 import org.scoutant.cc.model.Board;
 import org.scoutant.cc.model.Game;
@@ -33,8 +34,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
@@ -80,9 +79,10 @@ public class GameView extends FrameLayout  {
 	public int width=-1;
 	protected TurnMgr turnMgr;
 	private Context context;
-	public AnimationMgr animationMgr = new AnimationMgr();
+//	public AnimationMgr animationMgr = new AnimationMgr();
 	
 	public MoveAnimation animation=null;
+	public Command maystartAI;
 	
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -115,6 +115,9 @@ public class GameView extends FrameLayout  {
 
 	public void setTurnMgr(TurnMgr turnMgr){
 		this.turnMgr = turnMgr;
+	}
+	public void setMayStartAI(Command command){
+		this.maystartAI = command;
 	}
 	
 	@Override
@@ -292,7 +295,8 @@ public class GameView extends FrameLayout  {
 		return new Rect( l.x-length/2, l.y-length/2, l.x+length/2, l.y+length/2);
 	}
 
-	public void play(Move move, boolean animate) {
+//	public void play(Move move, boolean animate) {
+	public void play(Move move, boolean animate, boolean think) {
 		Log.d(tag, "playing move " + move);
 		if (move==null) return;
 		Peg start = game.peg(move.point(0));
@@ -301,14 +305,15 @@ public class GameView extends FrameLayout  {
 		boolean done = game.play(move);
 		if (done) {
 			if (animate) {
-				peg.animate(move);
+				peg.animate(move, think);
 			}
 			turnMgr.update();
 			prefs.edit().putBoolean(UI.KEY_GAME_ON, true).commit();
+//			if (think) {
+//				maystartAI.execute();
+//			}
 		}
 	}
-
-
 
 	public void setButtonMgr(ButtonsMgr buttonMgr) {
 		this.buttonMgr = buttonMgr; 
@@ -317,7 +322,7 @@ public class GameView extends FrameLayout  {
 	
 	public void replay(List<Move> list) {
 		for (Move move:list) {
-			play(move, false);
+			play(move, false, false);
 		}
 	}
 	
@@ -338,7 +343,7 @@ public class GameView extends FrameLayout  {
 	 */
 	private void back1move() {
 		Move move = game.last().reverse();
-		play(move, true);
+		play(move, true, false);
 		if (game.pop()) turnMgr.pop();
 		if (game.pop()) turnMgr.pop();
 	}

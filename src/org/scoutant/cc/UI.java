@@ -38,6 +38,8 @@ public class UI extends BaseActivity {
 	private GameView game;
 	private TurnMgr turnMgr;
 	private Repository repository;
+	private Command startAI = new StartAI();
+	private Command mayStartAI = new MayStartAI();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class UI extends BaseActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main);
-		findViewById(R.id.turn).setOnClickListener(new CommandListener( new StartAICommand()));
+		findViewById(R.id.turn).setOnClickListener(new CommandListener( startAI));
 		findViewById(R.id.menu).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -53,8 +55,10 @@ public class UI extends BaseActivity {
 			}
 		});
 		game = (GameView) findViewById(R.id.game);
-		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), new StartAICommand(), findViewById(R.id.cancel));
+		ButtonsMgr buttonMgr = new ButtonsMgr(game, findViewById(R.id.ok), new StartAI(), findViewById(R.id.cancel));
 		game.setButtonMgr( buttonMgr);
+		game.setMayStartAI( mayStartAI);
+		
 		buttonMgr.resize();
 		repository = new Repository(this, game);
 		initgame();
@@ -140,44 +144,46 @@ public class UI extends BaseActivity {
 		}
 	}
 	
-	protected void play() {
-		//TODO manage level
-		Move move = game.ai.think(turnMgr.player(), 0);
-		if (move==null) {
-			// for dev only
-			turnMgr.update();
-		} else {
-			game.play(move, true);
-		}
-		game.init();
-	}
+//	protected void play() {
+//		//TODO manage level
+//		Move move = game.ai.think(turnMgr.player(), 0);
+//		if (move==null) {
+//			// for dev only
+//			turnMgr.update();
+//		} else {
+//			game.play(move, true);
+//		}
+//		game.init();
+//	}
 	
 	private class AITask extends AsyncTask<Integer, Void, Move> {
 		@Override
 		protected Move doInBackground(Integer... params) {
+			Log.d(tag, "\n"  +"##################################################################################################################");
+			Log.d(tag, "thinking for : " + turnMgr.player());
 			Move move = game.ai.think(turnMgr.player(), 0);
 			return move;
 		}
 		@Override
 		protected void onPostExecute(Move move) {
 			if (move==null) turnMgr.update();
-			game.play(move, true);
+			game.play(move, true, true);
 			game.init();
-			int turn = turnMgr.player();
-			
-			if (ai(turn)) {
-				Log.d(tag, "\n"  +"##################################################################################################################");
-				Log.d(tag, "thinking for : " + turn);
-				new AITask().execute(turn);
-			}
+//			mayStartAI.execute();
 		}
 	}
 
-	private class StartAICommand implements Command {
+	private class StartAI implements Command {
 		@Override
-		public boolean execute() {
+		public void execute() {
 			new AITask().execute( turnMgr.player());
-			return false;
+		}
+		
+	}
+	private class MayStartAI implements Command {
+		@Override
+		public void execute() {
+			if (ai( turnMgr.player())) startAI.execute();  
 		}
 		
 	}

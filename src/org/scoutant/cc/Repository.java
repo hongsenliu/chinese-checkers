@@ -66,10 +66,7 @@ public class Repository {
 				list.add(move);
 			}
 			Log.i(tag, "# of moves to replay : " + list.size());
-//			newgame();
 			game.replay( list);
-			// TODO manage turn!
-			// Normally game state turn should be equal to deserialization turn data...
 			Log.i(tag, "turn data : " + dataTurn + ", game turn : " + game.turnMgr.player());
 		} catch (Exception e) {
 			Log.e(tag, "yep error is :", e);

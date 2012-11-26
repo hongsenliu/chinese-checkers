@@ -53,15 +53,17 @@ public class MoveAnimation {
 		animators.add(translateXY);
 	}
 	
-	public void start() {
+	public void start(boolean thinkAfterAnimation) {
 		AnimatorSet set = new AnimatorSet();
 		set.playSequentially(animators);
-		set.addListener( new AnimatorListener() {
-			@Override public void onAnimationStart(Animator animation) { }
-			@Override public void onAnimationRepeat(Animator animation) { }
-			@Override public void onAnimationEnd(Animator animation) { peg.game.animationMgr.done(); }
-			@Override public void onAnimationCancel(Animator animation) { peg.game.animationMgr.done(); }
-		});
+		if (thinkAfterAnimation) {
+			set.addListener( new AnimatorListener() {
+				@Override public void onAnimationStart(Animator animation) { }
+				@Override public void onAnimationRepeat(Animator animation) { }
+				@Override public void onAnimationEnd(Animator animation) { peg.game.maystartAI.execute(); }
+				@Override public void onAnimationCancel(Animator animation) { peg.game.maystartAI.execute(); }
+			});
+		}
 		set.start();
 	}
 
