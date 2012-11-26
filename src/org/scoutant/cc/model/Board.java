@@ -411,4 +411,34 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * @return true if point @param p is into target triangle for player @param player  
+	 */
+	public static boolean intoTriangle(int player, Point p) {
+		return Board.length(player, p) < 4;
+	}
+	
+	public static Point[] thirdRow(int player) {
+		switch (player) {
+		case 0: return new Point[] { new Point( 4, 3), new Point( 5, 3), new Point( 6, 3), new Point( 7, 3), };
+		case 3: return new Point[] { new Point( 4,13), new Point( 5,13), new Point( 6,13), new Point( 7,13), };
+		case 1: return new Point[] { new Point( 9, 4), new Point( 9, 5), new Point(10, 6), new Point(10, 7), };
+		case 5: return new Point[] { new Point( 1, 7), new Point( 2, 6), new Point( 2, 5), new Point( 3, 4), };
+		case 2: return new Point[] { new Point(10, 9), new Point(10,10), new Point( 9,11), new Point( 9,12), };
+		case 4: return new Point[] { new Point( 1, 9), new Point( 2,10), new Point( 2,11), new Point( 3,12), };
+		default: throw new IllegalArgumentException("player ranging from 0 to 5...");
+		}
+	}
+	
+	// TODO better name?
+	public static final Point[] pivots = { new Point(6,4), new Point(9,6), new Point(9,10), new Point(6,12), new Point(3,10), new Point(3,6) };
+	public static final Point[][] escapes = { 
+			{ new Point( 5, 4), new Point( 7, 4) }, 
+			{ new Point( 8, 5), new Point( 9, 7) }, 
+			{ new Point( 9, 9), new Point( 8,11) }, 
+			{ new Point( 7,12), new Point( 7,10) }, 
+			{ new Point( 3,11), new Point( 2, 9) }, 
+			{ new Point( 2, 7), new Point( 3, 5) }, 
+		};
+	
 }

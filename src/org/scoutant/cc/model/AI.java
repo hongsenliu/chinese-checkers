@@ -66,8 +66,17 @@ public class AI {
 			thinkHops(color);
 			Collections.sort(moves, endgameComparators[color]);
 			Log.d(tag, "# of moves including hops : " + moves.size());
-			log(color);
+//			log(color);
 		}
+		log(color);
+		if (moves.size()<=0) { // trapped in the 9-peg endgame issue?
+			consider9PegEndgamePosition(color);
+		}
+		
+		if (moves.size()==1) {
+			// TODO check if game over!
+		}
+		
 		if (moves.size()==0) {
 			// TODO end of game
 			Log.d(tag, "no more moves... for player : " + color);
@@ -80,6 +89,37 @@ public class AI {
 
 	// TODO performance : consider a LOG constant to actually log only if ON!
 	
+	/**
+	 * <p> 9-pegs endgame issue :
+	 * <li>. . X . .
+	 * <li> . X X X
+	 * <li>  X X X
+	 * <li>   X X
+	 * <li>    X
+	 */
+	private void consider9PegEndgamePosition(int color) {
+		List<Peg> pegs = game.player(color).pegs();
+		for( int i = 1 ; i<10; i++) {
+			Peg peg = pegs.get(i);
+			if (!Board.intoTriangle(color, peg.point)) return;
+		}
+		// the 9 pegs closest to goal are into triangle. 
+		Peg peg = pegs.get(0);
+		if (Board.length(color, peg.point)!= 4) return; // if length is 3, game actually is over...
+		Point target = null;
+		for (Point point : Board.thirdRow(color)) { // which is the hole not occupied by none of the 9 pegs?
+			if ( !board.is(point)) target = point;
+		}
+		if (target==null) return; // surely occupied by a peg of another player!
+		// correct option is to move peg towards target.
+		if (! target.equals(Board.pivots[color]) ) return; // if not pivot, AI naturally find move toward pivot.
+		int leftPlayer = (color+5)%6;
+		Move move = new Move(peg.point);
+		move.add( Board.length(leftPlayer, target)<6 ? Board.escapes[color][0] : Board.escapes[color][1]);
+		moves.add(move);
+	}
+
+
 	protected void thinkHops(int color) {
 		Player player = game.player(color);
 		// TODO exclude peg that has reached target!
@@ -94,7 +134,7 @@ public class AI {
 					Move move = new Move( peg.point);
 					move.add(p);
 					moves.add( move);
-					log(color, move);
+//					log(color, move);
 				}
 			}
 		}
@@ -107,15 +147,15 @@ public class AI {
 		moves.clear();
 		Player player = game.player(color);
 		for (Peg peg : player.pegs()) {
-			Log.d(tag, "*********************************************************************************");
-			Log.d(tag, "peg : " + peg );
-			Log.d(tag, "*********************************************************************************");
+//			Log.d(tag, "*********************************************************************************");
+//			Log.d(tag, "peg : " + peg );
+//			Log.d(tag, "*********************************************************************************");
 			Move move = new Move(peg.point);
 			track = new Board();
 			visite( color, move);
 		}
 		Collections.sort(moves, comparators[color]);
-		log(color);
+//		log(color);
 	}
 	
 	private void visite(int color, Move move) {
@@ -156,7 +196,7 @@ public class AI {
 		// TODO many if considering zero length move even in middle game?
 		if (found.length( color)>=0) {
 			moves.add(found);
-			log(color, found);
+//			log(color, found);
 		} 
 //		Log.d(tag, "+++++++++++++++++++++++++++++++++++++++++++");
 		visite( color, found.clone());

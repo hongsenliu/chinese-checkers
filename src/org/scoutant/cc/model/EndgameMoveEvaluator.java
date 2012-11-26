@@ -38,5 +38,4 @@ public class EndgameMoveEvaluator implements Evaluator<Move> {
 		if (m==null || m.point(0)==null || m.last()== null ) throw new IllegalAccessError("Move shall have at least 2 points!");
 		return (Board.length(player, m.point(0))>=4 && Board.length(player, m.last()) < 4 ? 1 : 0);
 	}
-	
 }

@@ -29,7 +29,6 @@ public abstract class BaseActivity extends Activity {
 
 	public static boolean[] playings(Context context) {
 		int nbPlayers = PreferenceManager.getDefaultSharedPreferences(context).getInt(NbPlayersActivity.KEY_NB_PLAYERS, 6);
-		Log.d(tag, "nb players : " + nbPlayers);
 		switch( nbPlayers) { 
 			case 2 : return new boolean[] { true, false, false, true , false, false};
 			case 3 : return new boolean[] { true, false, true , false, true , false};

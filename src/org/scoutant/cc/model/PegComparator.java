@@ -16,12 +16,10 @@ public class PegComparator implements Comparator<Peg>{
 		return evaluator.evaluate(b) - evaluator.evaluate(a);
 	}
 	
-	
 	private class PegEvaluator implements Evaluator<Peg> {
 		@Override
 		public int evaluate(Peg peg) {
 			return Board.length(player, peg.point);
 		}
-		
 	}
 }
