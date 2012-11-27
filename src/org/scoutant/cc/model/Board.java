@@ -399,11 +399,9 @@ public class Board {
 		case 1: return lengthJI_1[p.j][p.i];
 		case 3: return lengthJI_0[16-p.j][p.i]; 
 		case 2: return lengthJI_1[16-p.j][p.i]; 
-//		case 5: return lengthJI_1[p.j][12-p.i]; 
 		case 5:
 			i = p.isEven() ? 12-p.i : 11 -p.i ; 
 			return lengthJI_1[p.j][i]; 
-//		case 4: return lengthJI_1[16-p.j][12-p.i];
 		case 4: 
 			i = p.isEven() ? 12-p.i : 11 -p.i ; 
 			return lengthJI_1[16-p.j][i]; 
@@ -430,7 +428,6 @@ public class Board {
 		}
 	}
 	
-	// TODO better name?
 	public static final Point[] pivots = { new Point(6,4), new Point(9,6), new Point(9,10), new Point(6,12), new Point(3,10), new Point(3,6) };
 	public static final Point[][] escapes = { 
 			{ new Point( 5, 4), new Point( 7, 4) }, 
