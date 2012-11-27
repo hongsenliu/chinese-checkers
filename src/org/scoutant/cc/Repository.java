@@ -12,16 +12,20 @@ import java.util.List;
 import org.scoutant.cc.model.Move;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class Repository {
 	private static String tag = "activity";
 	private Context context;
 	private GameView game;
+	private SharedPreferences prefs;
 
 	public Repository(Context context, GameView game) {
 		this.context = context;
 		this.game = game;
+		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 	
 	public void save(){
@@ -30,11 +34,16 @@ public class Repository {
 			fos = context.openFileOutput("moves.txt", Context.MODE_PRIVATE);
 			if (fos==null) return;
 			String str = "";
-			if (!game.game.over()) {
+			if (game.game.over()) {
+				// if game is over we do not save it, so as to open a blank game next time
+				prefs.edit().putBoolean( BaseActivity.KEY_GAME_ON, false).commit();
+				prefs.edit().putInt( NbPlayersActivity.KEY_NB_PLAYERS, -1).commit();
+
+			} else {
 				str += game.game.moves.size()+"\n";
 				str += game.turnMgr.player()+"\n";
 				str += game.game.serialize();
-			} // if game is over we do not save it, so as to open a blank game next time
+			}
 			fos.write( str.getBytes());
 			Log.i(tag, "saving game \n" + game.game.serialize() );
 			fos.close();

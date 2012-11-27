@@ -17,7 +17,6 @@ import org.scoutant.Command;
 import org.scoutant.CommandListener;
 import org.scoutant.cc.model.Move;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
@@ -174,6 +173,7 @@ public class UI extends BaseActivity {
 			Log.d(tag, "\n"  +"####################################################################################");
 			int turn = turnMgr.player(); 
 			Log.d(tag, "thinking for : " + turn);
+			if (game.game.over()) return null; // to prevent looping if no human player...
 			Move move = game.ais[turn].think();
 			return move;
 		}
@@ -181,14 +181,17 @@ public class UI extends BaseActivity {
 		protected void onPostExecute(Move move) {
 			int turn = turnMgr.player();
 			if (move==null) turnMgr.update();
+			if (game.game.over()) {
+				return;
+				// TODO ok with return?
+			}
 			game.play(move, true, mayStartAI);
 			if (move!=null && game.game.over(turn)) {
 				Log.d(tag, "player " + turn +" is now over!");
 				// TODO nive message with button 'continue' and 'menu'...
-				Toast.makeText(UI.this , "Player " + turn + " is over!", Toast.LENGTH_LONG).show();
+				Toast.makeText(UI.this , "Player " + turn + " is over!", Toast.LENGTH_SHORT).show();
 				if (game.game.over()) {
-					Toast.makeText(UI.this , "GAME OVER!", 5000).show();
-					// TODO message....
+					Toast.makeText(UI.this , "GAME is just OVER!", Toast.LENGTH_LONG).show();
 				}
 			}
 			game.init();
