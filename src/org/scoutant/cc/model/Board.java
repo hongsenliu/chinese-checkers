@@ -416,6 +416,10 @@ public class Board {
 		return Board.length(player, p) < 4;
 	}
 	
+	public static boolean outsideTriangle( int player, Peg peg) {
+		return !intoTriangle(player, peg.point);
+	}
+	
 	public static Point[] thirdRow(int player) {
 		switch (player) {
 		case 0: return new Point[] { new Point( 4, 3), new Point( 5, 3), new Point( 6, 3), new Point( 7, 3), };

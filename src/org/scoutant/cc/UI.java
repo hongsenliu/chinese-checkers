@@ -17,6 +17,7 @@ import org.scoutant.Command;
 import org.scoutant.CommandListener;
 import org.scoutant.cc.model.Move;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
@@ -29,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class UI extends BaseActivity {
 //	@SuppressWarnings("unused")
@@ -169,15 +171,26 @@ public class UI extends BaseActivity {
 	private class AITask extends AsyncTask<Integer, Void, Move> {
 		@Override
 		protected Move doInBackground(Integer... params) {
-			Log.d(tag, "\n"  +"##################################################################################################################");
-			Log.d(tag, "thinking for : " + turnMgr.player());
-			Move move = game.ai.think(turnMgr.player());
+			Log.d(tag, "\n"  +"####################################################################################");
+			int turn = turnMgr.player(); 
+			Log.d(tag, "thinking for : " + turn);
+			Move move = game.ais[turn].think();
 			return move;
 		}
 		@Override
 		protected void onPostExecute(Move move) {
+			int turn = turnMgr.player();
 			if (move==null) turnMgr.update();
 			game.play(move, true, mayStartAI);
+			if (move!=null && game.game.over(turn)) {
+				Log.d(tag, "player " + turn +" is now over!");
+				// TODO nive message with button 'continue' and 'menu'...
+				Toast.makeText(UI.this , "Player " + turn + " is over!", Toast.LENGTH_LONG).show();
+				if (game.game.over()) {
+					Toast.makeText(UI.this , "GAME OVER!", 5000).show();
+					// TODO message....
+				}
+			}
 			game.init();
 		}
 	}

@@ -64,7 +64,7 @@ public class GameView extends FrameLayout  {
 	public Move move; // current target move in construction
 	
 	public Game game;
-	public AI ai;
+	public AI[] ais = new AI[6];
 	public UI ui;
 	public SharedPreferences prefs;
 	public boolean thinking=false;
@@ -103,7 +103,7 @@ public class GameView extends FrameLayout  {
 
 	public void reset() {
 		game = new Game( BaseActivity.playings(context));
-		ai = new AI(game);
+		for (int i=0; i<6; i++) ais[i] = new AI(game, i);
 		removeAllViews();
 		for (Player player : game.players) {
 			for (Peg peg : player.pegs()) {
@@ -306,6 +306,8 @@ public class GameView extends FrameLayout  {
 			if (animate) {
 				peg.animate(move, whenDone);
 			}
+			// TODO check if game over for player?
+			
 			turnMgr.update();
 			prefs.edit().putBoolean(UI.KEY_GAME_ON, true).commit();
 		}

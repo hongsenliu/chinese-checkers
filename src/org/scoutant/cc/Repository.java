@@ -29,14 +29,14 @@ public class Repository {
 		try {
 			fos = context.openFileOutput("moves.txt", Context.MODE_PRIVATE);
 			if (fos==null) return;
+			String str = "";
 			if (!game.game.over()) {
-				String str = "";
 				str += game.game.moves.size()+"\n";
 				str += game.turnMgr.player()+"\n";
 				str += game.game.serialize();
-				fos.write( str.getBytes());
-				Log.i(tag, "saving game \n" + game.game.serialize() );
 			} // if game is over we do not save it, so as to open a blank game next time
+			fos.write( str.getBytes());
+			Log.i(tag, "saving game \n" + game.game.serialize() );
 			fos.close();
 		} catch (FileNotFoundException e) {
 			Log.e(tag, "not found...", e);

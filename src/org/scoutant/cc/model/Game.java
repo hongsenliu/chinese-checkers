@@ -134,9 +134,17 @@ public class Game implements org.scoutant.Serializable {
 		return msg;
 	}
 
-	// TODO manage game over!
 	public boolean over() {
-		return false;
+		return over(0) && over(1) && over(2) && over(3) && over(4) && over(5);
+	}
+	
+	public boolean over(int player) {
+		List<Peg> pegs = players.get(player).pegs();
+		if (pegs.isEmpty()) return true; // player was not playing at all...
+		for (Peg peg: pegs) {
+			if (Board.outsideTriangle(player, peg)) return false; 
+		}
+		return true;
 	}
 
 	@Override
