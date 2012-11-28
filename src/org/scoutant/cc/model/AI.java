@@ -135,6 +135,7 @@ public class AI {
 	 * @return the list of moves for given play. Considering only jumps.
 	 */
 	protected void thinkJumps() {
+		pegs = game.player(player).pegs();
 		for (Peg peg : pegs) {
 			Move move = new Move(peg.point);
 			track = new Board();

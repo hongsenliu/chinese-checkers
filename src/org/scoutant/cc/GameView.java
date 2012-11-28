@@ -297,7 +297,10 @@ public class GameView extends FrameLayout  {
 
 	public void play(Move move, boolean animate, Command whenDone) {
 		Log.d(tag, "playing move " + move);
-		if (move==null) return;
+		if (move==null) {
+			if (whenDone!=null) whenDone.execute();
+			return;
+		}
 		Peg start = game.peg(move.point(0));
 		PegUI peg = findPeg(start);
 		
@@ -306,8 +309,6 @@ public class GameView extends FrameLayout  {
 			if (animate) {
 				peg.animate(move, whenDone);
 			}
-			// TODO check if game over for player?
-			
 			turnMgr.update();
 			prefs.edit().putBoolean(UI.KEY_GAME_ON, true).commit();
 		}

@@ -183,7 +183,6 @@ public class UI extends BaseActivity {
 			if (move==null) turnMgr.update();
 			if (game.game.over()) {
 				return;
-				// TODO ok with return?
 			}
 			game.play(move, true, mayStartAI);
 			if (move!=null && game.game.over(turn)) {
