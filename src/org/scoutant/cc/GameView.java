@@ -28,10 +28,8 @@ import org.scoutant.cc.model.Player;
 import org.scoutant.cc.model.Point;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -51,7 +49,7 @@ import android.widget.FrameLayout;
  * @author scoutant
  * http://commons.wikimedia.org/wiki/Category:Round_icons
  */
-public class GameView extends FrameLayout  {
+public class GameView extends FrameLayout implements MoveAnimationAware {
 
 	public static int sizeI = Board.sizeI;
 	public static int sizeJ = Board.sizeJ;
@@ -81,7 +79,7 @@ public class GameView extends FrameLayout  {
 	protected TurnMgr turnMgr;
 	private Context context;
 	
-	public List<MoveAnimation> pending=new ArrayList<MoveAnimation>();
+	private List<MoveAnimation> pending=new ArrayList<MoveAnimation>();
 	public Command maystartAI;
 	
 	public GameView(Context context, AttributeSet attrs) {
@@ -89,15 +87,12 @@ public class GameView extends FrameLayout  {
 		this.context = context;
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		setWillNotDraw(false);
-//		getBackground().setDither(true);
-		
 		processSize();
 		BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
         hole = BitmapFactory.decodeResource(context.getResources(), R.drawable.steel);
         iconSelected = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring2);
         iconPointed = BitmapFactory.decodeResource(context.getResources(), R.drawable.ring3);
-
 		reset();
 	}
 
@@ -132,19 +127,11 @@ public class GameView extends FrameLayout  {
 		Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		android.graphics.Point outSize = new android.graphics.Point();
 		display.getSize(outSize);
-		if (prefs.getBoolean("two-player", false)) { // portrait mode with buttons up or down according to who is the turn.
-			((Activity) getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			dI = outSize.x/sizeI;
-			dJ = Double.valueOf(0.8660254*dI).intValue();
-			layoutParams = new FrameLayout.LayoutParams(outSize.x, sizeJ*dJ, Gravity.TOP);
-			layoutParams.topMargin = (outSize.y-sizeJ*dJ)/2;
-		} else { // standard : landscape mode : one button on each side. 
-			dJ = Double.valueOf( outSize.y/sizeJ).intValue();
-			dI = Double.valueOf(dJ / 0.8660254).intValue();
-			layoutParams = new FrameLayout.LayoutParams(sizeI*dI, outSize.y, Gravity.TOP);
-			layoutParams.leftMargin = (outSize.x-sizeI*dI)/2;
-		}
-		Log.i(tag, "width : " + outSize.x + ", height : " + outSize.y+ ", dI : " + dI + ", dJ : " + dJ);
+		dJ = Double.valueOf( outSize.y/sizeJ).intValue();
+		dI = Double.valueOf(dJ / 0.8660254).intValue();
+		layoutParams = new FrameLayout.LayoutParams(sizeI*dI, outSize.y, Gravity.TOP);
+		layoutParams.leftMargin = (outSize.x-sizeI*dI)/2;
+//		Log.i(tag, "width : " + outSize.x + ", height : " + outSize.y+ ", dI : " + dI + ", dJ : " + dJ);
 		diameter = Double.valueOf( 0.96*dI).intValue();
 		height = outSize.y;
 		width = outSize.x;
@@ -157,7 +144,6 @@ public class GameView extends FrameLayout  {
 			View v = getChildAt(i);
 			if (v instanceof PegUI) {
 				found = (PegUI) v;
-//				if (found.peg.color == peg.color && found.peg.equals(peg)) return found;
 				if (found.peg.equals(peg)) return found;
 			}
 		}
@@ -166,7 +152,6 @@ public class GameView extends FrameLayout  {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-//		if (selected!=null) return false;
 		doTouch(event);
 		return true;
 	}
@@ -210,7 +195,6 @@ public class GameView extends FrameLayout  {
 	/** User pretend to select one of his balls */
 	private void select(Point p) {
 		if (!game.board.is(p)) return;
-		// TODO ensure ball actually is one of his. Or no need and consider case : selected==null...
 		Peg peg = game.peg(p);
 		if (!turnMgr.allowed(peg)) {
 			// TODO animation showing bad player?
@@ -263,7 +247,6 @@ public class GameView extends FrameLayout  {
 	}
 	
 	private void drawBoard(Canvas canvas){
-//		Log.d(tag, "onDraw");
 		for (int j=0; j<sizeJ; j++){
 			for (int i=0; i< sizeI; i++) {
 				Pixel l = pixel(new Point(i, j));
@@ -296,7 +279,7 @@ public class GameView extends FrameLayout  {
 	}
 
 	public void play(Move move, boolean animate, Command whenDone) {
-		Log.d(tag, "playing move " + move);
+		if (Game.LOG) Log.d(tag, "playing move " + move);
 		if (move==null) {
 			if (whenDone!=null) whenDone.execute();
 			return;
@@ -329,12 +312,11 @@ public class GameView extends FrameLayout  {
 	 * play back the last human move and potentially all the AI moves in-between
 	 */
 	public void back() {
-		// TODO first kill all play animation that mas still be waiting to be done. Use case : 'Menu' before end of animation and Back...
-		for (MoveAnimation animation : pending) {
-			if (animation!=null) animation.cancel();
-		}
-		pending.clear();
-		// TODO clear also every time a human play!
+//		for (MoveAnimation animation : pending) {
+//			if (animation!=null) animation.cancel();
+//		}
+//		pending.clear();
+		clearAnimations();
 		back1move();
 	}
 	
@@ -356,5 +338,24 @@ public class GameView extends FrameLayout  {
 			}
 		}
 	}
-	
+
+	@Override
+	public void addAnimation(MoveAnimation anim) {
+		pending.add(anim);
+	}
+
+	@Override
+	public void pauseAnimations() {
+		for (MoveAnimation animation : pending) {
+			if (animation!=null) animation.cancel();
+		}
+	}
+
+	@Override
+	public void clearAnimations() {
+		for (MoveAnimation animation : pending) {
+			if (animation!=null) animation.cancel();
+		}
+		pending.clear();
+	}	
 }

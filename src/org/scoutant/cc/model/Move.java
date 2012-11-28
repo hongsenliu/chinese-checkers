@@ -38,7 +38,7 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 	
 	public Move clone(){
 		Move move = new Move();
-		// TODO in bunch array cloning? 
+		// TODO performance : bunch array cloning? 
 		for (Point p : points) move.add(p);
 		return move;
 	}
@@ -136,19 +136,12 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 		}
 		return -1;
 	}
-	
 
 	/**
 	 * @return scalar distance between first and last point.
 	 */
 	public int length(int player) {
-		int a = Board.length(player, this.point(0));
-		if (a<0) throw new IllegalAccessError("BUG ON LENGTH---------------------------");
-		int z = Board.length(player, last());
-		if (z<0) throw new IllegalAccessError("BUG ON LENGTH---------------------------");
-		// TODO restore shorter :
-//		return Board.length(player, this.point(0)) - Board.length(player, last());
-		return a-z;
+		return Board.length(player, this.point(0)) - Board.length(player, last());
 	}
 	
 	
@@ -179,7 +172,6 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 			case 5: return axisLengh25(z);
 			default: throw new IllegalArgumentException("player ranging from 0 to 5...");
 		}
-		
 	}
 
 	/**

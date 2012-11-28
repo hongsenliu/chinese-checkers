@@ -38,8 +38,6 @@ public class MoveEvaluator implements Evaluator<Move> {
 	}
 
 	private static int leavingTriangle(int player,final Move m) {
-//		if (m==null || m.point(0)==null || m.last()== null ) return 0;
-		// TODO remove assert.
 		if (m==null || m.first()==null || m.last()== null ) throw new IllegalAccessError("Move shall have at least 2 points!");
 		return (Board.length(player, m.first())>12 && Board.length(player, m.last()) <= 12 ? 1 : 0);
 	}

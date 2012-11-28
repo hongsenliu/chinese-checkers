@@ -32,12 +32,12 @@ public class Peg implements Comparable<Peg> {
 		return ""+point + ", color :" + color;
 	}
 	/**
-	 * So as to consider as first candidate the pegs closest to bottom
+	 * Shall not be used! Do sort with a PegComparator...
 	 */
-	// TODO reconsider the ordering against player. this is valid only for player 0!!!
 	@Override
 	public int compareTo(Peg that) {
-		return -(this.point.j - that.point.j);
+		throw new IllegalAccessError( "Peg shall not be compared directly! Do sort with a PegComparator...");
+//		return -(this.point.j - that.point.j);
 	}
 	
 	@Override

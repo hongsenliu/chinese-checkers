@@ -48,7 +48,6 @@ public class PegUI extends ImageView {
 		Rect rect = toSquare(pixel, diameter);
 		params.setMargins(rect.left-1, rect.top-1, rect.right, rect.bottom);
 		setLayoutParams(params);
-		// TODO and for ANdroid level > 16?
 		setAlpha( peg.equals( game.selected) ? 95 : 255);
 	}
 	
@@ -72,7 +71,8 @@ public class PegUI extends ImageView {
 		List<Point> points = move.points;
 		if (points==null || points.size()< 2) return;
 		MoveAnimation animation = new MoveAnimation( this, move);
-		game.pending.add(animation);
+//		game.pending.add(animation);
+		game.addAnimation(animation);
 		animation.start( whenDone);
 	}
 

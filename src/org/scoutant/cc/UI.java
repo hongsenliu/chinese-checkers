@@ -15,6 +15,7 @@ package org.scoutant.cc;
 
 import org.scoutant.Command;
 import org.scoutant.CommandListener;
+import org.scoutant.cc.model.Game;
 import org.scoutant.cc.model.Move;
 
 import android.content.Intent;
@@ -133,9 +134,10 @@ public class UI extends BaseActivity {
 	
 	@Override
 		protected void onPause() {
-			for (MoveAnimation animation : game.pending) {
-				if (animation!=null) animation.cancel();
-			}
+//			for (MoveAnimation animation : game.pending) {
+//				if (animation!=null) animation.cancel();
+//			}
+			game.pauseAnimations();
 			super.onPause();
 		}
 	
@@ -170,9 +172,9 @@ public class UI extends BaseActivity {
 	private class AITask extends AsyncTask<Integer, Void, Move> {
 		@Override
 		protected Move doInBackground(Integer... params) {
-			Log.d(tag, "\n"  +"####################################################################################");
+			if (Game.LOG) Log.d(tag, "\n"  +"####################################################################################");
 			int turn = turnMgr.player(); 
-			Log.d(tag, "thinking for : " + turn);
+			if (Game.LOG) Log.d(tag, "thinking for : " + turn);
 			if (game.game.over()) return null; // to prevent looping if no human player...
 			Move move = game.ais[turn].think();
 			return move;
