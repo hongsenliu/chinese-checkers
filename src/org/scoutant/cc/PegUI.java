@@ -21,17 +21,17 @@ public class PegUI extends ImageView {
 	public static int[] ins = { R.anim.red_in, R.anim.push_left_in,R.anim.push_left_in, R.anim.blue_in, R.anim.push_left_in, R.anim.push_left_in}; 
 	protected Peg peg;
 	private int diameter;
-	public GameView game;
+	public GameAware game;
 
 	public PegUI(Context context) {
 		super(context);
 	}
 	
-	public PegUI(Context context, Peg peg, GameView game) {
+	public PegUI(Context context, Peg peg, GameAware game) {
 		this(context);
 		this.peg = peg;
 		this.game = game;
-		this.diameter = game.diameter*9/10;
+		this.diameter = game.diameter();
 		setImageBitmap( BitmapFactory.decodeResource(context.getResources(), icons[peg.color]));
 		doLayout();
 		}
@@ -48,7 +48,7 @@ public class PegUI extends ImageView {
 		Rect rect = toSquare(pixel, diameter);
 		params.setMargins(rect.left-1, rect.top-1, rect.right, rect.bottom);
 		setLayoutParams(params);
-		setAlpha( peg.equals( game.selected) ? 95 : 255);
+		setAlpha( peg.equals( game.selected()) ? 95 : 255);
 	}
 	
 	@Override
@@ -71,7 +71,6 @@ public class PegUI extends ImageView {
 		List<Point> points = move.points;
 		if (points==null || points.size()< 2) return;
 		MoveAnimation animation = new MoveAnimation( this, move);
-//		game.pending.add(animation);
 		game.addAnimation(animation);
 		animation.start( whenDone);
 	}

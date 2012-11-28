@@ -49,7 +49,7 @@ import android.widget.FrameLayout;
  * @author scoutant
  * http://commons.wikimedia.org/wiki/Category:Round_icons
  */
-public class GameView extends FrameLayout implements MoveAnimationAware {
+public class GameView extends FrameLayout implements GameAware {
 
 	public static int sizeI = Board.sizeI;
 	public static int sizeJ = Board.sizeJ;
@@ -57,7 +57,7 @@ public class GameView extends FrameLayout implements MoveAnimationAware {
 	private static String tag = "view";
 	private static String touch = "touch";
 	public int size; 
-	public Peg selected; // ball
+	private Peg selected; // ball
 	public Point pointed;  // board target point
 	public Move move; // current target move in construction
 	
@@ -137,7 +137,7 @@ public class GameView extends FrameLayout implements MoveAnimationAware {
 		width = outSize.x;
 	}
 	
-	public PegUI findPeg(Peg peg) {
+	private PegUI findPeg(Peg peg) {
 		if (peg==null) return null;
 		PegUI found=null;
 		for (int i=0; i<getChildCount(); i++) {
@@ -234,7 +234,7 @@ public class GameView extends FrameLayout implements MoveAnimationAware {
 	}
 
 	/** @return the center of the hole identified by provided @param point */
-	protected Pixel pixel(Point p) {
+	public Pixel pixel(Point p) {
 		// dI/2 offset for odd lines : 
 		int oI = (p.j%2==0 ? 0 : dI/2);
 		return new Pixel(dI/2 + p.i*dI+oI, dJ/2 +p.j*dJ);
@@ -312,10 +312,6 @@ public class GameView extends FrameLayout implements MoveAnimationAware {
 	 * play back the last human move and potentially all the AI moves in-between
 	 */
 	public void back() {
-//		for (MoveAnimation animation : pending) {
-//			if (animation!=null) animation.cancel();
-//		}
-//		pending.clear();
 		clearAnimations();
 		back1move();
 	}
@@ -357,5 +353,15 @@ public class GameView extends FrameLayout implements MoveAnimationAware {
 			if (animation!=null) animation.cancel();
 		}
 		pending.clear();
+	}
+
+	@Override
+	public int diameter() {
+		return diameter*9/10;
+	}
+
+	@Override
+	public Peg selected() {
+		return selected;
 	}	
 }
