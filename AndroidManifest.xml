@@ -13,11 +13,7 @@
         android:allowBackup="false"
         android:theme="@style/Theme.Holo.XL"
         >
-        <!-- 
-        android:theme="@style/Theme.Holo.Large"
         <activity android:name=".SplashScreenActivity" android:label="@string/chinese_checkers"  android:screenOrientation="landscape" >
-         -->
-        <activity android:name=".Help" android:label="@string/chinese_checkers"  android:screenOrientation="landscape" >
                 <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,8 +23,6 @@
         <activity android:name=".HumanVsMachineActivity" android:label="@string/human_vs_machine" android:screenOrientation="landscape" /> 
         <activity android:name=".UI" android:label="@string/chinese_checkers" android:screenOrientation="landscape" /> 
         <activity android:name=".MenuActivity" android:label="@string/menu" android:screenOrientation="landscape" />
-        <!-- 
-        <activity android:name=".Help" android:label="@string/help"  android:screenOrientation="landscape" />
-         --> 
+        <activity android:name=".HelpActivity" android:label="@string/help"  android:screenOrientation="landscape" />
         </application>
 </manifest>

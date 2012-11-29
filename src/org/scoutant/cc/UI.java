@@ -20,6 +20,7 @@ import org.scoutant.cc.model.Move;
 
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -134,9 +135,6 @@ public class UI extends BaseActivity {
 	
 	@Override
 		protected void onPause() {
-//			for (MoveAnimation animation : game.pending) {
-//				if (animation!=null) animation.cancel();
-//			}
 			game.pauseAnimations();
 			super.onPause();
 		}
@@ -164,8 +162,13 @@ public class UI extends BaseActivity {
 			if (resultCode == MenuActivity.RESULT_QUIT)  {
 				finish();
 			}
-			if (resultCode == MenuActivity.RESULT_HELP) { /* TODO Help */ }
-			if (resultCode == MenuActivity.RESULT_LOVE) { /* TODO launch User review */ }
+			if (resultCode == MenuActivity.RESULT_HELP) { 
+				startActivity( new Intent(this, HelpActivity.class)); 
+			}
+			if (resultCode == MenuActivity.RESULT_LOVE) { 
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=org.scoutant.cc")); 
+				startActivity(intent);
+			}
 		}
 	}
 	

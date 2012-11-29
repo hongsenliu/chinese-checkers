@@ -1,25 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView 
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     >
 	<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:id="@+id/container"
-	    android:gravity="center"
-	    android:background="@android:color/holo_blue_light"
-	    />
-	<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-	    android:textAppearance="?android:attr/textAppearanceLarge"
-	    android:text="@string/chinese_checkers"
-	    />
-	<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-	    android:textAppearance="?android:attr/textAppearance"
-	    android:text="bla bla..."
-	    />
-</LinearLayout>
+	    android:orientation="vertical"
+	    >
+		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearanceLarge"
+		    android:text="@string/chinese_checkers"
+		    />
+		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearance"
+		    android:text="@string/summary"
+		    />
+		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearanceLarge"
+		    android:text="@string/chinese_checkers"
+		    />
+		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearance"
+		    android:text="@string/summary"
+		    />
+				<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearanceLarge"
+		    android:text="@string/chinese_checkers"
+		    />
+		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearance"
+		    android:text="@string/summary"
+		    />
+				<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearanceLarge"
+		    android:text="@string/chinese_checkers"
+		    />
+		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearance"
+		    android:text="@string/summary"
+		    />
+		
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="match_parent"
+		    android:layout_height="350px"
+		    android:orientation="horizontal"
+		    android:id="@+id/container"
+		    android:gravity="center"
+		    android:background="@android:color/holo_blue_light"
+		    android:layout_weight="1"
+		    />
+		
+	    <ImageView 
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:id="@+id/back"
+		    android:src="@drawable/left_128"
+		    android:layout_width="match_parent"
+		    android:layout_height="64dp" 
+		    android:contentDescription="@string/back"
+	        />
+	
+	</LinearLayout>
+</ScrollView>
+	

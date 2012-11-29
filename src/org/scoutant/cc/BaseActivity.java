@@ -1,11 +1,13 @@
 package org.scoutant.cc;
 
+import org.scoutant.Command;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 
 public abstract class BaseActivity extends Activity {
@@ -51,5 +53,6 @@ public abstract class BaseActivity extends Activity {
 	protected boolean ai(int player) {
 		return ais(this)[player];
 	}
-	
+
+
 }
