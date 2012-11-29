@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="icon_margin">50dp</dimen>
-    <dimen name="text_to_icon_margin">15dp</dimen>
+    
+    <dimen name="size_xl_small">22sp</dimen>
+    <dimen name="size_xl">28sp</dimen>
+    <dimen name="size_xl_medium">28sp</dimen>
+    <dimen name="size_xl_large">40sp</dimen>
+                                                                                                                                       
 </resources>

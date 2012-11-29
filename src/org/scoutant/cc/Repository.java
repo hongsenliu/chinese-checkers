@@ -71,6 +71,7 @@ public class Repository {
 			// second line gives the turn data
 			String dataTurn = reader.readLine();
 			while ((line = reader.readLine()) != null)   {
+				System.out.println(line);
 				Move move = Move.deserialize(line);
 				list.add(move);
 			}
