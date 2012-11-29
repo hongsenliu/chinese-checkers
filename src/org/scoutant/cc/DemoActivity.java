@@ -11,14 +11,13 @@ import org.scoutant.cc.model.Move;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 
 public abstract class DemoActivity extends BaseActivity {
 	private static final String tag = "activity";
 	protected DemoGameView game;
 	private int current=0;
 	private List<Move> moves = new ArrayList<Move>();
-	protected Command finish = new Finish();
+	protected Command afterDemo = new DoNothing();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +44,10 @@ public abstract class DemoActivity extends BaseActivity {
 	protected class PlayMove implements Command {
 		@Override
 		public void execute() {
-			if (current>= moves.size()) finish.execute();
+			if (current>= moves.size()) afterDemo.execute();
 			else game.play( moves.get(current++), true, this);
 		}
 	}
 	
-	private class Finish implements Command {
-		@Override
-		public void execute() {
-			finish();
-		}
-	}
 
 }

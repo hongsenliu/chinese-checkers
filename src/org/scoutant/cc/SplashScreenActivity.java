@@ -10,19 +10,16 @@ import android.view.ViewGroup;
 
 public class SplashScreenActivity extends DemoActivity {
 	
-	private static final String tag = "activity";
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		finish = new FinishAndReplace();
 		if (gameOn()) {
-			finish.execute();
+			new FinishAndReplace().execute();
 			return;
 		}
+		afterDemo = new FinishAndReplace();
 		setContentView(R.layout.demo);
-		findViewById(R.id.container).setOnClickListener( new CommandListener(finish));
-		((ViewGroup) findViewById(R.id.container)).addView(game);
+		findViewById(R.id.container).setOnClickListener( new CommandListener( new FinishAndReplace()));
 
 		Display display = getWindowManager().getDefaultDisplay();
 		android.graphics.Point size = new android.graphics.Point();
@@ -30,15 +27,16 @@ public class SplashScreenActivity extends DemoActivity {
 		int height = size.y;
 		game = new DemoGameView(this, height*3/4);
 		
+		((ViewGroup) findViewById(R.id.container)).addView(game);
 		new PlayMove().execute();
 	}
 
 	private class FinishAndReplace implements Command {
 		@Override
 		public void execute() {
-			startActivityForResult(new Intent(SplashScreenActivity.this, NbPlayersActivity.class), 0);
+			startActivity(new Intent(SplashScreenActivity.this, NbPlayersActivity.class));
 			finish();
 		}
 	}
-
+	
 }

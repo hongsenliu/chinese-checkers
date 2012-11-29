@@ -8,13 +8,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.MenuItem;
 
 
 public abstract class BaseActivity extends Activity {
 	
 	protected static final String[] keys = { "h_vs_m_0",  "h_vs_m_1", "h_vs_m_2", "h_vs_m_3", "h_vs_m_4", "h_vs_m_5"};
 	
-	private static String tag = "activity";
+//	private static String tag = "activity";
 	public static final String KEY_GAME_ON = "game_on";
 	protected SharedPreferences prefs;
 
@@ -22,6 +23,25 @@ public abstract class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu ( final android.view.Menu menu ) {
+		getMenuInflater().inflate(R.menu.menu_help, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected ( final MenuItem item ) {
+		super.onOptionsItemSelected(item);
+		switch(item.getItemId()) {
+			case R.id.menu_item_help:
+				startActivity( new Intent(this, HelpActivity.class));
+				break;
+			default: return super.onOptionsItemSelected(item);
+		}
+		return true;
 	}
 	
 	protected boolean gameOn() {
@@ -54,5 +74,16 @@ public abstract class BaseActivity extends Activity {
 		return ais(this)[player];
 	}
 
+	protected class Finish implements Command {
+		@Override
+		public void execute() {
+			finish();
+		}
+	}
+	protected class DoNothing implements Command {
+		@Override
+		public void execute() {
+		}
+	}
 
 }

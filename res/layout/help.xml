@@ -34,14 +34,7 @@
 		    android:textAppearance="?android:attr/textAppearance"
 		    android:text="@string/summary"
 		    />
-				<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-		    android:textAppearance="?android:attr/textAppearanceLarge"
-		    android:text="@string/chinese_checkers"
-		    />
-		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-		    android:textAppearance="?android:attr/textAppearance"
-		    android:text="@string/summary"
-		    />
+		
 		
 		<LinearLayout
 			xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,6 +45,15 @@
 		    android:gravity="center"
 		    android:background="@android:color/holo_blue_light"
 		    android:layout_weight="1"
+		    />
+		
+		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearanceLarge"
+		    android:text="@string/about_title"
+		    />
+		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearance"
+		    android:text="@string/about"
 		    />
 		
 	    <ImageView 

@@ -4,10 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    >
-    <!-- 
     android:background="@layout/linear_gradient"
-     -->
+    >
     <LinearLayout 
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="match_parent"
@@ -41,6 +39,7 @@
 			    android:layout_marginRight="@dimen/text_to_icon_margin"
 			    android:gravity="center_vertical|right"
 			    android:layout_centerVertical="true"
+			    android:textAppearance="?android:attr/textAppearance"
 				/>
 	    </RelativeLayout>
 	    <RelativeLayout
@@ -69,6 +68,7 @@
 			    android:layout_marginLeft="@dimen/text_to_icon_margin"
 			    android:gravity="center_vertical|left"
 			    android:layout_centerVertical="true"
+			    android:textAppearance="?android:attr/textAppearance"
 				/>
 		    </RelativeLayout>
 	</LinearLayout>
@@ -107,6 +107,7 @@
 			    android:layout_marginRight="@dimen/text_to_icon_margin"
 			    android:gravity="center_vertical|right"
 			    android:layout_centerVertical="true"
+			    android:textAppearance="?android:attr/textAppearance"
 				/>
 	    </RelativeLayout>
 	    <RelativeLayout
@@ -135,6 +136,7 @@
 			    android:layout_marginLeft="@dimen/text_to_icon_margin"
 			    android:gravity="center_vertical|left"
 			    android:layout_centerVertical="true"
+			    android:textAppearance="?android:attr/textAppearance"
 				/>
 		    </RelativeLayout>
 	</LinearLayout>
@@ -173,6 +175,7 @@
 			    android:layout_marginRight="@dimen/text_to_icon_margin"
 			    android:gravity="center_vertical|right"
 			    android:layout_centerVertical="true"
+			    android:textAppearance="?android:attr/textAppearance"
 				/>
 	    </RelativeLayout>
 	    <RelativeLayout
@@ -201,6 +204,7 @@
 			    android:layout_marginLeft="@dimen/text_to_icon_margin"
 			    android:gravity="center_vertical|left"
 			    android:layout_centerVertical="true"
+			    android:textAppearance="?android:attr/textAppearance"
 				/>
 		    </RelativeLayout>
 	</LinearLayout>

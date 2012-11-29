@@ -11,7 +11,7 @@ public class HelpActivity extends DemoActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.help);
-		findViewById(R.id.back).setOnClickListener( new CommandListener(finish));
+		findViewById(R.id.back).setOnClickListener( new CommandListener( new Finish()));
 		game = new DemoGameView(this, 350);
 		((ViewGroup) findViewById(R.id.container)).addView(game);
 		new PlayMove().execute();
