@@ -84,7 +84,7 @@ public class UI extends BaseActivity {
 	
 	private void initgame() {
 		game.reset();
-		turnMgr = new TurnMgr( this, (ImageView) findViewById(R.id.turn), game.height/5);
+		turnMgr = new TurnMgr( this, (ImageView) findViewById(R.id.turn));
 		game.setTurnMgr(turnMgr);
 	}
 	
@@ -186,9 +186,7 @@ public class UI extends BaseActivity {
 		protected void onPostExecute(Move move) {
 			int turn = turnMgr.player();
 			if (move==null) turnMgr.update();
-			if (game.game.over()) {
-				return;
-			}
+			if (game.game.over()) return;
 			game.play(move, true, mayStartAI);
 			if (move!=null && game.game.over(turn)) {
 				Log.d(tag, "player " + turn +" is now over!");

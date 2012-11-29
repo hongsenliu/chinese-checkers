@@ -3,19 +3,17 @@ package org.scoutant.cc;
 import org.scoutant.cc.model.Peg;
 
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.FrameLayout;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 public class TurnMgr {
 	private ImageView view;
-	private int d;
 	private BaseActivity activity;
 
-	public TurnMgr(BaseActivity activity, ImageView turnView, int d) {
+	public TurnMgr(BaseActivity activity, ImageView turnView) {
 		this.activity = activity;
 		this.view = turnView;
-		this.d = d;
 		updateView();
 	}
 
@@ -40,10 +38,13 @@ public class TurnMgr {
 	private void updateView(){
 		int resId = PegUI.icons[turn];
 		view.setImageResource(resId);
-		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(d, d, Gravity.RIGHT|Gravity.BOTTOM);
-		layoutParams.rightMargin = 20;
-		layoutParams.bottomMargin = 20;
-		view.setLayoutParams( layoutParams);
+		Animation myFadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
+//		Animation myFadeInAnimation = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in);
+		view.startAnimation(myFadeInAnimation);
+//		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(d, d, Gravity.RIGHT|Gravity.BOTTOM);
+//		layoutParams.rightMargin = 20;
+//		layoutParams.bottomMargin = 20;
+//		view.setLayoutParams( layoutParams);
 	}
 
 	public boolean allowed(Peg peg){
