@@ -34,6 +34,7 @@ public class SplashScreenActivity extends DemoActivity {
 	private class FinishAndReplace implements Command {
 		@Override
 		public void execute() {
+			stopPlaying();
 			startActivity(new Intent(SplashScreenActivity.this, NbPlayersActivity.class));
 			finish();
 		}

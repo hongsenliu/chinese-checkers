@@ -90,20 +90,20 @@
 		    >
 		    <ImageView 
 				xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/back"
+			    android:id="@+id/resume"
 			    android:src="@drawable/left_128"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content" 
 			    android:layout_alignParentRight="true"
 			    android:layout_marginRight="@dimen/icon_margin"
 			    android:layout_centerVertical="true"
-			    android:contentDescription="@string/back"
+			    android:contentDescription="@string/resume_game"
 		        />
 		    <TextView 
-		        android:text="@string/back"
+		        android:text="@string/resume_game"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content" 
-			    android:layout_toLeftOf="@id/back"
+			    android:layout_toLeftOf="@id/resume"
 			    android:layout_marginRight="@dimen/text_to_icon_margin"
 			    android:gravity="center_vertical|right"
 			    android:layout_centerVertical="true"
@@ -119,20 +119,20 @@
 		    >
 		    <ImageView 
 				xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/resume"
-			    android:src="@drawable/action_forward_128"
+			    android:id="@+id/back"
+			    android:src="@drawable/undo_57_128"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content" 
 			    android:layout_alignParentLeft="true"
 			    android:layout_marginLeft="@dimen/icon_margin"
 			    android:layout_centerVertical="true"
-			    android:contentDescription="@string/resume"
+			    android:contentDescription="@string/undo_move"
 		        />
 		    <TextView 
-		        android:text="@string/resume"
+		        android:text="@string/undo_move"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content" 
-			    android:layout_toRightOf="@id/resume"
+			    android:layout_toRightOf="@id/back"
 			    android:layout_marginLeft="@dimen/text_to_icon_margin"
 			    android:gravity="center_vertical|left"
 			    android:layout_centerVertical="true"

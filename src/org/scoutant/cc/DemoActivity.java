@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.scoutant.Command;
+import org.scoutant.cc.BaseActivity.DoNothing;
 import org.scoutant.cc.model.Move;
 
 import android.os.Bundle;
@@ -49,5 +50,8 @@ public abstract class DemoActivity extends BaseActivity {
 		}
 	}
 	
-
+	public void stopPlaying() {
+		afterDemo = new DoNothing();
+		moves.clear();
+	}
 }
