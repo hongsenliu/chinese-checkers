@@ -18,6 +18,7 @@ import java.util.List;
 public class Game implements org.scoutant.Serializable {
 	
 	public static final boolean LOG=true;
+	public static final boolean DEV=true;
 	
 	@SuppressWarnings("unused")
 	private static String tag = "model";

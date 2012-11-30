@@ -51,7 +51,7 @@ public class UI extends BaseActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main);
-		findViewById(R.id.turn).setOnClickListener(new CommandListener( startAI));
+		if (Game.DEV) findViewById(R.id.turn).setOnClickListener(new CommandListener( startAI));
 		findViewById(R.id.menu).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -210,7 +210,14 @@ public class UI extends BaseActivity {
 	private class MayStartAI implements Command {
 		@Override
 		public void execute() {
-			if (ai( turnMgr.player())) startAI.execute();  
+			int turn = turnMgr.player();
+			if (ai( turn)) startAI.execute();
+			else { // human
+				if (game.game.over(turn)) { // human player is over let's trigger next player!
+					turnMgr.update();
+					mayStartAI.execute();
+				}
+			}
 		}
 		
 	}
