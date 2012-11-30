@@ -197,7 +197,6 @@ public class GameView extends FrameLayout implements GameAware {
 		if (!game.board.is(p)) return;
 		Peg peg = game.peg(p);
 		if (!turnMgr.allowed(peg)) {
-			// TODO animation showing bad player?
 			turnMgr.animate();
 			return;
 		}

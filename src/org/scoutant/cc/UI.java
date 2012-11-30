@@ -96,7 +96,7 @@ public class UI extends BaseActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO manage double back to exit and single back do nothing
+		// TODO maybe later : manage double back to exit and single back do nothing
 		if ( keyCode == KeyEvent.KEYCODE_MENU) {
 			startMenu();
 			return true;

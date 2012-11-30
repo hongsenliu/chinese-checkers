@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.scoutant.cc.NbPlayersActivity;
+import java.util.Random;
 
 /**
  * Players in this order :
@@ -52,6 +51,7 @@ public class AI {
 	private List<Move> moves = new ArrayList<Move>();
 	private Comparator<Move> comparator; 
 	private Comparator<Move> endgameComparator;
+	private Random random = new Random();
 	
 	public AI(Game game, int player) {
 		this.game = game;
@@ -62,7 +62,7 @@ public class AI {
 	}
 	
 	public Move think() {
-		// TODO exclude peg that has reached target!
+		// TODO performance exclude peg that has reached target!
 		pegs = game.player(player).pegs();
 		moves.clear();
 
@@ -78,16 +78,12 @@ public class AI {
 		if (moves.size()<=4) { // trapped in the 9-peg endgame issue?
 			consider9PegEndgamePosition();
 		}
-		
 		if (moves.size()==0) return null; // game over
-		
-		// TODO random move among the 10 best ones...
-		Move move = moves.get(0);
+
+		Move move = randomAmongBest();
 		return move ;
 	}
 
-	// TODO performance : consider a LOG constant to actually log only if ON!
-	
 	/**
 	 * <p> 9-pegs endgame issue :
 	 * <li>. . X . .
@@ -200,4 +196,31 @@ public class AI {
 		}
 		return nb;
 	}
+
+	/**
+	 * @return a nice move among the best ones : taken randomly among the best moves.
+	 * The set of best moves is the one that have length greater than 75% of the very best one. 
+	 */
+	private Move randomAmongBest() {
+		Move best = moves.get(0);
+		if (moves.size()==1) return best;
+		if (best.length(player)==0) return best; // important to consider the very best when only zero-length moves available.
+		int breakthrough = breakthrough();
+		int index = random.nextInt( breakthrough < 6 ? breakthrough : 6);
+		if (Game.LOG) Log.d(tag, "random index : " + index +", breaktrough was : " + breakthrough);
+		return moves.get(index);
+	}
+	
+	/**
+	 * @return the first index of move which length is strictly shorter than move # 0. 
+	 */
+	private int breakthrough() {
+		int l0 = moves.get(0).length(player);
+		l0 = l0*72/100;
+		for (int i=1; i<moves.size(); i++) {
+			if (l0>moves.get(i).length(player)) return i;
+		}
+		return moves.size();
+	}
+	
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements org.scoutant.Serializable {
-	
+	// TODO REMOVE LOG and DEV before publish!
 	public static final boolean LOG=true;
 	public static final boolean DEV=true;
 	
@@ -39,7 +39,6 @@ public class Game implements org.scoutant.Serializable {
 	public Game( ) {
 		this( new boolean[] { true, true, true, true, true, true } );
 	}
-
 	
 	/**
 	 * creating players in this order :
