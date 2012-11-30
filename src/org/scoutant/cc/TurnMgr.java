@@ -18,6 +18,9 @@ public class TurnMgr {
 	}
 
 	private int turn = 0;
+	private Animation myFadeInAnimation;
+	private Animation cautionAnimation;
+	
 	public int player() { return turn;}
 	
 	/** @return true is current player is AI  */
@@ -34,17 +37,12 @@ public class TurnMgr {
 		} else update();
 	}
 
-	// TODO add a fade-out and fade-in animation?
 	private void updateView(){
 		int resId = PegUI.icons[turn];
 		view.setImageResource(resId);
-		Animation myFadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
-//		Animation myFadeInAnimation = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in);
+		myFadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
+		cautionAnimation = AnimationUtils.loadAnimation(activity, R.anim.shrink_fade_out_center);
 		view.startAnimation(myFadeInAnimation);
-//		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(d, d, Gravity.RIGHT|Gravity.BOTTOM);
-//		layoutParams.rightMargin = 20;
-//		layoutParams.bottomMargin = 20;
-//		view.setLayoutParams( layoutParams);
 	}
 
 	public boolean allowed(Peg peg){
@@ -58,5 +56,13 @@ public class TurnMgr {
 			Log.d("activity", "turn is now : " + turn);
 			updateView();
 		} else pop(); 
+	}
+
+	
+	/**
+	 * animates the peg view showing who is the turn, mostly to indicate the user pressed wrong color... 
+	 */
+	public void animate() {
+		view.startAnimation(cautionAnimation);
 	}
 }

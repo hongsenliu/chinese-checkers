@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.scoutant.cc.NbPlayersActivity;
+
 /**
  * Players in this order :
  *<p>    3 
@@ -65,8 +67,9 @@ public class AI {
 		moves.clear();
 
 		thinkJumps();
-		Log.d(tag, "# of jumps : " + moves.size());
-		if (moves.size()<=4) {
+		int nb = nbPositiveJumps(); 
+		Log.d(tag, "# of jumps : " + moves.size() +", and strictly positive : " + nb);
+		if (nb<=4) {
 			thinkHops();
 			Collections.sort(moves, endgameComparator);
 			Log.d(tag, "# of moves including hops : " + moves.size());
@@ -186,5 +189,15 @@ public class AI {
 			log(move);
 		}
 	}
-	
+
+	/** 
+	 * Among the moves, @return the number of ones which length is strictly positive.
+	 */
+	private int nbPositiveJumps() {
+		int nb=0;
+		for (Move move: moves ) {
+			if (move.length(player) > 0) nb++;
+		}
+		return nb;
+	}
 }
