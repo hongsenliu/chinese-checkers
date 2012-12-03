@@ -18,11 +18,14 @@ import org.scoutant.CommandListener;
 import org.scoutant.cc.model.Game;
 import org.scoutant.cc.model.Move;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,12 +34,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class UI extends BaseActivity {
 //	@SuppressWarnings("unused")
 	private static String tag = "activity";
 	public static final int REQUEST_MENU = 90;
+	public static final int REQUEST_GAME_OVER = 99;
+	public static final int REQUEST_RATE = 100;
 	
 	private GameView game;
 	private TurnMgr turnMgr;
@@ -67,6 +71,7 @@ public class UI extends BaseActivity {
 		repository = new Repository(this, game);
 		initgame();
 
+		logMetrics();
 		repository.restore();
 	}
 	
@@ -170,6 +175,13 @@ public class UI extends BaseActivity {
 				startActivity(intent);
 			}
 		}
+		if (requestCode == REQUEST_GAME_OVER) {
+			boolean asking = mayAskForRate();
+			if (!asking) startMenu();
+		}
+		if (requestCode == REQUEST_RATE) {
+			startMenu();
+		}
 	}
 	
 	private class AITask extends AsyncTask<Integer, Void, Move> {
@@ -190,21 +202,21 @@ public class UI extends BaseActivity {
 			game.play(move, true, mayStartAI);
 			if (move!=null && game.game.over(turn)) {
 				Log.d(tag, "player " + turn +" is now over!");
-				// TODO nive message with button 'continue' and 'menu'...
-				Toast.makeText(UI.this , "Player " + turn + " is over!", Toast.LENGTH_SHORT).show();
 				if (game.game.over()) {
-					Toast.makeText(UI.this , "GAME is just OVER!", Toast.LENGTH_LONG).show();
-					mayAskForRate();
+					Log.d(tag, "GAME is just OVER!");
+					startActivityForResult(new Intent(UI.this, GameOverActivity.class), REQUEST_GAME_OVER);
 				}
 			}
 			game.init();
 		}
 	}
 
-	public void mayAskForRate() {
+	public boolean mayAskForRate() {
 		if (AppRater.shallAskForRate(this)) {
-			startActivity( new Intent(this, RateActivity.class));
+			startActivityForResult( new Intent(this, RateActivity.class), REQUEST_RATE);
+			return true;
 		}
+		return false;
 	}
 	
 	private class StartAI implements Command {
@@ -228,4 +240,49 @@ public class UI extends BaseActivity {
 		}
 		
 	}
+	
+	
+	private void logMetrics() {
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+//		Log.d(tag , "densityDpi: " +  metrics.densityDpi);
+//		Log.d(tag , "widthPixel: " +  metrics.widthPixels);
+//		Log.d(tag , "xdpi: " +  metrics.xdpi);
+		Log.d(tag , "density: " +  metrics.density);
+		Log.d(tag, "screen : " + metrics.widthPixels + "px * " + metrics.heightPixels +" px");
+		float w = convertPixelsToDp( metrics.widthPixels , this);
+		float h = convertPixelsToDp( metrics.heightPixels , this);
+		Log.d(tag, "screen : " + w + "dp * " + h +"dp");
+	}
+	
+	/**
+	 * This method converts dp unit to equivalent device specific value in pixels. 
+	 * 
+	 * @param dp A value in dp(Device independent pixels) unit. Which we need to convert into pixels
+	 * @param context Context to get resources and device specific display metrics
+	 * @return A float value to represent Pixels equivalent to dp according to device
+	 * 
+	 * @see http://stackoverflow.com/questions/4605527/converting-pixels-to-dp-in-android
+	 */
+	public static float convertDpToPixel(float dp,Context context){
+	    Resources resources = context.getResources();
+	    DisplayMetrics metrics = resources.getDisplayMetrics();
+	    float px = dp * (metrics.densityDpi/160f);
+	    return px;
+	}
+	/**
+	 * This method converts device specific pixels to device independent pixels.
+	 * 
+	 * @param px A value in px (pixels) unit. Which we need to convert into db
+	 * @param context Context to get resources and device specific display metrics
+	 * @return A float value to represent db equivalent to px value
+	 */
+	public static float convertPixelsToDp(float px,Context context){
+	    Resources resources = context.getResources();
+	    DisplayMetrics metrics = resources.getDisplayMetrics();
+	    float dp = px / (metrics.densityDpi / 160f);
+	    return dp;
+
+	}
+
+	
 }

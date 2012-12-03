@@ -3,6 +3,7 @@
 	<string name="chinese_checkers">Chinese Checkers</string>
 	
 	<string name="yes">Yes</string>
+	<string name="ok">Ok</string>
 	<string name="no">No</string>
 
 	<string name="help">Help</string>
@@ -62,6 +63,7 @@
 	<string name="later">Later</string>
 	<string name="never">No</string>
 	
+	
 	<string name="i_like_it">I like it</string>
 	
 	<string name="summary">Chinese Checkers is ...</string>
@@ -70,5 +72,8 @@
 	<string name="about">Chinese Checkers, release 1.0, chinese-checkers.scoutant.org\n
 Free Libre open-source application, licence GPLv3, find the source at https://github.com/scoutant/chinese-checkers</string>
 	
+	<!-- game over and player over messages-->
+	<string name="ranking">Ranking</string>
+	<string name="game_over">Game over</string>
 	
 </resources>

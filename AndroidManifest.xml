@@ -7,12 +7,16 @@
     
     <uses-feature android:name="android.hardware.touchscreen" android:required="true"/>
 	<supports-screens android:smallScreens="false" android:normalScreens="false" android:largeScreens="false" android:xlargeScreens="true" />
+	<!--  only targeting XL screens ie at least : 960dp * 720 dp -->
 	
     <application android:icon="@drawable/chinese_checkers_512" 
         android:label="@string/chinese_checkers"
         android:allowBackup="false"
         android:theme="@style/Theme.Holo.XL"
         >
+        <!-- 
+        <activity android:name=".GameOverActivity" android:label="@string/game_over"  android:screenOrientation="landscape" >
+         -->
         <activity android:name=".SplashScreenActivity" android:label="@string/chinese_checkers"  android:screenOrientation="landscape" >
             <intent-filter>
                <action android:name="android.intent.action.MAIN" />
@@ -25,5 +29,6 @@
         <activity android:name=".MenuActivity" android:label="@string/menu" android:screenOrientation="landscape" />
         <activity android:name=".HelpActivity" android:label="@string/help"  android:screenOrientation="landscape" />
         <activity android:name=".RateActivity" android:label="@string/rate"  android:screenOrientation="landscape" />
-        </application>
+        <activity android:name=".GameOverActivity" android:label="@string/game_over"  android:screenOrientation="landscape" />
+     </application>
 </manifest>
