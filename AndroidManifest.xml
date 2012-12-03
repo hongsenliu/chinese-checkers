@@ -14,6 +14,7 @@
         android:theme="@style/Theme.Holo.XL"
         >
         <!-- 
+        <activity android:name=".RateActivity" android:label="@string/rate"  android:screenOrientation="landscape" >
          -->
         <activity android:name=".SplashScreenActivity" android:label="@string/chinese_checkers"  android:screenOrientation="landscape" >
             <intent-filter>
@@ -26,5 +27,5 @@
         <activity android:name=".UI" android:label="@string/chinese_checkers" android:screenOrientation="landscape" /> 
         <activity android:name=".MenuActivity" android:label="@string/menu" android:screenOrientation="landscape" />
         <activity android:name=".HelpActivity" android:label="@string/help"  android:screenOrientation="landscape" />
-        </application>
+       </application>
 </manifest>

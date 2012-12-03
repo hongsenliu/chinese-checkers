@@ -61,58 +61,33 @@ public class AI {
 		endgameComparator = new MoveComparator( new EndgameMoveEvaluator(player));
 	}
 	
-	public Move think() {
+	protected void init() {
 		// TODO performance exclude peg that has reached target!
 		pegs = game.player(player).pegs();
 		moves.clear();
-
+	}
+	
+	public Move think() {
+		init();
 		thinkJumps();
 		int nb = nbPositiveJumps(); 
 		Log.d(tag, "# of jumps : " + moves.size() +", and strictly positive : " + nb);
+		if (isBeginning()) {
+			considerBeginning();
+		}
 		if (nb<=4) {
 			thinkHops();
 			Collections.sort(moves, endgameComparator);
 			Log.d(tag, "# of moves including hops : " + moves.size());
 		}
-		log();
 		if (moves.size()<=4) { // trapped in the 9-peg endgame issue?
 			consider9PegEndgamePosition();
 		}
+		log();
 		if (moves.size()==0) return null; // game over
 
 		Move move = randomAmongBest();
 		return move ;
-	}
-
-	/**
-	 * <p> 9-pegs endgame issue :
-	 * <li>. . X . .
-	 * <li> . X X X
-	 * <li>  X X X
-	 * <li>   X X
-	 * <li>    X
-	 */
-	private void consider9PegEndgamePosition() {
-		for( int i = 1 ; i<10; i++) {
-			Peg peg = pegs.get(i);
-			if (!Board.intoTriangle(player, peg.point)) return;
-		}
-		// the 9 pegs closest to goal are into triangle. 
-		Peg peg = pegs.get(0);
-		if (Board.length(player, peg.point)!= 4) return; // if length is 3, game actually is over...
-		if (! peg.point.equals(Board.pivots[player]) ) return; // if not pivot, AI naturally find move toward pivot.
-		Point target = null;
-		for (Point point : Board.thirdRow(player)) { // which is the hole not occupied by none of the 9 pegs?
-			if ( !board.is(point)) target = point;
-		}
-		if (target==null) return; // surely occupied by a peg of another player!
-		// correct option is to move peg towards target.
-		int rigthPlayer = (player+1)%6;
-		Move move = new Move(peg.point);
-		Log.d(tag, "Considering 9-peg endgame issue! distance of free hole to rigth-player goal : " + Board.length(rigthPlayer, target) +", " + target);
-		move.add( Board.length(rigthPlayer, target)>6 ? Board.escapes[player][0] : Board.escapes[player][1]);
-		moves.clear();
-		moves.add(move);
 	}
 
 	protected void thinkHops() {
@@ -198,14 +173,17 @@ public class AI {
 	}
 
 	/**
-	 * @return a nice move among the best ones : taken randomly among the best moves.
-	 * The set of best moves is the one that have length greater than 75% of the very best one. 
+	 * @return a nice move among the best ones : taken randomly among the best moves, against 'move length'.
+	 * <p>For the very first move we also consider the 2 one-step hop towards pivot point.
 	 */
 	private Move randomAmongBest() {
 		Move best = moves.get(0);
 		if (moves.size()==1) return best;
 		if (best.length(player)==0) return best; // important to consider the very best when only zero-length moves available.
 		int breakthrough = breakthrough();
+		if (isBeginning() && moves.get(0).length(player)<=2 ) { // lets randomly get one of the 6 + 2 nive moves
+			return moves.get(random.nextInt(breakthrough+2)); 
+		}
 		int index = random.nextInt( breakthrough < 6 ? breakthrough : 6);
 		if (Game.LOG) Log.d(tag, "random index : " + index +", breaktrough was : " + breakthrough);
 		return moves.get(index);
@@ -216,11 +194,64 @@ public class AI {
 	 */
 	private int breakthrough() {
 		int l0 = moves.get(0).length(player);
-		l0 = l0*72/100;
 		for (int i=1; i<moves.size(); i++) {
 			if (l0>moves.get(i).length(player)) return i;
 		}
 		return moves.size();
 	}
+
+	/**
+	 * It's the first move if the 4 'last' pegs are still at length more than 13 from target. 
+	 */
+	private boolean isBeginning(){
+		for( int i=6; i<10; i++) {
+			if ( Board.length(player, pegs.get(i).point) <= 12) return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * As initial position, a jump is the standard move, but a one-step hop is nice too in order to prepare a 4-length jump the turn.
+	 * Here we add 2 interesting moves that will complete the 6 standard other options. Ramdomly choosing one among those 8 moves will provided different
+	 * game for the player...
+	 */
+	protected void considerBeginning(){
+		if (!isBeginning()) return;
+		if (moves.get(0).length(player)>=4) return; // no competing with long-length moves
+		moves.add( Board.beginnings[player][0]);
+		moves.add( Board.beginnings[player][1]);
+	}
+	
+	/**
+	 * <p> 9-pegs endgame issue :
+	 * <li>. . X . .
+	 * <li> . X X X
+	 * <li>  X X X
+	 * <li>   X X
+	 * <li>    X
+	 */
+	private void consider9PegEndgamePosition() {
+		for( int i = 1 ; i<10; i++) {
+			Peg peg = pegs.get(i);
+			if (!Board.intoTriangle(player, peg.point)) return;
+		}
+		// the 9 pegs closest to goal are into triangle. 
+		Peg peg = pegs.get(0);
+		if (Board.length(player, peg.point)!= 4) return; // if length is 3, game actually is over...
+		if (! peg.point.equals(Board.pivots[player]) ) return; // if not pivot, AI naturally find move toward pivot.
+		Point target = null;
+		for (Point point : Board.thirdRow(player)) { // which is the hole not occupied by none of the 9 pegs?
+			if ( !board.is(point)) target = point;
+		}
+		if (target==null) return; // surely occupied by a peg of another player!
+		// correct option is to move peg towards target.
+		int rigthPlayer = (player+1)%6;
+		Move move = new Move(peg.point);
+		Log.d(tag, "Considering 9-peg endgame issue! distance of free hole to rigth-player goal : " + Board.length(rigthPlayer, target) +", " + target);
+		move.add( Board.length(rigthPlayer, target)>6 ? Board.escapes[player][0] : Board.escapes[player][1]);
+		moves.clear();
+		moves.add(move);
+	}
+
 	
 }

@@ -40,7 +40,7 @@ public class MoveAnimation {
 			this.add( move.point(k-1), to);
 		}
 	}
-	
+	// TODO nicer : parabolic animation
 	public void add(Point from, Point to) {
 		int dx = dx(first,to);
 		int dy = dy(first,to);

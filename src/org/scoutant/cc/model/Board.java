@@ -441,5 +441,13 @@ public class Board {
 			{ new Point( 3,11), new Point( 2, 9) }, 
 			{ new Point( 2, 7), new Point( 3, 5) }, 
 		};
+	public static final Move[][] beginnings = { 
+		{ new Move( new Point( 5,13)).add( pivots[3]),  new Move( new Point( 6,13)).add( pivots[3])}, 
+		{ new Move( new Point( 2,10)).add( pivots[4]),  new Move( new Point( 2,11)).add( pivots[4])}, 
+		{ new Move( new Point( 2, 5)).add( pivots[5]),  new Move( new Point( 2, 6)).add( pivots[5])}, 
+		{ new Move( new Point( 5, 3)).add( pivots[0]),  new Move( new Point( 6, 3)).add( pivots[0])}, 
+		{ new Move( new Point( 9, 5)).add( pivots[1]),  new Move( new Point(10, 6)).add( pivots[1])}, 
+		{ new Move( new Point(10,10)).add( pivots[2]),  new Move( new Point( 9,11)).add( pivots[2])} 
+	};
 	
 }

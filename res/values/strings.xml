@@ -52,7 +52,12 @@
 	
 
     <!-- rate form -->
-	<string name="if_you_enjoy">If you enjoy the game Blokish, shall you take a moment to rate the app?</string>
+    
+	<string name="rate">Rate app on Google Play?</string>
+    
+	<string name="enjoy_game">Maybe you enjoy the game...</string>
+	<string name="rate_app">Do you agree to rate the app on Google Play?</string>
+	
 	<string name="now">OK</string>
 	<string name="later">Later</string>
 	<string name="never">No</string>
