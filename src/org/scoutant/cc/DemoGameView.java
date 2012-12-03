@@ -13,8 +13,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -35,8 +33,6 @@ public class DemoGameView extends FrameLayout implements GameAware {
 		super(context);
 		this.context = context;
 		setWillNotDraw(false);
-		setBackgroundColor(Color.RED);
-//        setLayoutParams( new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER));
         setLayoutParams( new LayoutParams(height, height, Gravity.CENTER));
         dJ = height/sizeJ;
         dI = Double.valueOf(dJ / 0.8660254).intValue();
@@ -47,7 +43,6 @@ public class DemoGameView extends FrameLayout implements GameAware {
         init();
 		}
 	public void init() {
-        
 		game = new Game( new boolean[] { true, false, true , false, true , false});
 		removeAllViews();
 		for (Player player : game.players) {
