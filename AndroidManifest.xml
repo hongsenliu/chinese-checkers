@@ -3,7 +3,7 @@
     package="org.scoutant.cc"
     android:versionCode="1" android:versionName="0.9" 
     >
-    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="15"/>
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="17"/>
     
     <uses-feature android:name="android.hardware.touchscreen" android:required="true"/>
 	<supports-screens android:smallScreens="false" android:normalScreens="false" android:largeScreens="false" android:xlargeScreens="true" />
@@ -13,9 +13,6 @@
         android:allowBackup="false"
         android:theme="@style/Theme.Holo.XL"
         >
-        <!-- 
-        <activity android:name=".RateActivity" android:label="@string/rate"  android:screenOrientation="landscape" >
-         -->
         <activity android:name=".SplashScreenActivity" android:label="@string/chinese_checkers"  android:screenOrientation="landscape" >
             <intent-filter>
                <action android:name="android.intent.action.MAIN" />
@@ -27,5 +24,6 @@
         <activity android:name=".UI" android:label="@string/chinese_checkers" android:screenOrientation="landscape" /> 
         <activity android:name=".MenuActivity" android:label="@string/menu" android:screenOrientation="landscape" />
         <activity android:name=".HelpActivity" android:label="@string/help"  android:screenOrientation="landscape" />
-       </application>
+        <activity android:name=".RateActivity" android:label="@string/rate"  android:screenOrientation="landscape" />
+        </application>
 </manifest>

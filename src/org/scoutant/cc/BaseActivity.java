@@ -1,6 +1,7 @@
 package org.scoutant.cc;
 
 import org.scoutant.Command;
+import org.scoutant.CommandListener;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,14 +9,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public abstract class BaseActivity extends Activity {
 	
 	protected static final String[] keys = { "h_vs_m_0",  "h_vs_m_1", "h_vs_m_2", "h_vs_m_3", "h_vs_m_4", "h_vs_m_5"};
 	
-//	private static String tag = "activity";
+	private static String tag = "activity";
 	public static final String KEY_GAME_ON = "game_on";
 	protected SharedPreferences prefs;
 
@@ -84,6 +87,15 @@ public abstract class BaseActivity extends Activity {
 		@Override
 		public void execute() {
 		}
+	}
+
+	protected void bind(int id, Command command) {
+		View view = findViewById(id);
+		if (view==null) {
+			Log.e(tag, "did not find view !: " + id);
+			return;
+		}
+		view.setOnClickListener( new CommandListener(command));
 	}
 
 }

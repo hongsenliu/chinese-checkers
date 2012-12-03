@@ -194,12 +194,19 @@ public class UI extends BaseActivity {
 				Toast.makeText(UI.this , "Player " + turn + " is over!", Toast.LENGTH_SHORT).show();
 				if (game.game.over()) {
 					Toast.makeText(UI.this , "GAME is just OVER!", Toast.LENGTH_LONG).show();
+					mayAskForRate();
 				}
 			}
 			game.init();
 		}
 	}
 
+	public void mayAskForRate() {
+		if (AppRater.shallAskForRate(this)) {
+			startActivity( new Intent(this, RateActivity.class));
+		}
+	}
+	
 	private class StartAI implements Command {
 		@Override
 		public void execute() {
