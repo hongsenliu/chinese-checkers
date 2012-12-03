@@ -13,7 +13,10 @@
 package org.scoutant.cc.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Game implements org.scoutant.Serializable {
 	// TODO REMOVE LOG and DEV before publish!
@@ -159,6 +162,24 @@ public class Game implements org.scoutant.Serializable {
 	}
 	// no direct deserialization : we will replay the list of moves instead. To have the UIs in sync with the game state...
 
-	
+	public static List<Integer> ranking( int[] overs) {
+		// let's prune 0...
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		List<Integer> indexes= new ArrayList<Integer>();
+		List<Integer> values = new ArrayList<Integer>();
+		for (int i=0; i<6; i++) {
+			int value = overs[i];
+			if (value >0) {
+				values.add(value);
+				map.put(value, i);
+			}
+		}
+		Collections.sort(values);
+		for (int i=0; i<values.size(); i++) {
+			indexes.add( map.get(values.get(i)));
+		}
+		return indexes;
+		
+	}
 	
 }

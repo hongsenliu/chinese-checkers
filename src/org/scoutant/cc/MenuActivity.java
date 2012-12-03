@@ -22,6 +22,7 @@ public class MenuActivity extends Activity {
 		setContentView(R.layout.menu);
 		bind(R.id.help, RESULT_HELP);
 		bind(R.id.love, RESULT_LOVE);
+		// TODO disable Resume if game over...
 		bind(R.id.resume, RESULT_RESUME);
 		bind(R.id.back, RESULT_BACK);
 		bind(R.id.newgame, RESULT_NEW_GAME);

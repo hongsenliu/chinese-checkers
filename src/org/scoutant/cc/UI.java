@@ -48,7 +48,8 @@ public class UI extends BaseActivity {
 	private Command startAI = new StartAI();
 	private Command mayStartAI = new MayStartAI();
 	private int resultCode = 0;
-	
+	private int counter = 1;
+	private int[] overs = new int[6];
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -202,9 +203,13 @@ public class UI extends BaseActivity {
 			game.play(move, true, mayStartAI);
 			if (move!=null && game.game.over(turn)) {
 				Log.d(tag, "player " + turn +" is now over!");
+				overs[turn] = counter;
+				counter++;
 				if (game.game.over()) {
 					Log.d(tag, "GAME is just OVER!");
-					startActivityForResult(new Intent(UI.this, GameOverActivity.class), REQUEST_GAME_OVER);
+					Intent intent = new Intent(UI.this, GameOverActivity.class);
+					intent.putExtra("overs", overs);
+					startActivityForResult(intent, REQUEST_GAME_OVER);
 				}
 			}
 			game.init();
