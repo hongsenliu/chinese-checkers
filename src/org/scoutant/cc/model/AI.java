@@ -246,6 +246,7 @@ public class AI {
 	 * @return true if 3 enemy pegs occupy 3 of the 4 blocking holes...
 	 */
 	protected boolean threatening() {
+		if (! game.player(player).has( Board.origins[player])) return false; // no backward peg, no worry.
 		int free=0;
 		for (Point p : Board.blockers[player]) {
 			if (board.is(p)) {
