@@ -12,22 +12,30 @@
 	    >
 		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
 		    android:textAppearance="?android:attr/textAppearanceLarge"
-		    android:text="@string/chinese_checkers"
+		    android:text="@string/chinese_checkers_rules"
+		    android:layout_marginLeft="100dp"
 		    />
 		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
 		    android:textAppearance="?android:attr/textAppearance"
 		    android:text="@string/summary"
+		    />
+	    <ImageView 
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:src="@drawable/rules_3"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginTop="10dp" 
+		    android:contentDescription="@string/demo"
+	        />
+		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		    android:textAppearance="?android:attr/textAppearance"
+		    android:text="@string/rules_details"
 		    />
 		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
 		    android:textAppearance="?android:attr/textAppearanceLarge"
-		    android:text="@string/chinese_checkers"
+		    android:text="@string/demo"
+		    android:layout_marginLeft="100dp"
 		    />
-		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-		    android:textAppearance="?android:attr/textAppearance"
-		    android:text="@string/summary"
-		    />
-		
-		
 		<LinearLayout
 			xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:layout_width="match_parent"
@@ -37,10 +45,10 @@
 		    android:gravity="center"
 		    android:layout_weight="1"
 		    />
-		
 		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
 		    android:textAppearance="?android:attr/textAppearanceLarge"
 		    android:text="@string/about_title"
+		    android:layout_marginLeft="100dp"
 		    />
 		<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
 		    android:textAppearance="?android:attr/textAppearance"
