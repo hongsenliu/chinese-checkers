@@ -19,7 +19,7 @@ public class SplashScreenActivity extends DemoActivity {
 		}
 		afterDemo = new FinishAndReplace();
 		setContentView(R.layout.demo);
-		findViewById(R.id.container).setOnClickListener( new CommandListener( new FinishAndReplace()));
+		findViewById(R.id.screen).setOnClickListener( new CommandListener( new FinishAndReplace()));
 
 		Display display = getWindowManager().getDefaultDisplay();
 		android.graphics.Point size = new android.graphics.Point();
