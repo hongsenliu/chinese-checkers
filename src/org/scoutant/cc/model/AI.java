@@ -75,6 +75,21 @@ public class AI {
 		if (isBeginning()) {
 			considerBeginning();
 		}
+		if (threatening()) {
+			thinkHops();
+			// now keep only the 0 peg moves...
+			for (int i=moves.size()-1; i>=0; i--) {
+				Move move = moves.get(i);
+				if ( !move.first().equals( Board.origins[player])) {
+					moves.remove(i);
+				}
+			}
+			Collections.sort(moves, comparator);
+			// TOOD finish!
+			Log.d(tag, "escaping threatening situation : ");
+			if (moves.size()==0) return null; // game over
+			return moves.get(0) ;
+		}
 		if (nb<=4) {
 			thinkHops();
 			Collections.sort(moves, endgameComparator);
@@ -85,7 +100,6 @@ public class AI {
 		}
 		log();
 		if (moves.size()==0) return null; // game over
-
 		Move move = randomAmongBest();
 		return move ;
 	}
@@ -223,21 +237,27 @@ public class AI {
 	}
 
 
-	/**
+	/** 
 	 * <p> In order to prevent this situation :
 	 * <li> . . . .
 	 * <li>  X . X
 	 * <li>   X X
 	 * <li>    O
-	 * <p>One's further peg shall move before 4 enemy pegs trap it!.
-	 * <p>We will consider a short move (even a one-step hop) when 3 enemy pegs occupy 3 of the 4 blocking holes... 
+	 * @return true if 3 enemy pegs occupy 3 of the 4 blocking holes...
 	 */
-	private void considerTrappedPosition() {
-		
+	protected boolean threatening() {
+		int free=0;
+		for (Point p : Board.blockers[player]) {
+			if (board.is(p)) {
+				if (game.player(player).has(p)) return false;
+			} else {
+				free++;
+			}
+		}
+		// when at least 2 holes, no worry
+		if (free>=2) return false;
+		return true;
 	}
-
-	
-	
 	
 	/**
 	 * <p> 9-pegs endgame issue :
@@ -269,6 +289,4 @@ public class AI {
 		moves.clear();
 		moves.add(move);
 	}
-
-	
 }

@@ -29,6 +29,8 @@ public class TurnMgr {
 	/** @return true is current player is human  */
 	public boolean ishuman() { return !isAI(); }
 	
+	public boolean onlyAis() { return activity.onlyAI(); }
+	
 	public void update() {
 		turn++;
 		turn = turn%6;

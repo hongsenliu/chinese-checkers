@@ -328,6 +328,7 @@ public class GameView extends FrameLayout implements GameAware {
 	private class MayBackOneMove implements Command {
 		@Override
 		public void execute() {
+			if (turnMgr.onlyAis()) return;
 			if (turnMgr.isAI()) {
 				back1move();
 			}

@@ -78,4 +78,15 @@ public class Player {
 		return msg;
 	}
 	
+	
+	/**
+	 * @return true if @param point is occupied by one of the 10 pegs of present player 
+	 */
+	public boolean has(Point point) {
+		for (Peg peg : pegs) {
+			if (peg.point.equals(point)) return true;
+		}
+		return false;
+	}
+	
 }

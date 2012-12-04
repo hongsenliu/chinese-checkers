@@ -95,7 +95,7 @@ public class Board {
 	public static int radiusJ = 8;
 	public static int sizeI = 2*radiusI+1;
 	public static int sizeJ = 2*radiusJ+1;
-	public static Point origin = new Point(sizeI/2, sizeJ/2);
+//	public static Point origin = new Point(sizeI/2, sizeJ/2);
 	public static Board center = new Board( centreJI ); 
 	public static Board hole = new Board( holeJI ); 
 	
@@ -450,4 +450,14 @@ public class Board {
 		{ new Move( new Point(10,10)).add( pivots[2]),  new Move( new Point( 9,11)).add( pivots[2])} 
 	};
 	
+	public static final Point[][] blockers = {
+		{ new Point( 5,14), new Point( 7,14), new Point( 5,15), new Point( 6,15)},
+		{ new Point( 0,11), new Point( 1,10), new Point( 1,12), new Point( 2,12)},
+		{ new Point( 1, 4), new Point( 2, 4), new Point( 0, 5), new Point( 1, 6)},
+		{ new Point( 5, 2), new Point( 7, 2), new Point( 5, 1), new Point( 6, 1)},
+		{ new Point(10, 4), new Point(11, 4), new Point(11, 5), new Point(11, 6)},
+		{ new Point(10,12), new Point(11,12), new Point(11,10), new Point(11,11)},
+	};
+	
+	public static final Point[] origins = { new Point(6,16), new Point(0,12), new Point(0,4), new Point(6,0), new Point(12,4), new Point(12,12) };
 }

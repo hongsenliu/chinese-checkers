@@ -78,6 +78,16 @@ public abstract class BaseActivity extends Activity {
 	protected boolean ai(int player) {
 		return ais(this)[player];
 	}
+	
+	/** 
+	 * @return true if all the player are AIs.
+	 */
+	protected boolean onlyAI() {
+		for (int i=0; i<6; i++) {
+			if (playing(i) && ai(i)==false ) return false;
+		}
+		return true;
+	}
 
 	protected class Finish implements Command {
 		@Override
