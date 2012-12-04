@@ -2,8 +2,8 @@
 <resources>
     
     <dimen name="size_xl_small">22sp</dimen>
-    <dimen name="size_xl">28sp</dimen>
     <dimen name="size_xl_medium">28sp</dimen>
-    <dimen name="size_xl_large">40sp</dimen>
+    <dimen name="size_xl">38sp</dimen>
+    <dimen name="size_xl_large">60sp</dimen>
                                                                                                                                        
 </resources>

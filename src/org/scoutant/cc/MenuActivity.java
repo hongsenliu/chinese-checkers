@@ -26,11 +26,7 @@ public class MenuActivity extends Activity {
 		bind(R.id.back, RESULT_BACK);
 		bind(R.id.newgame, RESULT_NEW_GAME);
 		bind(R.id.quit, RESULT_QUIT);
-//		boolean gameover = getIntent().getBooleanExtra("gameover", false);
-		// TODO disable Resume if game over...
-//		findViewById(R.id.resume).setVisibility( gameover ? View.INVISIBLE : View.VISIBLE);
 	}
-	
 	
 	private void bind(int viewId, int resultCode) {
 		View view = findViewById(viewId);

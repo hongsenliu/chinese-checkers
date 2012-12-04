@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class SplashScreenActivity extends DemoActivity {
 	
@@ -29,6 +30,8 @@ public class SplashScreenActivity extends DemoActivity {
 		
 		((ViewGroup) findViewById(R.id.container)).addView(game);
 		new PlayMove().execute();
+		
+		Toast.makeText(this, R.string.skip_demo, Toast.LENGTH_LONG).show();
 	}
 
 	private class FinishAndReplace implements Command {

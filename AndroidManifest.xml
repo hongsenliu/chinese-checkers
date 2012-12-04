@@ -14,9 +14,6 @@
         android:allowBackup="false"
         android:theme="@style/Theme.Holo.XL"
         >
-        <!-- 
-        <activity android:name=".GameOverActivity" android:label="@string/game_over"  android:screenOrientation="landscape" >
-         -->
         <activity android:name=".SplashScreenActivity" android:label="@string/chinese_checkers"  android:screenOrientation="landscape" >
             <intent-filter>
                <action android:name="android.intent.action.MAIN" />

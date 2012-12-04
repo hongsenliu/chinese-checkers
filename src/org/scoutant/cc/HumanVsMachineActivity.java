@@ -27,16 +27,6 @@ public class HumanVsMachineActivity extends BaseActivity {
 		if (gameOn()) {
 			startActivity( new Intent(getApplicationContext(), UI.class));
 		}
-		resizeWidgets();
-	}
-
-	// TODO resize and reposition so as to full the space in a tablet?
-	private void resizeWidgets() {
-		View container  = findViewById(R.id.container);
-		Log.d(tag, "container : " + container.getWidth() +" x " + container.getHeight());
-		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		float h = convertPixelsToDp( metrics.heightPixels , this);
-		if (h<960f) return; // should not be the case for 'xLargeScreen' !
 	}
 
 	@Override
@@ -45,7 +35,6 @@ public class HumanVsMachineActivity extends BaseActivity {
 		if ( gameOn()) finish();
 		if ( prefs.getInt(NbPlayersActivity.KEY_NB_PLAYERS, 99) < 0 ) finish(); 
 	}
-	
 
 	private void populate(int player) {
 		CheckBox view = (CheckBox) findViewById( ids[player]);

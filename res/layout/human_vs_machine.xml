@@ -12,7 +12,7 @@
 	    android:layout_marginTop="15dp"
 	    android:layout_centerInParent="true"
         >
-	   		   	        <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+	  	<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:id="@+id/player_0"
 		    android:button="@drawable/human_machine_checkbox_selector"
 		    android:layout_width="64dp"

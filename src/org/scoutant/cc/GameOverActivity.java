@@ -28,13 +28,11 @@ public class GameOverActivity extends BaseActivity {
 		setContentView(R.layout.game_over);
 		container = (LinearLayout) findViewById(R.id.container);
 		inflater = getLayoutInflater();
-		bind( R.id.ok, new Finish());
+		bind( R.id.play, new Finish());
 		processRankingOrder();
-		
 		for (int player=0; player<6; player++) {
 			if (playing(player)) addRanking();
 		}
-		
 	}
 
 	private void processRankingOrder() {

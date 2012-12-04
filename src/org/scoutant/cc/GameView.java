@@ -314,7 +314,6 @@ public class GameView extends FrameLayout implements GameAware {
 		back1move();
 	}
 	
-	// TODO if only AI, let's go back all players only one round...
 	/**
 	 * play back the last move
 	 */
