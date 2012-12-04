@@ -22,11 +22,13 @@ public class MenuActivity extends Activity {
 		setContentView(R.layout.menu);
 		bind(R.id.help, RESULT_HELP);
 		bind(R.id.love, RESULT_LOVE);
-		// TODO disable Resume if game over...
 		bind(R.id.resume, RESULT_RESUME);
 		bind(R.id.back, RESULT_BACK);
 		bind(R.id.newgame, RESULT_NEW_GAME);
 		bind(R.id.quit, RESULT_QUIT);
+//		boolean gameover = getIntent().getBooleanExtra("gameover", false);
+		// TODO disable Resume if game over...
+//		findViewById(R.id.resume).setVisibility( gameover ? View.INVISIBLE : View.VISIBLE);
 	}
 	
 	

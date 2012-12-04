@@ -81,6 +81,7 @@ public class UI extends BaseActivity {
 	
 	private void startMenu() {
 		Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+		intent.putExtra("gameover", game.game.over());
 		startActivityForResult(intent, REQUEST_MENU);
 	}
 	
@@ -153,31 +154,47 @@ public class UI extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		this.resultCode = resultCode ;  
-		if (requestCode == REQUEST_MENU) {
-			if (resultCode == MenuActivity.RESULT_BACK) {
-				game.back();
-			}
-			if (resultCode == MenuActivity.RESULT_NEW_GAME) { 
-				newgame();
-				finish();
-			}
-			if (resultCode == MenuActivity.RESULT_QUIT)  {
-				finish();
-			}
-			if (resultCode == MenuActivity.RESULT_HELP) { 
-				startActivity( new Intent(this, HelpActivity.class)); 
-			}
-			if (resultCode == MenuActivity.RESULT_LOVE) { 
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=org.scoutant.cc")); 
-				startActivity(intent);
-			}
-		}
 		if (requestCode == REQUEST_GAME_OVER) {
 			boolean asking = mayAskForRate();
 			if (!asking) startMenu();
+			return;
 		}
 		if (requestCode == REQUEST_RATE) {
 			startMenu();
+			return;
+		}
+		if (requestCode == REQUEST_MENU) { 
+			onResultFromMenu(resultCode);
+			return;
+		}
+		if (Game.LOG) Log.d(tag, "back with requestCode : " + requestCode);
+		if (game.game.over()) replay();
+	}
+
+	private void replay() {
+		newgame();
+		finish();		
+	}
+	
+	private void onResultFromMenu( int resultCode) {
+		if (resultCode == MenuActivity.RESULT_BACK) {
+			game.back();
+		}
+		if (resultCode == MenuActivity.RESULT_NEW_GAME) { 
+			replay();		
+			}
+		if (resultCode == MenuActivity.RESULT_QUIT)  {
+			finish();
+		}
+		if (resultCode == MenuActivity.RESULT_HELP) { 
+			startActivity( new Intent(this, HelpActivity.class)); 
+		}
+		if (resultCode == MenuActivity.RESULT_LOVE) { 
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=org.scoutant.cc")); 
+			startActivity(intent);
+		}
+		if (resultCode == MenuActivity.RESULT_RESUME) {
+			if (game.game.over()) replay();
 		}
 	}
 	

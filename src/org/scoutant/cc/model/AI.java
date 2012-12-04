@@ -221,6 +221,23 @@ public class AI {
 		moves.add( Board.beginnings[player][0]);
 		moves.add( Board.beginnings[player][1]);
 	}
+
+
+	/**
+	 * <p> In order to prevent this situation :
+	 * <li> . . . .
+	 * <li>  X . X
+	 * <li>   X X
+	 * <li>    O
+	 * <p>One's further peg shall move before 4 enemy pegs trap it!.
+	 * <p>We will consider a short move (even a one-step hop) when 3 enemy pegs occupy 3 of the 4 blocking holes... 
+	 */
+	private void considerTrappedPosition() {
+		
+	}
+
+	
+	
 	
 	/**
 	 * <p> 9-pegs endgame issue :

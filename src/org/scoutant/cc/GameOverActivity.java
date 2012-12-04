@@ -28,10 +28,7 @@ public class GameOverActivity extends BaseActivity {
 		setContentView(R.layout.game_over);
 		container = (LinearLayout) findViewById(R.id.container);
 		inflater = getLayoutInflater();
-		
 		bind( R.id.ok, new Finish());
-		
-		// TODO process true ranking!
 		processRankingOrder();
 		
 		for (int player=0; player<6; player++) {
