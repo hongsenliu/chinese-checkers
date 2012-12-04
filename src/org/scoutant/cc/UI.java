@@ -18,9 +18,7 @@ import org.scoutant.CommandListener;
 import org.scoutant.cc.model.Game;
 import org.scoutant.cc.model.Move;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -48,8 +46,6 @@ public class UI extends BaseActivity {
 	private Command startAI = new StartAI();
 	private Command mayStartAI = new MayStartAI();
 	private int resultCode = 0;
-	private int counter = 1;
-	private int[] overs = new int[6];
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -188,9 +184,8 @@ public class UI extends BaseActivity {
 	private class AITask extends AsyncTask<Integer, Void, Move> {
 		@Override
 		protected Move doInBackground(Integer... params) {
-			if (Game.LOG) Log.d(tag, "\n"  +"####################################################################################");
 			int turn = turnMgr.player(); 
-			if (Game.LOG) Log.d(tag, "thinking for : " + turn);
+			if (Game.LOG) Log.d(tag, "\n"  +"####  " + turn  +  "  ################################################################################");
 			if (game.game.over()) return null; // to prevent looping if no human player...
 			Move move = game.ais[turn].think();
 			return move;
@@ -203,12 +198,10 @@ public class UI extends BaseActivity {
 			game.play(move, true, mayStartAI);
 			if (move!=null && game.game.over(turn)) {
 				Log.d(tag, "player " + turn +" is now over!");
-				overs[turn] = counter;
-				counter++;
 				if (game.game.over()) {
 					Log.d(tag, "GAME is just OVER!");
 					Intent intent = new Intent(UI.this, GameOverActivity.class);
-					intent.putExtra("overs", overs);
+					intent.putExtra("overs", game.game.overs());
 					startActivityForResult(intent, REQUEST_GAME_OVER);
 				}
 			}
@@ -249,9 +242,6 @@ public class UI extends BaseActivity {
 	
 	private void logMetrics() {
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
-//		Log.d(tag , "densityDpi: " +  metrics.densityDpi);
-//		Log.d(tag , "widthPixel: " +  metrics.widthPixels);
-//		Log.d(tag , "xdpi: " +  metrics.xdpi);
 		Log.d(tag , "density: " +  metrics.density);
 		Log.d(tag, "screen : " + metrics.widthPixels + "px * " + metrics.heightPixels +" px");
 		float w = convertPixelsToDp( metrics.widthPixels , this);
@@ -259,35 +249,5 @@ public class UI extends BaseActivity {
 		Log.d(tag, "screen : " + w + "dp * " + h +"dp");
 	}
 	
-	/**
-	 * This method converts dp unit to equivalent device specific value in pixels. 
-	 * 
-	 * @param dp A value in dp(Device independent pixels) unit. Which we need to convert into pixels
-	 * @param context Context to get resources and device specific display metrics
-	 * @return A float value to represent Pixels equivalent to dp according to device
-	 * 
-	 * @see http://stackoverflow.com/questions/4605527/converting-pixels-to-dp-in-android
-	 */
-	public static float convertDpToPixel(float dp,Context context){
-	    Resources resources = context.getResources();
-	    DisplayMetrics metrics = resources.getDisplayMetrics();
-	    float px = dp * (metrics.densityDpi/160f);
-	    return px;
-	}
-	/**
-	 * This method converts device specific pixels to device independent pixels.
-	 * 
-	 * @param px A value in px (pixels) unit. Which we need to convert into db
-	 * @param context Context to get resources and device specific display metrics
-	 * @return A float value to represent db equivalent to px value
-	 */
-	public static float convertPixelsToDp(float px,Context context){
-	    Resources resources = context.getResources();
-	    DisplayMetrics metrics = resources.getDisplayMetrics();
-	    float dp = px / (metrics.densityDpi / 160f);
-	    return dp;
-
-	}
-
 	
 }

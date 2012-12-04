@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class AppRater {
-    private final static int DAYS_UNTIL_PROMPT = 2;
+//    private final static int DAYS_UNTIL_PROMPT = 2;
+    private final static int DAYS_UNTIL_PROMPT = 0;
+    //TODO restore DAY UNTIL PRONT
     private final static int LAUNCHES_UNTIL_PROMPT = 6;
 
     public static boolean shallAskForRate(Context context) {

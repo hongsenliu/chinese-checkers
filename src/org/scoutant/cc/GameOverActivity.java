@@ -6,6 +6,7 @@ import org.scoutant.cc.model.Game;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,7 +15,8 @@ import android.widget.TextView;
 
 @SuppressLint("UseSparseArrays")
 public class GameOverActivity extends BaseActivity {
-	
+
+	private static final String tag = "activity";
 	private LinearLayout container;
 	private int rank=0;
 	private LayoutInflater inflater;
@@ -44,12 +46,17 @@ public class GameOverActivity extends BaseActivity {
 	}
 	
 	private void addRanking() {
-		View view = inflater.inflate(R.layout.ranking_item, container, false);
-		TextView tv = (TextView) view.findViewById(R.id.rank);
-		tv.setText(""+(rank+1));
-		ImageView iv = (ImageView) view.findViewById(R.id.peg);
-		iv.setImageResource( PegUI.icons[ ranking.get(rank)]);
-		rank++;
-		container.addView(view);
+		try {
+			View view = inflater.inflate(R.layout.ranking_item, container, false);
+			TextView tv = (TextView) view.findViewById(R.id.rank);
+			tv.setText(""+(rank+1));
+			ImageView iv = (ImageView) view.findViewById(R.id.peg);
+			Integer player = ranking.get(rank);
+			iv.setImageResource( PegUI.icons[ player]);
+			rank++;
+			container.addView(view);
+		} catch(Exception e) {
+			Log.e(tag, "BAD ranking!", e);
+		}
 	}
 }

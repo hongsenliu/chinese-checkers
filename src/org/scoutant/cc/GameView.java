@@ -287,14 +287,12 @@ public class GameView extends FrameLayout implements GameAware {
 		Peg start = game.peg(move.point(0));
 		PegUI peg = findPeg(start);
 		
-		boolean done = game.play(move);
-		if (done) {
-			if (animate) {
-				peg.animate(move, whenDone);
-			}
-			turnMgr.update();
-			prefs.edit().putBoolean(UI.KEY_GAME_ON, true).commit();
+		game.play(move);
+		if (animate) {
+			peg.animate(move, whenDone);
 		}
+		turnMgr.update();
+		prefs.edit().putBoolean(UI.KEY_GAME_ON, true).commit();
 	}
 
 	public void setButtonMgr(ButtonsMgr buttonMgr) {

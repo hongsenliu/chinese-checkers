@@ -1,8 +1,11 @@
 package org.scoutant.cc;
 
+import org.scoutant.cc.R.id;
+
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +27,16 @@ public class HumanVsMachineActivity extends BaseActivity {
 		if (gameOn()) {
 			startActivity( new Intent(getApplicationContext(), UI.class));
 		}
-		// TODO resize and reposition so as to full the space in a tablet?
+		resizeWidgets();
+	}
+
+	// TODO resize and reposition so as to full the space in a tablet?
+	private void resizeWidgets() {
+		View container  = findViewById(R.id.container);
+		Log.d(tag, "container : " + container.getWidth() +" x " + container.getHeight());
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		float h = convertPixelsToDp( metrics.heightPixels , this);
+		if (h<960f) return; // should not be the case for 'xLargeScreen' !
 	}
 
 	@Override

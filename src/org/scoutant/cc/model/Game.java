@@ -33,6 +33,14 @@ public class Game implements org.scoutant.Serializable {
 	}
 	public List<Move> moves = new ArrayList<Move>();
 	public Move last() { return moves.get(moves.size()-1);}
+
+	public int counter = 1;
+	public int[] overs() {
+		int [] overs = new int [6];
+		for (int i=0; i<6; i++) overs[i] = players.get(i).over;
+		return overs;
+	}
+
 	public boolean pop() {
 		if (moves.size() <= 0) return false;
 		moves.remove(moves.size()-1);
@@ -87,11 +95,11 @@ public class Game implements org.scoutant.Serializable {
 	/** Actually move @param peg to a given position @param p. Keeping in synch the pegs list and the board 'ball'. 
 	 * Validation is do be done elsewhere.
 	 */
-	public boolean move(Peg peg, Point p) {
+	public void move(Peg peg, Point p) {
 		board.reset( peg.point);
 		peg.point = p;
 		board.set(p);
-		return true;
+		return;
 	}
 
 	/** @return true if each steps of given @param move is valid */
@@ -103,16 +111,19 @@ public class Game implements org.scoutant.Serializable {
 	 * Assuming move was previously validated. Play provided move @param m.
 	 * @return true if done.   
 	 */
-	public boolean play(Move move) {
-//		Log.d(tag, "playing move " + move);
+	public void play(Move move) {
 		Peg peg = peg( move.point(0));
-		if (peg==null) return false;
+		if (peg==null) return;
 		Point point = move.point( move.points.size()-1);
-		boolean done = move( peg, point);
-		if (done) moves.add(move);
-		return done;
+		move( peg, point);
+		moves.add(move);
+		registerIfOver( peg.color);
+		return;
 	}
-	
+
+	private void registerIfOver(int player) {
+		if ( over(player)) players.get( player).over = counter++;
+	}
 	
 	public String toString() {
 		return toString(0, Board.sizeJ-1);

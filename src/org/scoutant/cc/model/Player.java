@@ -17,6 +17,7 @@ public class Player {
 	
 	public Point goal;
 	public int color;
+	public int over=0;
 	
 	private Player(Point goal) {
 		this.goal = goal;
