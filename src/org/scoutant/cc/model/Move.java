@@ -139,9 +139,15 @@ public class Move implements Comparable<Move>, org.scoutant.Serializable {
 
 	/**
 	 * @return scalar distance between first and last point.
+	 * <p>With bonus if distance is positive and start is origin ar second row 
 	 */
 	public int length(int player) {
-		return Board.length(player, this.point(0)) - Board.length(player, last());
+		int distance = Board.length(player, this.point(0)) - Board.length(player, last());
+		if (distance <= 0 ) return distance;
+		Point first = this.first();
+		int zeroPegBonus = Board.origins[player].equals( first) ? 4 : 0;
+		int secondRowBonus =  Board.secondRows[player][0].equals(first) || Board.secondRows[player][1].equals(first) ? 2 : 0;
+		return distance + zeroPegBonus + secondRowBonus;
 	}
 	
 	

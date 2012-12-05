@@ -34,10 +34,7 @@ public class MoveEvaluator implements Evaluator<Move> {
 		Point first = m.first();
 		int axis = m.axisLengh(player);
 		int origin = Board.length(player, first);
-		// TODO tune the bonus...
-		int zeroPegBonus = origins[player].equals( first) ? 6 : 0;
-		int hardly0PegBonus =  (origin==15 ? 4 : 0);
-		return 2*Board.sizeJ*(target + zeroPegBonus + hardly0PegBonus) - axis + origin/2 + Board.sizeJ*leavingTriangle(player, m) + m.points.size();
+		return 2*Board.sizeJ*target - axis + origin/2 + Board.sizeJ*leavingTriangle(player, m) + m.points.size();
 	}
 
 	private static int leavingTriangle(int player,final Move m) {

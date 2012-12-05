@@ -164,6 +164,7 @@ public class AI {
 			track = new Board();
 			visite( move);
 		}
+		Collections.sort(moves, comparator);
 	}
 	
 	private void visite(Move move) {
