@@ -76,19 +76,8 @@ public class AI {
 			considerBeginning();
 		}
 		if (threatening()) {
-			thinkHops();
-			// now keep only the 0 peg moves...
-			for (int i=moves.size()-1; i>=0; i--) {
-				Move move = moves.get(i);
-				if ( !move.first().equals( Board.origins[player])) {
-					moves.remove(i);
-				}
-			}
-			Collections.sort(moves, comparator);
-			// TOOD finish!
-			Log.d(tag, "escaping threatening situation : ");
-			if (moves.size()==0) return null; // game over
-			return moves.get(0) ;
+			boolean done = consider0PegMoves();
+			if (done) moves.get(0); 
 		}
 		if (nb<=4) {
 			thinkHops();
@@ -102,6 +91,29 @@ public class AI {
 		if (moves.size()==0) return null; // game over
 		Move move = randomAmongBest();
 		return move ;
+	}
+
+	private boolean consider0PegMoves() {
+		thinkHops();
+		if (! ableToPlay0Peg()) return false; // we are not going to promote 0-peg if it cannot be moved anyway! 
+		// We have 0-peg moves, now keep only those...
+		for (int i=moves.size()-1; i>=0; i--) {
+			Move move = moves.get(i);
+			if ( !move.first().equals( Board.origins[player])) {
+				moves.remove(i);
+			}
+		}
+		Collections.sort(moves, comparator);
+		Log.d(tag, "escaping threatening situation : ");
+		if (moves.size()==0) return false; // game over ?
+		return true ;
+		
+	}
+	private boolean ableToPlay0Peg() {
+		for (Move move : moves) {
+			if (move.first().equals(Board.origins[player])) return true;
+		}
+		return false;
 	}
 
 	protected void thinkHops() {
