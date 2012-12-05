@@ -70,8 +70,10 @@ public class AI {
 	public Move think() {
 		init();
 		thinkJumps();
-		int nb = nbPositiveJumps(); 
-		Log.d(tag, "# of jumps : " + moves.size() +", and strictly positive : " + nb);
+		int nb = nbPositiveJumps();
+		think012PegHops();
+		Collections.sort(moves, comparator);
+		if (Game.LOG) Log.d(tag, "# of jumps : " + moves.size() +", and strictly positive : " + nb);
 		if (isBeginning()) {
 			considerBeginning();
 		}
@@ -132,6 +134,27 @@ public class AI {
 	}
 	
 	/**
+	 * find hops for the potential 0-peg and the 2 15-length pegs... 
+	 */
+	protected void think012PegHops() {
+		for (int k=0; k<=2; k++) {
+			Peg peg = pegs.get(k);
+			if (Board.length(player, peg.point)>=15) { 
+				for (int i=0; i<2; i++) {
+					int dir = dirs[player][i];
+					Point p = board.hop(peg.point, dir);
+					if (p!=null && !board.is(p)) {
+						// target is a hole not occupied by a peg
+						Move move = new Move( peg.point);
+						move.add(p);
+						moves.add( move);
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * @return the list of moves for given play. Considering only jumps.
 	 */
 	protected void thinkJumps() {
@@ -141,7 +164,6 @@ public class AI {
 			track = new Board();
 			visite( move);
 		}
-		Collections.sort(moves, comparator);
 	}
 	
 	private void visite(Move move) {

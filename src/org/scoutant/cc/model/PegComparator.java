@@ -2,6 +2,9 @@ package org.scoutant.cc.model;
 
 import java.util.Comparator;
 
+/**
+ * A Peg is 'preferred' if distance to target if larger
+ */
 public class PegComparator implements Comparator<Peg>{
 	private int player;
 	private PegEvaluator evaluator;
