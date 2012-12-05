@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Game implements org.scoutant.Serializable {
-	// TODO REMOVE LOG and DEV before publish!
+	// TODO set LOG and DEV before publish
 	public static final boolean LOG=true;
-	public static final boolean DEV=true;
+	public static final boolean DEV=false;
 	
 	@SuppressWarnings("unused")
 	private static String tag = "model";

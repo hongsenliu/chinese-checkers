@@ -250,7 +250,7 @@ public class UI extends BaseActivity {
 		@Override
 		public void execute() {
 			if (paused) return;
-			Log.d(tag, "zeroLengthMoves : " + game.game.zeroLengthMoves);
+//			Log.d(tag, "zeroLengthMoves : " + game.game.zeroLengthMoves);
 			if (game.game.zeroLengthMoves > 12) {
 				Log.i(tag, "Too many 0-length moves! we stop here.");
 				return;

@@ -60,6 +60,7 @@
 		    android:checked="true"
 		    />
 	</FrameLayout>
+	<!-- 
    	<ImageView 
 		xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/play"
@@ -71,4 +72,17 @@
 	    android:layout_alignParentRight="true"
 	    android:layout_centerHorizontal="true"
         />
+	 -->
+    <ImageButton 
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/play"
+	    android:src="@drawable/checkmark_256"
+	    android:layout_width="wrap_content"
+    	android:layout_height="match_parent"
+	    android:layout_gravity="right|center_vertical"
+	    android:background="@android:color/transparent"
+	    android:scaleType="fitCenter"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerHorizontal="true"
+        />   	
 </RelativeLayout>

@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.scoutant.cc.model.Game;
 import org.scoutant.cc.model.Move;
 
 import android.content.Context;
@@ -45,7 +46,7 @@ public class Repository {
 				str += game.game.serialize();
 			}
 			fos.write( str.getBytes());
-			Log.i(tag, "saving game \n" + game.game.serialize() );
+			if (Game.LOG) Log.i(tag, "saving game \n" + game.game.serialize() );
 			fos.close();
 		} catch (FileNotFoundException e) {
 			Log.e(tag, "not found...", e);

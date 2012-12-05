@@ -1,15 +1,16 @@
 package org.scoutant.cc;
 
-import org.scoutant.cc.R.id;
+import org.scoutant.cc.model.Game;
 
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class HumanVsMachineActivity extends BaseActivity {
 	public static final String KEY_NB_PLAYERS = "nb_players";
@@ -45,6 +46,7 @@ public class HumanVsMachineActivity extends BaseActivity {
 		cbs[player] = view;
 		view.setVisibility( playing(player) ? View.VISIBLE : View.INVISIBLE);
 		view.setChecked(  player!=0 ? true: false);
+		if (!Game.DEV) view.setOnCheckedChangeListener( new CheckChanged());
 	}
 	
 	private class StartListener implements OnClickListener {
@@ -62,4 +64,20 @@ public class HumanVsMachineActivity extends BaseActivity {
         }
         editor.commit();
 	}
+	
+	private class CheckChanged implements OnCheckedChangeListener {
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			boolean onlyAIs = cbs[0].isChecked()&&cbs[1].isChecked()&&cbs[2].isChecked()&&cbs[3].isChecked()&&cbs[4].isChecked()&&cbs[5].isChecked(); 
+			setState( !onlyAIs);
+		}
+	}
+	
+	protected void setState( boolean state) {
+		Log.d("activity", "state : " +state);
+		View view = findViewById(R.id.play); 
+		view.setEnabled( state);
+		view.setAlpha( state ? 0.8f : 0.3f );
+	}
+
 }
