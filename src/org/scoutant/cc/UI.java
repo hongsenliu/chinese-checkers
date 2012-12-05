@@ -46,6 +46,8 @@ public class UI extends BaseActivity {
 	private Command startAI = new StartAI();
 	private Command mayStartAI = new MayStartAI();
 	private int resultCode = 0;
+	private boolean paused = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -132,12 +134,14 @@ public class UI extends BaseActivity {
 	@Override
 		protected void onResume() {
 			super.onResume();
+			paused = false;
 			if (resultCode!= MenuActivity.RESULT_BACK) mayStartAI.execute();
 			resultCode = 0;
 		}
 	
 	@Override
 		protected void onPause() {
+			paused = true;
 			game.pauseAnimations();
 			super.onPause();
 		}
@@ -245,12 +249,12 @@ public class UI extends BaseActivity {
 	private class MayStartAI implements Command {
 		@Override
 		public void execute() {
+			if (paused) return;
 			Log.d(tag, "zeroLengthMoves : " + game.game.zeroLengthMoves);
 			if (game.game.zeroLengthMoves > 12) {
 				Log.i(tag, "Too many 0-length moves! we stop here.");
 				return;
 			}
-
 			int turn = turnMgr.player();
 			if (ai( turn)) startAI.execute();
 			else { // human
