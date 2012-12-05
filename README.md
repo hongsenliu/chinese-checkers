@@ -18,7 +18,7 @@ You can access it at https://github.com/scoutant/chinese-checkers.
 
 You can reuse and adapt it according to GPL v3 license.
 
-You may post issues at http://github.com/scoutant/cc/issues
+You may post issues at http://github.com/scoutant/chinese-checkers/issues
 
 Stephane Coutant, http://scoutant.org
 

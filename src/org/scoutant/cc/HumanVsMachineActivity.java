@@ -74,10 +74,8 @@ public class HumanVsMachineActivity extends BaseActivity {
 	}
 	
 	protected void setState( boolean state) {
-		Log.d("activity", "state : " +state);
 		View view = findViewById(R.id.play); 
 		view.setEnabled( state);
 		view.setAlpha( state ? 0.8f : 0.3f );
 	}
-
 }

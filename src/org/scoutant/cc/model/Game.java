@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class Game implements org.scoutant.Serializable {
 	// TODO set LOG and DEV before publish
-	public static final boolean LOG=true;
+	public static final boolean LOG=false;
 	public static final boolean DEV=false;
 	
 	@SuppressWarnings("unused")
