@@ -40,7 +40,8 @@ public class Game implements org.scoutant.Serializable {
 		for (int i=0; i<6; i++) overs[i] = players.get(i).over;
 		return overs;
 	}
-
+	public int zeroLengthMoves=0;
+	
 	public boolean pop() {
 		if (moves.size() <= 0) return false;
 		moves.remove(moves.size()-1);
@@ -118,7 +119,18 @@ public class Game implements org.scoutant.Serializable {
 		move( peg, point);
 		moves.add(move);
 		registerIfOver( peg.color);
+		registerLengthMove(move, peg.color);
 		return;
+	}
+
+	/**
+	 * To avoid game with only AIs to fall in infinite loop in case of blocking position.
+	 * Here we count the number of zero-length consecutive moves.
+	 * <p>AITask may request this counter and decide to stop the chaining.  
+	 */
+	private void registerLengthMove(Move move, int player) {
+		if (move.length(player)==0) zeroLengthMoves++;
+		else zeroLengthMoves=0;
 	}
 
 	private void registerIfOver(int player) {

@@ -312,6 +312,7 @@ public class GameView extends FrameLayout implements GameAware {
 	public void back() {
 		clearAnimations();
 		back1move();
+		game.zeroLengthMoves = 0;
 	}
 	
 	/**

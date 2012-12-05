@@ -204,6 +204,7 @@ public class UI extends BaseActivity {
 			int turn = turnMgr.player(); 
 			if (Game.LOG) Log.d(tag, "\n"  +"####  " + turn  +  "  ################################################################################");
 			if (game.game.over()) return null; // to prevent looping if no human player...
+			// TODO TEST
 			Move move = game.ais[turn].think();
 			return move;
 		}
@@ -244,6 +245,12 @@ public class UI extends BaseActivity {
 	private class MayStartAI implements Command {
 		@Override
 		public void execute() {
+			Log.d(tag, "zeroLengthMoves : " + game.game.zeroLengthMoves);
+			if (game.game.zeroLengthMoves > 12) {
+				Log.i(tag, "Too many 0-length moves! we stop here.");
+				return;
+			}
+
 			int turn = turnMgr.player();
 			if (ai( turn)) startAI.execute();
 			else { // human

@@ -77,7 +77,7 @@ public class AI {
 		}
 		if (threatening()) {
 			boolean done = consider0PegMoves();
-			if (done) moves.get(0); 
+			if (done) return moves.get(0); 
 		}
 		if (nb<=4) {
 			thinkHops();
